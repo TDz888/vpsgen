@@ -1,9 +1,0 @@
-[build]
-  publish = "public"
-
-[functions]
-  directory = "netlify/functions"
-
-[dev]
-  command = "npx serve public"
-  port = 3000
