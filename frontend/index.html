@@ -3,15 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <meta name="description" content="Singularity Club - VPS Generator với 25+ tính năng nâng cấp">
-    <title>Singularity Club | VPS Generator v2.0</title>
+    <title>Singularity Club | VPS Generator v3.0</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* ============================================ */
-        /* UPDATE 1: CSS Variables nâng cao */
-        /* ============================================ */
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         :root {
             --primary: #8b5cf6;
             --primary-dark: #7c3aed;
@@ -22,224 +19,204 @@
             --error: #ef4444;
             --info: #3b82f6;
             --bg: #0f0f1a;
-            --bg-light: #1a1a2e;
             --card: rgba(30, 30, 50, 0.85);
-            --card-hover: rgba(40, 40, 60, 0.9);
             --border: rgba(255, 255, 255, 0.08);
-            --border-hover: rgba(139, 92, 246, 0.3);
             --text: #f1f5f9;
             --text-muted: #94a3b8;
-            --text-dark: #64748b;
-            --shadow-sm: 0 2px 8px rgba(0,0,0,0.1);
-            --shadow-md: 0 4px 16px rgba(0,0,0,0.15);
-            --shadow-lg: 0 8px 32px rgba(0,0,0,0.2);
             --shadow-primary: 0 0 20px rgba(139,92,246,0.3);
-            --transition-fast: 0.15s ease;
-            --transition-normal: 0.3s ease;
-            --transition-slow: 0.5s ease;
-            --border-radius-sm: 8px;
-            --border-radius-md: 12px;
-            --border-radius-lg: 16px;
-            --border-radius-xl: 20px;
-            --border-radius-2xl: 24px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
-        /* UPDATE 2: Light mode hỗ trợ */
         body.light {
             --bg: #f1f5f9;
-            --bg-light: #e2e8f0;
             --card: rgba(255, 255, 255, 0.9);
-            --card-hover: rgba(255, 255, 255, 1);
             --border: rgba(0, 0, 0, 0.08);
-            --border-hover: rgba(139, 92, 246, 0.3);
             --text: #0f172a;
             --text-muted: #475569;
-            --text-dark: #64748b;
         }
         
-        body { 
-            background: var(--bg); 
-            font-family: 'Inter', sans-serif; 
-            color: var(--text); 
-            min-height: 100vh;
-            transition: background 0.3s ease, color 0.3s ease;
-        }
+        body { background: var(--bg); font-family: 'Inter', sans-serif; color: var(--text); min-height: 100vh; transition: background 0.3s; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
         
-        /* UPDATE 3: Background gradient động */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(circle at 20% 30%, rgba(139,92,246,0.08) 0%, transparent 50%),
-                        radial-gradient(circle at 80% 70%, rgba(236,72,153,0.05) 0%, transparent 50%);
-            pointer-events: none;
-            z-index: 0;
-        }
-        
-        .container { max-width: 1400px; margin: 0 auto; padding: 20px; position: relative; z-index: 1; }
-        
-        /* UPDATE 4: Glassmorphism header */
-        .header { text-align: center; margin-bottom: 30px; padding: 20px; background: var(--card); border-radius: var(--border-radius-2xl); backdrop-filter: blur(10px); border: 1px solid var(--border); }
-        .logo { font-size: 2rem; font-weight: 800; background: linear-gradient(135deg, #fff, var(--primary), var(--secondary)); -webkit-background-clip: text; background-clip: text; color: transparent; animation: pulse 2s infinite; }
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.8; } }
+        /* Header */
+        .header { text-align: center; margin-bottom: 30px; padding: 20px; background: var(--card); border-radius: 24px; backdrop-filter: blur(10px); border: 1px solid var(--border); }
+        .logo { font-size: 2rem; font-weight: 800; background: linear-gradient(135deg, #fff, var(--primary), var(--secondary)); -webkit-background-clip: text; background-clip: text; color: transparent; }
         .subtitle { color: var(--text-muted); font-size: 0.8rem; margin-top: 6px; }
-        
-        /* UPDATE 5: Badge container với hover effect */
         .badge-container { display: flex; justify-content: center; gap: 10px; margin-top: 15px; flex-wrap: wrap; }
-        .badge { background: var(--card); border: 1px solid var(--border); border-radius: 50px; padding: 5px 12px; font-size: 0.7rem; transition: var(--transition-normal); cursor: default; }
-        .badge:hover { transform: translateY(-2px); border-color: var(--primary); box-shadow: var(--shadow-primary); }
+        .badge { background: var(--card); border: 1px solid var(--border); border-radius: 50px; padding: 5px 12px; font-size: 0.7rem; }
         
-        /* UPDATE 6: Stats cards với animation khi hover */
+        /* Stats */
         .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 30px; }
         @media (max-width: 768px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
-        .stat-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--border-radius-lg); padding: 16px; transition: var(--transition-normal); cursor: pointer; backdrop-filter: blur(10px); }
-        .stat-card:hover { transform: translateY(-4px) scale(1.02); border-color: var(--primary); box-shadow: var(--shadow-primary); }
-        .stat-label { font-size: 0.7rem; color: var(--text-muted); margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+        .stat-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 16px; transition: var(--transition); cursor: pointer; }
+        .stat-card:hover { transform: translateY(-2px); border-color: var(--primary); box-shadow: var(--shadow-primary); }
+        .stat-label { font-size: 0.7rem; color: var(--text-muted); margin-bottom: 6px; }
         .stat-value { font-size: 1.8rem; font-weight: 700; background: linear-gradient(135deg, var(--primary), var(--secondary)); -webkit-background-clip: text; background-clip: text; color: transparent; }
         
-        /* UPDATE 7: Two columns layout responsive */
+        /* Two Columns */
         .two-columns { display: grid; grid-template-columns: 1fr 1.2fr; gap: 24px; }
         @media (max-width: 900px) { .two-columns { grid-template-columns: 1fr; } }
         
-        /* UPDATE 8: Card với glassmorphism và hover nâng cao */
-        .card { background: var(--card); border: 1px solid var(--border); border-radius: var(--border-radius-xl); padding: 24px; backdrop-filter: blur(10px); transition: var(--transition-normal); }
-        .card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); border-color: var(--border-hover); }
+        .card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 24px; backdrop-filter: blur(10px); transition: var(--transition); }
+        .card:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,0,0,0.2); }
         .card-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
         
-        /* UPDATE 9: Input field với focus animation */
+        /* Form */
         .input-group { margin-bottom: 18px; }
         .input-label { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 6px; display: block; }
-        .input-field { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: var(--border-radius-md); padding: 12px 14px; color: var(--text); font-size: 0.85rem; transition: var(--transition-fast); }
-        .input-field:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(139,92,246,0.2); transform: scale(1.01); }
-        
-        /* UPDATE 10: Input row với random button cân đối */
+        .input-field { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; color: var(--text); font-size: 0.85rem; transition: var(--transition); }
+        .input-field:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(139,92,246,0.2); }
         .input-row { display: flex; gap: 10px; align-items: center; }
         .input-row .input-group { flex: 1; margin-bottom: 0; }
-        .random-btn { background: rgba(139,92,246,0.2); border: 1px solid var(--border); border-radius: var(--border-radius-md); padding: 12px 16px; color: var(--primary); cursor: pointer; font-size: 0.75rem; white-space: nowrap; transition: var(--transition-fast); display: flex; align-items: center; gap: 6px; }
+        .random-btn { background: rgba(139,92,246,0.2); border: 1px solid var(--border); border-radius: 12px; padding: 12px 16px; color: var(--primary); cursor: pointer; font-size: 0.75rem; white-space: nowrap; transition: var(--transition); display: flex; align-items: center; gap: 6px; }
         .random-btn:hover { background: rgba(139,92,246,0.4); transform: scale(1.02); }
         
-        /* UPDATE 11: Button primary với ripple effect */
-        .btn { padding: 12px 20px; border-radius: var(--border-radius-md); font-weight: 600; font-size: 0.85rem; cursor: pointer; border: none; width: 100%; margin-top: 10px; position: relative; overflow: hidden; transition: var(--transition-fast); }
+        /* Progress Bar */
+        .create-progress-container { margin-top: 16px; margin-bottom: 8px; display: none; }
+        .create-progress-steps { display: flex; justify-content: space-between; margin-bottom: 8px; gap: 4px; }
+        .create-progress-step { flex: 1; text-align: center; font-size: 0.55rem; opacity: 0.4; padding: 4px; border-radius: 8px; transition: var(--transition); }
+        .create-progress-step i { display: block; margin-bottom: 2px; font-size: 0.7rem; }
+        .create-progress-step.active { opacity: 1; color: var(--primary); background: rgba(139,92,246,0.15); }
+        .create-progress-step.completed { opacity: 1; color: var(--success); }
+        .create-progress-bar { background: rgba(0,0,0,0.3); border-radius: 20px; height: 4px; overflow: hidden; }
+        .create-progress-fill { background: linear-gradient(90deg, var(--primary), var(--secondary)); width: 0%; height: 100%; transition: width 0.3s; position: relative; }
+        .create-progress-fill::after { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent); animation: shimmer 1.5s infinite; }
+        @keyframes shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+        .create-progress-text { font-size: 0.65rem; text-align: center; margin-top: 6px; color: var(--text-muted); }
+        
+        .btn { padding: 12px 20px; border-radius: 12px; font-weight: 600; font-size: 0.85rem; cursor: pointer; border: none; width: 100%; margin-top: 10px; transition: var(--transition); }
         .btn-primary { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; }
         .btn-primary:hover { transform: translateY(-2px); box-shadow: var(--shadow-primary); }
-        .btn-primary:active { transform: translateY(0); }
         .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
-        .btn-primary::after { content: ''; position: absolute; top: 50%; left: 50%; width: 0; height: 0; background: rgba(255,255,255,0.3); border-radius: 50%; transform: translate(-50%, -50%); transition: width 0.6s, height 0.6s; }
-        .btn-primary:active::after { width: 300px; height: 300px; }
         
-        /* UPDATE 12: Quick actions với hover scale */
         .quick-actions { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
-        .quick-btn { flex: 1; background: rgba(0,0,0,0.25); border: 1px solid var(--border); border-radius: var(--border-radius-sm); padding: 8px 10px; font-size: 0.7rem; cursor: pointer; text-align: center; transition: var(--transition-fast); display: flex; align-items: center; justify-content: center; gap: 5px; }
+        .quick-btn { flex: 1; background: rgba(0,0,0,0.25); border: 1px solid var(--border); border-radius: 10px; padding: 8px 10px; font-size: 0.7rem; cursor: pointer; text-align: center; transition: var(--transition); display: flex; align-items: center; justify-content: center; gap: 5px; }
         .quick-btn:hover { background: rgba(139,92,246,0.2); border-color: var(--primary); transform: translateY(-2px); }
         
-        /* UPDATE 13: VM controls với search animation */
+        /* VM Controls */
         .vm-controls { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
-        .vm-search { flex: 1; background: rgba(0,0,0,0.25); border: 1px solid var(--border); border-radius: 30px; padding: 10px 16px; color: var(--text); font-size: 0.8rem; transition: var(--transition-fast); }
-        .vm-search:focus { outline: none; border-color: var(--primary); width: 100%; }
-        .vm-filter, .vm-sort { background: rgba(0,0,0,0.25); border: 1px solid var(--border); border-radius: 30px; padding: 10px 16px; color: var(--text); font-size: 0.75rem; cursor: pointer; transition: var(--transition-fast); }
+        .vm-search { flex: 1; background: rgba(0,0,0,0.25); border: 1px solid var(--border); border-radius: 30px; padding: 10px 16px; color: var(--text); font-size: 0.8rem; transition: var(--transition); }
+        .vm-search:focus { outline: none; border-color: var(--primary); }
+        .vm-filter, .vm-sort { background: rgba(0,0,0,0.25); border: 1px solid var(--border); border-radius: 30px; padding: 10px 16px; color: var(--text); font-size: 0.75rem; cursor: pointer; transition: var(--transition); }
         .vm-filter:hover, .vm-sort:hover { border-color: var(--primary); }
         .vm-count { background: rgba(139,92,246,0.2); border-radius: 30px; padding: 10px 16px; font-size: 0.75rem; display: flex; align-items: center; gap: 6px; }
         
-        /* UPDATE 14: VM list với scrollbar đẹp */
+        /* VM List - Accordion Style */
         .vm-list { display: flex; flex-direction: column; gap: 12px; max-height: 550px; overflow-y: auto; padding-right: 5px; }
         .vm-list::-webkit-scrollbar { width: 6px; }
         .vm-list::-webkit-scrollbar-track { background: var(--border); border-radius: 10px; }
         .vm-list::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
         
-        /* UPDATE 15: VM item với slide-in animation */
-        .vm-item { background: rgba(0,0,0,0.25); border-radius: var(--border-radius-lg); border: 1px solid var(--border); overflow: hidden; transition: var(--transition-normal); animation: slideIn 0.3s ease; }
+        .vm-item { background: rgba(0,0,0,0.25); border-radius: 16px; border: 1px solid var(--border); overflow: hidden; transition: var(--transition); animation: slideIn 0.3s ease; }
         @keyframes slideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .vm-item:hover { border-color: var(--primary); background: rgba(139,92,246,0.08); transform: translateX(4px); }
+        .vm-item:hover { border-color: var(--primary); background: rgba(139,92,246,0.08); }
         
-        /* UPDATE 16: VM header với cursor pointer */
-        .vm-header { display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; cursor: pointer; }
+        .vm-header { display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; cursor: pointer; transition: var(--transition); }
+        .vm-header:hover { background: rgba(139,92,246,0.05); }
         .vm-info { display: flex; align-items: center; gap: 12px; }
-        .vm-icon { width: 40px; height: 40px; background: linear-gradient(135deg, rgba(139,92,246,0.2), rgba(236,72,153,0.2)); border-radius: var(--border-radius-md); display: flex; align-items: center; justify-content: center; transition: var(--transition-fast); }
-        .vm-item:hover .vm-icon { transform: scale(1.05); }
+        .vm-icon { width: 40px; height: 40px; background: linear-gradient(135deg, rgba(139,92,246,0.2), rgba(236,72,153,0.2)); border-radius: 12px; display: flex; align-items: center; justify-content: center; transition: var(--transition); }
         .vm-name { font-weight: 600; font-size: 0.9rem; }
         .vm-time { font-size: 0.6rem; color: var(--text-muted); margin-top: 3px; }
-        .vm-status { font-size: 0.65rem; padding: 3px 10px; border-radius: 50px; font-weight: 500; transition: var(--transition-fast); }
+        .vm-status { font-size: 0.65rem; padding: 3px 10px; border-radius: 50px; font-weight: 500; transition: var(--transition); }
         .status-creating { background: rgba(245,158,11,0.2); color: var(--warning); animation: blink 1.5s infinite; }
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
         .status-running { background: rgba(16,185,129,0.2); color: var(--success); }
         .vm-expand-icon { transition: transform 0.3s ease; color: var(--text-muted); }
-        .vm-item.open .vm-expand-icon { transform: rotate(180deg); }
         
-        /* UPDATE 17: VM detail với expand animation */
+        /* Accordion: chỉ mở 1 cái 1 lúc */
         .vm-detail { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1); border-top: 1px solid transparent; }
         .vm-item.open .vm-detail { max-height: 450px; border-top-color: var(--border); padding: 16px; }
+        .vm-item.open .vm-expand-icon { transform: rotate(180deg); }
         
-        /* UPDATE 18: Info grid responsive */
         .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
         @media (max-width: 640px) { .info-grid { grid-template-columns: 1fr; } }
-        .info-box { background: rgba(0,0,0,0.2); border-radius: var(--border-radius-md); padding: 12px; transition: var(--transition-fast); }
+        .info-box { background: rgba(0,0,0,0.2); border-radius: 12px; padding: 12px; transition: var(--transition); }
         .info-box:hover { background: rgba(0,0,0,0.35); transform: translateX(2px); }
         .info-title { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
         .info-value { font-family: monospace; font-size: 0.8rem; display: flex; justify-content: space-between; align-items: center; gap: 6px; flex-wrap: wrap; word-break: break-all; }
         
-        /* UPDATE 19: Copy button với feedback */
-        .copy-btn { background: rgba(139,92,246,0.2); border: none; color: var(--primary); padding: 4px 10px; border-radius: var(--border-radius-sm); font-size: 0.65rem; cursor: pointer; transition: var(--transition-fast); display: inline-flex; align-items: center; gap: 4px; }
+        /* Copy Button với hiệu ứng */
+        .copy-btn { background: rgba(139,92,246,0.2); border: none; color: var(--primary); padding: 4px 10px; border-radius: 8px; font-size: 0.65rem; cursor: pointer; transition: var(--transition); display: inline-flex; align-items: center; gap: 4px; }
         .copy-btn:hover { background: rgba(139,92,246,0.4); transform: scale(1.02); }
-        .copy-btn.copied { background: var(--success); color: white; }
+        .copy-btn.copied { background: var(--success); color: white; animation: bounce 0.3s ease; }
+        @keyframes bounce { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
         
-        /* UPDATE 20: VM links với hover effect */
         .vm-links { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
-        .vm-link { background: rgba(59,130,246,0.15); padding: 6px 12px; border-radius: var(--border-radius-sm); font-size: 0.7rem; text-decoration: none; color: var(--info); display: inline-flex; align-items: center; gap: 5px; transition: var(--transition-fast); }
+        .vm-link { background: rgba(59,130,246,0.15); padding: 6px 12px; border-radius: 8px; font-size: 0.7rem; text-decoration: none; color: var(--info); display: inline-flex; align-items: center; gap: 5px; transition: var(--transition); }
         .vm-link:hover { background: rgba(59,130,246,0.3); transform: translateY(-2px); }
-        .vm-delete { background: rgba(239,68,68,0.15); color: var(--error); padding: 6px 12px; border-radius: var(--border-radius-sm); font-size: 0.7rem; cursor: pointer; border: none; display: inline-flex; align-items: center; gap: 5px; transition: var(--transition-fast); }
+        .vm-delete { background: rgba(239,68,68,0.15); color: var(--error); padding: 6px 12px; border-radius: 8px; font-size: 0.7rem; cursor: pointer; border: none; display: inline-flex; align-items: center; gap: 5px; transition: var(--transition); }
         .vm-delete:hover { background: rgba(239,68,68,0.3); transform: translateY(-2px); }
         
-        /* UPDATE 21: Theme toggle button */
-        .theme-toggle { position: fixed; top: 20px; right: 20px; background: var(--card); border: 1px solid var(--border); border-radius: 50%; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 100; backdrop-filter: blur(10px); transition: var(--transition-fast); }
+        /* VM Progress inside detail */
+        .vm-progress { margin-top: 12px; padding: 10px; background: rgba(0,0,0,0.2); border-radius: 10px; }
+        .vm-progress-bar { background: rgba(0,0,0,0.3); border-radius: 10px; height: 4px; overflow: hidden; }
+        .vm-progress-fill { background: linear-gradient(90deg, var(--primary), var(--secondary)); height: 100%; width: 0%; transition: width 0.3s; }
+        .vm-progress-text { font-size: 0.6rem; text-align: center; margin-top: 6px; color: var(--text-muted); }
+        
+        /* Theme toggle */
+        .theme-toggle { position: fixed; top: 20px; right: 20px; background: var(--card); border: 1px solid var(--border); border-radius: 50%; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 100; backdrop-filter: blur(10px); transition: var(--transition); }
         .theme-toggle:hover { transform: scale(1.05); border-color: var(--primary); }
         
-        /* UPDATE 22: Toast notification đẹp */
-        .toast { position: fixed; bottom: 24px; right: 24px; background: var(--card); backdrop-filter: blur(12px); border: 1px solid var(--border); border-radius: var(--border-radius-md); padding: 12px 20px; display: flex; align-items: center; gap: 12px; transform: translateX(400px); transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55); z-index: 1000; border-left: 3px solid var(--primary); box-shadow: var(--shadow-lg); }
+        /* Debug Toggle */
+        .debug-toggle-btn { position: fixed; top: 20px; right: 80px; background: var(--card); border: 1px solid var(--border); border-radius: 50%; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 100; backdrop-filter: blur(10px); transition: var(--transition); }
+        .debug-toggle-btn:hover { transform: scale(1.05); border-color: var(--warning); }
+        
+        /* Debug Panel */
+        .debug-panel { position: fixed; bottom: 20px; left: 20px; right: 20px; background: var(--card); backdrop-filter: blur(12px); border: 1px solid var(--border); border-radius: 16px; z-index: 99; transition: var(--transition); transform: translateY(100%); max-height: 300px; overflow: hidden; }
+        .debug-panel.open { transform: translateY(0); }
+        .debug-header { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: rgba(0,0,0,0.3); cursor: pointer; border-bottom: 1px solid var(--border); }
+        .debug-title { font-size: 0.8rem; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+        .debug-actions { display: flex; gap: 10px; }
+        .debug-clear { background: none; border: none; color: var(--warning); cursor: pointer; font-size: 0.7rem; padding: 4px 8px; border-radius: 6px; transition: var(--transition); }
+        .debug-clear:hover { background: rgba(0,0,0,0.2); }
+        .debug-content { padding: 12px 16px; max-height: 250px; overflow-y: auto; font-family: monospace; font-size: 0.7rem; }
+        .debug-log { padding: 6px 0; border-bottom: 1px solid var(--border); display: flex; gap: 10px; animation: fadeIn 0.2s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
+        .debug-time { color: var(--text-muted); min-width: 65px; font-size: 0.6rem; }
+        .debug-success { color: var(--success); }
+        .debug-error { color: var(--error); }
+        .debug-info { color: var(--info); }
+        .debug-warning { color: var(--warning); }
+        
+        /* Toast */
+        .toast { position: fixed; bottom: 24px; right: 24px; background: var(--card); backdrop-filter: blur(12px); border: 1px solid var(--border); border-radius: 12px; padding: 12px 20px; display: flex; align-items: center; gap: 12px; transform: translateX(400px); transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55); z-index: 1000; border-left: 3px solid var(--primary); box-shadow: 0 8px 32px rgba(0,0,0,0.2); }
         .toast.show { transform: translateX(0); }
         .toast-success { border-left-color: var(--success); }
         .toast-error { border-left-color: var(--error); }
         .toast-info { border-left-color: var(--info); }
         
-        /* UPDATE 23: Empty state đẹp */
         .empty-state { text-align: center; padding: 50px 20px; color: var(--text-muted); }
         .empty-icon { font-size: 3.5rem; margin-bottom: 12px; opacity: 0.5; animation: float 3s ease-in-out infinite; }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
         
-        /* UPDATE 24: Loading spinner */
         .spinner { width: 18px; height: 18px; border: 2px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 0.6s linear infinite; display: inline-block; }
         @keyframes spin { to { transform: rotate(360deg); } }
         
-        /* UPDATE 25: Footer với social links */
         .footer { text-align: center; padding: 20px; margin-top: 24px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 0.65rem; }
-        .footer a { color: var(--primary); text-decoration: none; transition: var(--transition-fast); }
-        .footer a:hover { text-decoration: underline; }
-        .social-links { display: flex; justify-content: center; gap: 16px; margin-bottom: 12px; }
-        .social-link { color: var(--text-muted); transition: var(--transition-fast); font-size: 1.1rem; }
-        .social-link:hover { color: var(--primary); transform: translateY(-2px); }
+        .footer a { color: var(--primary); text-decoration: none; }
         
-        /* Responsive */
         @media (max-width: 640px) {
             .container { padding: 12px; }
             .card { padding: 16px; }
+            .debug-panel { left: 10px; right: 10px; bottom: 10px; }
+            .debug-toggle-btn { right: 70px; }
+            .theme-toggle { right: 15px; }
         }
     </style>
 </head>
 <body>
     <div class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></div>
+    <div class="debug-toggle-btn" id="debugToggleBtn"><i class="fas fa-bug"></i></div>
     
     <div class="container">
         <div class="header">
             <div class="logo"><i class="fas fa-infinity"></i> SINGULARITY CLUB</div>
-            <div class="subtitle">Virtual Machine Platform v2.0 • 25+ tính năng nâng cấp</div>
+            <div class="subtitle">Virtual Machine Platform v3.0 • Tự động đổi user/pass sau mỗi lần tạo</div>
             <div class="badge-container">
                 <div class="badge"><i class="fab fa-github"></i> GitHub Actions</div>
                 <div class="badge"><i class="fas fa-network-wired"></i> Tailscale</div>
                 <div class="badge"><i class="fas fa-shield-alt"></i> Bảo mật cao</div>
                 <div class="badge"><i class="fas fa-chart-line"></i> Live Monitor</div>
-                <div class="badge"><i class="fas fa-moon"></i> Dark/Light</div>
                 <div class="badge"><i class="fas fa-copy"></i> Copy thông minh</div>
             </div>
         </div>
@@ -268,37 +245,88 @@
                 <div class="card-title"><i class="fas fa-rocket"></i> Khởi tạo Virtual Machine</div>
                 <div class="input-group"><label class="input-label"><i class="fab fa-github"></i> GitHub Token</label><input type="password" class="input-field" id="githubToken" placeholder="ghp_xxxxxxxxxxxx"></div>
                 <div class="input-group"><label class="input-label"><i class="fas fa-network-wired"></i> Tailscale Key</label><input type="password" class="input-field" id="tailscaleKey" placeholder="tskey-xxxxxxxxxxxx"></div>
-                <div class="input-row"><div class="input-group"><label class="input-label"><i class="fas fa-user"></i> Tên đăng nhập</label><input type="text" class="input-field" id="vmUsername" placeholder="username"></div><button class="random-btn" id="randomUserBtn"><i class="fas fa-dice"></i> Random</button></div>
-                <div class="input-row"><div class="input-group"><label class="input-label"><i class="fas fa-lock"></i> Mật khẩu</label><input type="password" class="input-field" id="vmPassword" placeholder="password"></div><button class="random-btn" id="randomPassBtn"><i class="fas fa-dice"></i> Random</button></div>
+                <div class="input-row">
+                    <div class="input-group"><label class="input-label"><i class="fas fa-user"></i> Tên đăng nhập</label><input type="text" class="input-field" id="vmUsername" placeholder="username"></div>
+                    <button class="random-btn" id="randomUserBtn"><i class="fas fa-dice"></i> Random</button>
+                </div>
+                <div class="input-row">
+                    <div class="input-group"><label class="input-label"><i class="fas fa-lock"></i> Mật khẩu</label><input type="password" class="input-field" id="vmPassword" placeholder="password"></div>
+                    <button class="random-btn" id="randomPassBtn"><i class="fas fa-dice"></i> Random</button>
+                </div>
+                
+                <!-- Progress Bar -->
+                <div class="create-progress-container" id="createProgressContainer">
+                    <div class="create-progress-steps" id="createProgressSteps">
+                        <div class="create-progress-step"><i class="fas fa-key"></i> Token</div>
+                        <div class="create-progress-step"><i class="fas fa-folder-plus"></i> Repo</div>
+                        <div class="create-progress-step"><i class="fas fa-file-code"></i> Workflow</div>
+                        <div class="create-progress-step"><i class="fas fa-play"></i> Trigger</div>
+                        <div class="create-progress-step"><i class="fas fa-check-circle"></i> Done</div>
+                    </div>
+                    <div class="create-progress-bar"><div class="create-progress-fill" id="createProgressFill"></div></div>
+                    <div class="create-progress-text" id="createProgressText">Sẵn sàng</div>
+                </div>
+                
                 <button class="btn btn-primary" id="createBtn"><i class="fas fa-play"></i> Tạo VM Ngay</button>
-                <div class="quick-actions"><div class="quick-btn" id="demoBtn"><i class="fas fa-flask"></i> Demo</div><div class="quick-btn" id="clearBtn"><i class="fas fa-eraser"></i> Xóa</div><div class="quick-btn" id="refreshBtn"><i class="fas fa-sync-alt"></i> Làm mới</div><div class="quick-btn" id="saveConfigBtn"><i class="fas fa-save"></i> Lưu</div><div class="quick-btn" id="loadConfigBtn"><i class="fas fa-folder-open"></i> Tải</div></div>
+                
+                <div class="quick-actions">
+                    <div class="quick-btn" id="demoBtn"><i class="fas fa-flask"></i> Demo</div>
+                    <div class="quick-btn" id="clearBtn"><i class="fas fa-eraser"></i> Xóa</div>
+                    <div class="quick-btn" id="refreshBtn"><i class="fas fa-sync-alt"></i> Làm mới</div>
+                    <div class="quick-btn" id="saveConfigBtn"><i class="fas fa-save"></i> Lưu</div>
+                    <div class="quick-btn" id="loadConfigBtn"><i class="fas fa-folder-open"></i> Tải</div>
+                </div>
             </div>
 
             <div class="card">
                 <div class="card-title"><i class="fas fa-server"></i> Virtual Machines</div>
-                <div class="vm-controls"><input type="text" class="vm-search" id="searchInput" placeholder="🔍 Tìm kiếm VM..."><select class="vm-filter" id="filterSelect"><option value="all">📋 Tất cả</option><option value="running">✅ Đang chạy</option><option value="creating">⚙️ Đang tạo</option></select><select class="vm-sort" id="sortSelect"><option value="newest">🕐 Mới nhất</option><option value="oldest">🕐 Cũ nhất</option></select><div class="vm-count"><i class="fas fa-chart-simple"></i> <span id="vmCount">0</span></div></div>
-                <div class="vm-list" id="vmList"><div class="empty-state"><div class="empty-icon"><i class="fas fa-cloud-upload-alt"></i></div><div>✨ Chưa có VM nào<br>Tạo VM đầu tiên bên trái ✨</div></div></div>
+                <div class="vm-controls">
+                    <input type="text" class="vm-search" id="searchInput" placeholder="🔍 Tìm kiếm VM...">
+                    <select class="vm-filter" id="filterSelect">
+                        <option value="all">📋 Tất cả</option>
+                        <option value="running">✅ Đang chạy</option>
+                        <option value="creating">⚙️ Đang tạo</option>
+                    </select>
+                    <select class="vm-sort" id="sortSelect">
+                        <option value="newest">🕐 Mới nhất</option>
+                        <option value="oldest">🕐 Cũ nhất</option>
+                    </select>
+                    <div class="vm-count"><i class="fas fa-chart-simple"></i> <span id="vmCount">0</span></div>
+                </div>
+                <div class="vm-list" id="vmList">
+                    <div class="empty-state"><div class="empty-icon"><i class="fas fa-cloud-upload-alt"></i></div><div>✨ Chưa có VM nào<br>Tạo VM đầu tiên bên trái ✨</div></div>
+                </div>
             </div>
         </div>
         
         <div class="footer">
-            <div class="social-links">
-                <a href="#" class="social-link"><i class="fab fa-github"></i></a>
-                <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
-                <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
-                <a href="#" class="social-link"><i class="fab fa-telegram"></i></a>
-            </div>
-            <div>© 2026 Singularity Club | <i class="fas fa-code-branch"></i> 25+ tính năng nâng cấp | <i class="fas fa-heart"></i> Made with passion</div>
+            <div>© 2026 Singularity Club | <i class="fas fa-code-branch"></i> v3.0 | Tự động đổi user/pass sau mỗi lần tạo</div>
         </div>
     </div>
+    
+    <!-- Toast -->
     <div id="toast" class="toast"><i class="fas fa-check-circle"></i> <span id="toastMsg"></span></div>
+    
+    <!-- Debug Panel -->
+    <div class="debug-panel" id="debugPanel">
+        <div class="debug-header" id="debugHeader">
+            <div class="debug-title"><i class="fas fa-terminal"></i> Debug Console</div>
+            <div class="debug-actions">
+                <button class="debug-clear" id="clearDebugBtn"><i class="fas fa-trash-alt"></i> Xóa</button>
+            </div>
+        </div>
+        <div class="debug-content" id="debugContent">
+            <div class="debug-log"><span class="debug-time">--:--:--</span><span class="debug-info">🚀 Hệ thống khởi động</span></div>
+            <div class="debug-log"><span class="debug-time">--:--:--</span><span class="debug-info">📋 Chế độ Accordion: chỉ mở 1 VM mỗi lần</span></div>
+        </div>
+    </div>
 
     <script>
         // ============================================ //
         // STORAGE KEYS
         // ============================================ //
-        const STORAGE_KEY = 'singularity_vms_v2';
-        const CONFIG_KEY = 'singularity_config_v2';
+        const STORAGE_KEY = 'singularity_vms_v3';
+        const CONFIG_KEY = 'singularity_config_v3';
         const THEME_KEY = 'singularity_theme';
         
         // ============================================ //
@@ -310,6 +338,7 @@
         let currentSort = 'newest';
         let totalCreations = 0;
         let successfulCreations = 0;
+        let currentOpenVM = null; // Chỉ mở 1 VM cùng lúc
         
         // ============================================ //
         // DOM ELEMENTS
@@ -329,17 +358,34 @@
             statActive: document.getElementById('statActive'),
             statUptime: document.getElementById('statUptime'),
             statRate: document.getElementById('statRate'),
+            createProgressContainer: document.getElementById('createProgressContainer'),
+            createProgressFill: document.getElementById('createProgressFill'),
+            createProgressText: document.getElementById('createProgressText'),
+            createProgressSteps: document.getElementById('createProgressSteps'),
             toast: document.getElementById('toast'),
-            toastMsg: document.getElementById('toastMsg')
+            toastMsg: document.getElementById('toastMsg'),
+            debugContent: document.getElementById('debugContent')
         };
         
         // ============================================ //
         // UTILITIES
         // ============================================ //
+        function addDebugLog(msg, type = 'info') {
+            const time = new Date().toLocaleTimeString();
+            const div = document.createElement('div');
+            div.className = 'debug-log';
+            div.innerHTML = `<span class="debug-time">${time}</span><span class="debug-${type}">${msg}</span>`;
+            elements.debugContent.insertBefore(div, elements.debugContent.firstChild);
+            if (elements.debugContent.children.length > 50) {
+                elements.debugContent.removeChild(elements.debugContent.lastChild);
+            }
+        }
+        
         function showToast(msg, type = 'success') {
             elements.toastMsg.textContent = msg;
             elements.toast.className = `toast toast-${type} show`;
             setTimeout(() => elements.toast.classList.remove('show'), 3000);
+            addDebugLog(msg, type);
         }
         
         function randomUsername() {
@@ -364,6 +410,13 @@
             return result.split('').sort(() => Math.random() - 0.5).join('');
         }
         
+        // Cập nhật user/pass mới sau mỗi lần tạo
+        function refreshFormCredentials() {
+            elements.vmUsername.value = randomUsername();
+            elements.vmPassword.value = randomPassword();
+            addDebugLog('🔄 Đã tạo user/pass mới cho lần tạo tiếp theo', 'info');
+        }
+        
         function updateStats() {
             elements.statTotal.textContent = vms.length;
             elements.statActive.textContent = vms.filter(v => v.status === 'running').length;
@@ -386,9 +439,57 @@
                 try {
                     vms = JSON.parse(saved);
                     renderVMList();
-                } catch(e) {}
+                } catch(e) { addDebugLog('Lỗi tải dữ liệu: ' + e.message, 'error'); }
             }
         }
+        
+        function updateCreateProgress(step, percent, text) {
+            elements.createProgressFill.style.width = percent + '%';
+            elements.createProgressText.textContent = text;
+            const steps = elements.createProgressSteps.children;
+            for (let i = 0; i < steps.length; i++) {
+                steps[i].classList.remove('active', 'completed');
+                if (i < step) steps[i].classList.add('completed');
+                else if (i === step) steps[i].classList.add('active');
+            }
+        }
+        
+        // ============================================ //
+        // COPY FUNCTION với thông báo
+        // ============================================ //
+        window.copyText = async function(text, btn) {
+            try {
+                await navigator.clipboard.writeText(text);
+                const originalHTML = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check"></i> Đã copy';
+                btn.classList.add('copied');
+                showToast('✅ Đã sao chép: ' + (text.length > 30 ? text.substring(0, 30) + '...' : text), 'success');
+                setTimeout(() => {
+                    btn.innerHTML = originalHTML;
+                    btn.classList.remove('copied');
+                }, 1500);
+                addDebugLog(`📋 Đã sao chép: ${text.substring(0, 50)}`, 'success');
+            } catch (err) {
+                showToast('❌ Sao chép thất bại! Vui lòng thử lại', 'error');
+                addDebugLog(`❌ Lỗi sao chép: ${err.message}`, 'error');
+            }
+        };
+        
+        // ============================================ //
+        // ACCORDION: chỉ mở 1 VM cùng lúc
+        // ============================================ //
+        window.toggleVM = function(id) {
+            const clickedItem = document.querySelector(`.vm-item[data-id="${id}"]`);
+            if (!clickedItem) return;
+            
+            if (currentOpenVM && currentOpenVM !== id) {
+                const prevItem = document.querySelector(`.vm-item[data-id="${currentOpenVM}"]`);
+                if (prevItem) prevItem.classList.remove('open');
+            }
+            
+            clickedItem.classList.toggle('open');
+            currentOpenVM = clickedItem.classList.contains('open') ? id : null;
+        };
         
         // ============================================ //
         // RENDER VM LIST
@@ -427,6 +528,8 @@
                 const expiresAt = vm.expiresAt ? new Date(vm.expiresAt) : new Date(createdAt.getTime() + 6 * 60 * 60 * 1000);
                 const statusClass = vm.status === 'running' ? 'status-running' : 'status-creating';
                 const statusIcon = vm.status === 'running' ? 'fa-play-circle' : 'fa-spinner fa-pulse';
+                const progress = vm.status === 'creating' ? Math.min(95, Math.floor((Date.now() - createdAt.getTime()) / 360000)) : 100;
+                const progressText = progress < 20 ? 'Đang tạo repository...' : progress < 40 ? 'Đang tạo workflow...' : progress < 60 ? 'Đang trigger...' : progress < 80 ? 'Đợi GitHub Runner...' : 'Đang cài đặt...';
                 
                 return `
                     <div class="vm-item" data-id="${vm.id}">
@@ -449,11 +552,11 @@
                                     <div class="info-title"><i class="fas fa-user"></i> THÔNG TIN ĐĂNG NHẬP</div>
                                     <div class="info-value">
                                         <span><i class="fas fa-user"></i> ${vm.username}</span>
-                                        <button class="copy-btn" onclick="copyText('${vm.username}', this)">Sao chép</button>
+                                        <button class="copy-btn" onclick="copyText('${vm.username.replace(/'/g, "\\'")}', this)">Sao chép</button>
                                     </div>
                                     <div class="info-value" style="margin-top: 8px;">
                                         <span><i class="fas fa-lock"></i> ${vm.password ? '••••••••' : 'N/A'}</span>
-                                        <button class="copy-btn" onclick="copyText('${vm.password}', this)">Sao chép</button>
+                                        <button class="copy-btn" onclick="copyText('${vm.password.replace(/'/g, "\\'")}', this)">Sao chép</button>
                                     </div>
                                 </div>
                                 <div class="info-box">
@@ -472,6 +575,10 @@
                                 ${vm.novncUrl ? `<div class="info-value" style="margin-top: 8px;"><span><i class="fas fa-desktop"></i> noVNC: ${vm.novncUrl}</span><button class="copy-btn" onclick="copyText('${vm.novncUrl}', this)">Sao chép</button></div>` : ''}
                             </div>
                             ` : ''}
+                            <div class="vm-progress">
+                                <div class="vm-progress-bar"><div class="vm-progress-fill" style="width: ${progress}%"></div></div>
+                                <div class="vm-progress-text"><i class="fas fa-spinner fa-pulse"></i> ${progressText} (${progress}%)</div>
+                            </div>
                             <div class="vm-links">
                                 ${vm.repoUrl ? `<a href="${vm.repoUrl}" target="_blank" class="vm-link"><i class="fab fa-github"></i> Repository</a>` : ''}
                                 ${vm.workflowUrl ? `<a href="${vm.workflowUrl}" target="_blank" class="vm-link"><i class="fas fa-code-branch"></i> GitHub Actions</a>` : ''}
@@ -485,40 +592,23 @@
             saveToLocal();
         }
         
-        window.toggleVM = function(id) {
-            const item = document.querySelector(`.vm-item[data-id="${id}"]`);
-            if (item) item.classList.toggle('open');
-        };
-        
-        window.copyText = function(text, btn) {
-            navigator.clipboard.writeText(text).then(() => {
-                const originalText = btn.innerHTML;
-                btn.innerHTML = '<i class="fas fa-check"></i> Đã copy';
-                btn.classList.add('copied');
-                setTimeout(() => {
-                    btn.innerHTML = originalText;
-                    btn.classList.remove('copied');
-                }, 1500);
-                showToast('✅ Đã sao chép!');
-            }).catch(() => {
-                showToast('❌ Sao chép thất bại', 'error');
-            });
-        };
-        
         window.deleteVM = function(id) {
             if (!confirm('Bạn có chắc muốn xóa VM này?')) return;
+            const vm = vms.find(v => v.id === id);
             vms = vms.filter(v => v.id !== id);
+            if (currentOpenVM === id) currentOpenVM = null;
             renderVMList();
-            showToast('🗑️ Đã xóa VM');
+            showToast(`🗑️ Đã xóa VM ${vm?.name || ''}`, 'info');
+            addDebugLog(`Đã xóa VM: ${vm?.name || id}`, 'warning');
         };
         
         window.refreshList = function() {
             renderVMList();
-            showToast('🔄 Đã làm mới danh sách');
+            showToast('🔄 Đã làm mới danh sách', 'info');
         };
         
         // ============================================ //
-        // TẠO VM
+        // TẠO VM - Tự động đổi user/pass sau khi tạo
         // ============================================ //
         function createVM() {
             const githubToken = elements.githubToken.value.trim();
@@ -528,17 +618,25 @@
             
             if (!githubToken) {
                 showToast('❌ Vui lòng nhập GitHub Token', 'error');
+                addDebugLog('Lỗi: Thiếu GitHub Token', 'error');
                 return;
             }
             if (!tailscaleKey) {
                 showToast('❌ Vui lòng nhập Tailscale Key', 'error');
+                addDebugLog('Lỗi: Thiếu Tailscale Key', 'error');
                 return;
             }
             if (!username) username = randomUsername();
             if (!password) password = randomPassword();
             
+            elements.createProgressContainer.style.display = 'block';
             elements.createBtn.disabled = true;
             elements.createBtn.innerHTML = '<span class="spinner"></span> Đang tạo VM...';
+            
+            updateCreateProgress(0, 10, '🔑 Đang xác thực token...');
+            setTimeout(() => updateCreateProgress(1, 30, '📁 Đang tạo repository...'), 800);
+            setTimeout(() => updateCreateProgress(2, 55, '📝 Đang tạo workflow...'), 2000);
+            setTimeout(() => updateCreateProgress(3, 80, '🚀 Đang trigger...'), 3500);
             
             const newVM = {
                 id: Date.now().toString(),
@@ -557,17 +655,10 @@
             vms.unshift(newVM);
             renderVMList();
             totalCreations++;
+            addDebugLog(`🚀 Đã tạo VM mới: ${username}`, 'info');
             
-            let progress = 0;
-            const interval = setInterval(() => {
-                progress += 10;
-                if (progress <= 80) {
-                    elements.createBtn.innerHTML = `<span class="spinner"></span> Đang tạo VM... ${progress}%`;
-                }
-            }, 400);
-            
+            // Mô phỏng quá trình tạo VM
             setTimeout(() => {
-                clearInterval(interval);
                 const vm = vms.find(v => v.id === newVM.id);
                 if (vm) {
                     vm.status = 'running';
@@ -578,9 +669,15 @@
                     successfulCreations++;
                     renderVMList();
                     showToast(`✅ VM "${username}" đã được tạo thành công!`);
+                    addDebugLog(`✅ VM "${username}" hoàn tất! IP: ${vm.tailscaleIP}`, 'success');
+                    
+                    // SAU KHI TẠO VM THÀNH CÔNG -> TỰ ĐỘNG ĐỔI USER/PASS MỚI
+                    refreshFormCredentials();
+                    addDebugLog(`🔄 Đã tạo user/pass mới cho lần tạo tiếp theo`, 'info');
                 }
                 elements.createBtn.disabled = false;
                 elements.createBtn.innerHTML = '<i class="fas fa-play"></i> Tạo VM Ngay';
+                elements.createProgressContainer.style.display = 'none';
                 elements.githubToken.value = '';
                 elements.tailscaleKey.value = '';
             }, 5000);
@@ -592,11 +689,11 @@
         document.getElementById('createBtn').onclick = createVM;
         document.getElementById('randomUserBtn').onclick = () => {
             elements.vmUsername.value = randomUsername();
-            showToast('🎲 Đã tạo username ngẫu nhiên');
+            showToast('🎲 Đã tạo username ngẫu nhiên', 'info');
         };
         document.getElementById('randomPassBtn').onclick = () => {
             elements.vmPassword.value = randomPassword();
-            showToast('🔐 Đã tạo mật khẩu ngẫu nhiên');
+            showToast('🔐 Đã tạo mật khẩu ngẫu nhiên', 'info');
         };
         document.getElementById('demoBtn').onclick = () => {
             elements.githubToken.value = 'ghp_demo_token_123456789';
@@ -606,37 +703,26 @@
         document.getElementById('clearBtn').onclick = () => {
             elements.githubToken.value = '';
             elements.tailscaleKey.value = '';
-            elements.vmUsername.value = '';
-            elements.vmPassword.value = '';
-            showToast('🧹 Đã xóa form');
+            showToast('🧹 Đã xóa form', 'info');
         };
         document.getElementById('refreshBtn').onclick = () => {
             renderVMList();
-            showToast('🔄 Đã làm mới danh sách');
+            showToast('🔄 Đã làm mới danh sách', 'info');
         };
         document.getElementById('saveConfigBtn').onclick = () => {
-            const config = {
-                githubToken: elements.githubToken.value,
-                tailscaleKey: elements.tailscaleKey.value
-            };
+            const config = { githubToken: elements.githubToken.value, tailscaleKey: elements.tailscaleKey.value };
             localStorage.setItem(CONFIG_KEY, JSON.stringify(config));
-            showToast('💾 Đã lưu cấu hình');
+            showToast('💾 Đã lưu cấu hình', 'success');
         };
         document.getElementById('loadConfigBtn').onclick = () => {
             const config = JSON.parse(localStorage.getItem(CONFIG_KEY) || '{}');
             if (config.githubToken) elements.githubToken.value = config.githubToken;
             if (config.tailscaleKey) elements.tailscaleKey.value = config.tailscaleKey;
-            showToast('📂 Đã tải cấu hình');
+            showToast('📂 Đã tải cấu hình', 'success');
         };
         
-        elements.filterSelect.onchange = (e) => {
-            currentFilter = e.target.value;
-            renderVMList();
-        };
-        elements.sortSelect.onchange = (e) => {
-            currentSort = e.target.value;
-            renderVMList();
-        };
+        elements.filterSelect.onchange = (e) => { currentFilter = e.target.value; renderVMList(); };
+        elements.sortSelect.onchange = (e) => { currentSort = e.target.value; renderVMList(); };
         
         let searchTimeout;
         elements.searchInput.oninput = () => {
@@ -644,12 +730,9 @@
             searchTimeout = setTimeout(() => renderVMList(), 300);
         };
         
-        // ============================================ //
-        // THEME TOGGLE
-        // ============================================ //
+        // Theme toggle
         const themeToggle = document.getElementById('themeToggle');
         let isDark = localStorage.getItem(THEME_KEY) !== 'light';
-        
         function applyTheme() {
             if (isDark) {
                 document.body.classList.remove('light');
@@ -660,26 +743,32 @@
             }
             localStorage.setItem(THEME_KEY, isDark ? 'dark' : 'light');
         }
-        
-        themeToggle.onclick = () => {
-            isDark = !isDark;
-            applyTheme();
-            showToast(isDark ? '🌙 Chế độ tối' : '☀️ Chế độ sáng', 'info');
-        };
-        
+        themeToggle.onclick = () => { isDark = !isDark; applyTheme(); showToast(isDark ? '🌙 Chế độ tối' : '☀️ Chế độ sáng', 'info'); };
         applyTheme();
         
-        // ============================================ //
-        // KHỞI TẠO
-        // ============================================ //
-        elements.vmUsername.value = randomUsername();
-        elements.vmPassword.value = randomPassword();
+        // Debug panel
+        const debugPanel = document.getElementById('debugPanel');
+        const debugToggleBtn = document.getElementById('debugToggleBtn');
+        let debugOpen = false;
+        debugToggleBtn.onclick = () => {
+            debugOpen = !debugOpen;
+            debugPanel.classList.toggle('open', debugOpen);
+            debugToggleBtn.style.borderColor = debugOpen ? 'var(--warning)' : 'var(--border)';
+        };
+        document.getElementById('clearDebugBtn').onclick = () => {
+            elements.debugContent.innerHTML = '';
+            addDebugLog('Đã xóa debug console', 'info');
+        };
+        
+        // Khởi tạo
+        refreshFormCredentials(); // Tạo user/pass mới khi load trang
         loadFromLocal();
-        setInterval(() => {
-            renderVMList();
-            updateStats();
-        }, 10000);
+        setInterval(() => { renderVMList(); updateStats(); }, 10000);
         setInterval(updateStats, 1000);
+        addDebugLog('🚀 Singularity Club v3.0 khởi động', 'success');
+        addDebugLog('📋 Chế độ Accordion: chỉ mở 1 VM mỗi lần', 'info');
+        addDebugLog('🔄 Tự động đổi user/pass sau mỗi lần tạo VM', 'success');
+        addDebugLog('📋 Nút copy có thông báo thành công/thất bại', 'info');
     </script>
 </body>
 </html>
