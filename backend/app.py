@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # backend/app.py - Singularity Club Backend
-# BETA VERSION 1.0 - Đồng bộ với frontend v1.0
+# BETA VERSION 1.0 - ĐÃ SỬA LỖI
 
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
@@ -14,19 +14,16 @@ import re
 import threading
 import os
 import logging
-import subprocess
 from datetime import datetime, timedelta
-from functools import wraps
 
 app = Flask(__name__, static_folder='../frontend', static_url_path='')
 CORS(app)
 
 # ============================================ #
-# CẤU HÌNH BETA
+# CẤU HÌNH
 # ============================================ #
 VERSION = "BETA 1.0"
 BUILD_DATE = "2026-04-10"
-STATUS = "Đang phát triển - Có thể có lỗi"
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -35,18 +32,15 @@ logger = logging.getLogger(__name__)
 vms = {}
 vm_counter = 0
 monitor_threads = {}
-cloudflare_tunnels = {}  # Lưu trữ process tunnel cho mỗi VM
 
 # ============================================ #
 # HÀM TIỆN ÍCH
 # ============================================ #
 def generate_username():
-    """Tạo username 8 ký tự"""
     chars = 'abcdefghijklmnopqrstuvwxyz0123456789'
     return ''.join(random.choices(chars, k=8))
 
 def generate_password():
-    """Tạo mật khẩu mạnh 16-20 ký tự"""
     upper = 'ABCDEFGHJKLMNPQRSTUVWXYZ'
     lower = 'abcdefghijkmnopqrstuvwxyz'
     numbers = '0123456789'
@@ -63,15 +57,46 @@ def generate_password():
     return ''.join(password)
 
 def generate_repo_name():
-    """Tạo tên repository ngẫu nhiên"""
     return f'vm-{int(time.time())}-{random.randint(1000, 9999)}'
 
 # ============================================ #
-# TẠO WORKFLOW YML
+# GITHUB API FUNCTIONS
 # ============================================ #
-def generate_workflow_content(username, password):
-    """Tạo nội dung workflow GitHub Actions"""
-    return f'''name: Create Windows VM (BETA)
+def verify_github_token(token):
+    try:
+        headers = {'Authorization': f'Bearer {token}', 'Accept': 'application/vnd.github.v3+json'}
+        response = requests.get('https://api.github.com/user', headers=headers, timeout=10)
+        if response.status_code == 200:
+            return True, response.json()
+        return False, None
+    except Exception as e:
+        logger.error(f"Verify token error: {e}")
+        return False, None
+
+def create_github_repo(token, name, description):
+    try:
+        headers = {
+            'Authorization': f'Bearer {token}',
+            'Accept': 'application/vnd.github.v3+json',
+            'Content-Type': 'application/json'
+        }
+        data = {
+            'name': name,
+            'description': description,
+            'private': False,
+            'auto_init': True
+        }
+        response = requests.post('https://api.github.com/user/repos', headers=headers, json=data, timeout=30)
+        if response.status_code == 201:
+            return True, response.json()
+        return False, None
+    except Exception as e:
+        logger.error(f"Create repo error: {e}")
+        return False, None
+
+def create_workflow_file(token, owner, repo, username, password):
+    try:
+        content = f'''name: Create Windows VM
 
 on:
   workflow_dispatch:
@@ -98,116 +123,40 @@ jobs:
           $installer = "$env:TEMP\\tailscale.exe"
           Invoke-WebRequest -Uri $url -OutFile $installer
           Start-Process -FilePath $installer -ArgumentList "/S" -Wait -NoNewWindow
-          Write-Host "Tailscale installed"
       
       - name: Connect Tailscale
         shell: pwsh
         run: |
-          Write-Host "Connecting to Tailscale..."
           & "C:\\Program Files\\Tailscale\\Tailscale.exe" up --auth-key "${{{{ github.event.inputs.tailscale_key }}}}"
           Start-Sleep -Seconds 15
           $ip = & "C:\\Program Files\\Tailscale\\Tailscale.exe" ip -4
           echo "TAILSCALE_IP=$ip" >> $env:GITHUB_ENV
           Write-Host "Tailscale IP: $ip"
       
-      - name: Configure Windows RDP
+      - name: Setup Windows
         shell: pwsh
         run: |
-          Write-Host "Configuring Windows RDP..."
-          Set-ItemProperty -Path "HKLM:\\SYSTEM\\CurrentControlSet\\Control\\Terminal Server" -Name "fDenyTSConnections" -Value 0
-          Set-ItemProperty -Path "HKLM:\\SYSTEM\\CurrentControlSet\\Control\\Terminal Server\\WinStations\\RDP-Tcp" -Name "UserAuthentication" -Value 0
           net user {username} {password} /add
           net localgroup Administrators {username} /add
-          net localgroup "Remote Desktop Users" {username} /add
-          New-NetFirewallRule -DisplayName "RDP" -Direction Inbound -Protocol TCP -LocalPort 3389 -Action Allow
-          Write-Host "RDP configured with user: {username}"
+          Write-Host "User {username} created"
       
-      - name: Setup noVNC
-        shell: pwsh
-        run: |
-          Write-Host "Setting up noVNC..."
-          git clone https://github.com/novnc/noVNC.git C:\\novnc
-          git clone https://github.com/novnc/websockify.git C:\\websockify
-          Write-Host "Starting noVNC server..."
-          Start-Process -NoNewWindow -FilePath python -ArgumentList "C:\\websockify\\websockify.py", "--web=C:\\novnc", "6080", "localhost:3389"
-          New-NetFirewallRule -DisplayName "noVNC" -Direction Inbound -Protocol TCP -LocalPort 6080 -Action Allow
-          Write-Host "noVNC started on port 6080"
-      
-      - name: Display Connection Info
-        shell: pwsh
-        run: |
-          Write-Host "=================================================="
-          Write-Host "WINDOWS VM READY (BETA)"
-          Write-Host "=================================================="
-          Write-Host "Tailscale IP: $env:TAILSCALE_IP"
-          Write-Host "Username: {username}"
-          Write-Host "Password: {password}"
-          Write-Host "noVNC URL: http://$env:TAILSCALE_IP:6080/vnc.html"
-          Write-Host "=================================================="
-      
-      - name: Keep VM Alive
+      - name: Keep Alive
         shell: pwsh
         run: |
           $end = (Get-Date).AddHours(6)
-          Write-Host "VM will run for 6 hours, expires at: $end"
           while ((Get-Date) -lt $end) {{
-            $remaining = [math]::Round(($end - (Get-Date)).TotalMinutes)
-            Write-Host "VM running... expires in $remaining minutes"
+            Write-Host "VM running..."
             Start-Sleep -Seconds 300
           }}
-          Write-Host "VM expired. Shutting down..."
 '''
-
-# ============================================ #
-# GITHUB API FUNCTIONS
-# ============================================ #
-def verify_github_token(token):
-    """Xác thực GitHub token"""
-    try:
-        headers = {'Authorization': f'Bearer {token}', 'Accept': 'application/vnd.github.v3+json'}
-        response = requests.get('https://api.github.com/user', headers=headers, timeout=10)
-        if response.status_code == 200:
-            return True, response.json()
-        return False, None
-    except Exception as e:
-        logger.error(f"Verify token error: {e}")
-        return False, None
-
-def create_github_repo(token, name, description):
-    """Tạo repository trên GitHub"""
-    try:
-        headers = {
-            'Authorization': f'Bearer {token}',
-            'Accept': 'application/vnd.github.v3+json',
-            'Content-Type': 'application/json'
-        }
-        data = {
-            'name': name,
-            'description': description,
-            'private': False,
-            'auto_init': True
-        }
-        response = requests.post('https://api.github.com/user/repos', headers=headers, json=data, timeout=30)
-        if response.status_code == 201:
-            return True, response.json()
-        return False, None
-    except Exception as e:
-        logger.error(f"Create repo error: {e}")
-        return False, None
-
-def create_workflow_file(token, owner, repo, username, password):
-    """Tạo workflow file trong repository"""
-    try:
-        content = generate_workflow_content(username, password)
         encoded = base64.b64encode(content.encode()).decode()
-        
         headers = {
             'Authorization': f'Bearer {token}',
             'Accept': 'application/vnd.github.v3+json',
             'Content-Type': 'application/json'
         }
         data = {
-            'message': 'Add GitHub Actions workflow for VM creation (BETA)',
+            'message': 'Add GitHub Actions workflow',
             'content': encoded,
             'branch': 'main'
         }
@@ -219,7 +168,6 @@ def create_workflow_file(token, owner, repo, username, password):
         return False
 
 def trigger_workflow(token, owner, repo, tailscale_key):
-    """Trigger GitHub Actions workflow"""
     try:
         headers = {
             'Authorization': f'Bearer {token}',
@@ -238,7 +186,6 @@ def trigger_workflow(token, owner, repo, tailscale_key):
         return False
 
 def get_workflow_runs(token, owner, repo):
-    """Lấy danh sách workflow runs"""
     try:
         headers = {'Authorization': f'Bearer {token}', 'Accept': 'application/vnd.github.v3+json'}
         url = f'https://api.github.com/repos/{owner}/{repo}/actions/runs'
@@ -252,7 +199,6 @@ def get_workflow_runs(token, owner, repo):
         return []
 
 def get_workflow_logs(token, owner, repo, run_id):
-    """Lấy logs từ workflow run"""
     try:
         headers = {'Authorization': f'Bearer {token}', 'Accept': 'application/vnd.github.v3+json'}
         url = f'https://api.github.com/repos/{owner}/{repo}/actions/runs/{run_id}/logs'
@@ -264,59 +210,8 @@ def get_workflow_logs(token, owner, repo, run_id):
         logger.error(f"Get workflow logs error: {e}")
         return ""
 
-# ============================================ #
-# CLOUDFLARE TUNNEL FUNCTIONS
-# ============================================ #
-def start_cloudflare_tunnel(vm_id, local_port=6080):
-    """Khởi động Cloudflare tunnel cho noVNC"""
-    try:
-        # Kiểm tra cloudflared đã được cài đặt
-        result = subprocess.run(['which', 'cloudflared'], capture_output=True, text=True)
-        if result.returncode != 0:
-            logger.warning("cloudflared not installed, installing...")
-            subprocess.run(['wget', 'https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb'], check=False)
-            subprocess.run(['sudo', 'dpkg', '-i', 'cloudflared-linux-amd64.deb'], check=False)
-        
-        # Khởi động tunnel
-        tunnel_process = subprocess.Popen(
-            ['cloudflared', 'tunnel', '--url', f'http://localhost:{local_port}'],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            text=True
-        )
-        
-        # Đọc output để lấy URL
-        time.sleep(3)
-        output = tunnel_process.stderr.read() if tunnel_process.stderr else ""
-        
-        # Tìm URL trong output
-        url_match = re.search(r'https://[a-zA-Z0-9-]+\.trycloudflare\.com', output)
-        if url_match:
-            tunnel_url = url_match.group(0)
-            logger.info(f"Cloudflare tunnel started for VM {vm_id}: {tunnel_url}")
-            return tunnel_process, tunnel_url
-        
-        return tunnel_process, None
-    except Exception as e:
-        logger.error(f"Failed to start Cloudflare tunnel: {e}")
-        return None, None
-
-def stop_cloudflare_tunnel(vm_id):
-    """Dừng Cloudflare tunnel"""
-    if vm_id in cloudflare_tunnels:
-        try:
-            cloudflare_tunnels[vm_id].terminate()
-            del cloudflare_tunnels[vm_id]
-            logger.info(f"Cloudflare tunnel stopped for VM {vm_id}")
-        except Exception as e:
-            logger.error(f"Error stopping tunnel: {e})
-
-# ============================================ #
-# MONITOR WORKFLOW
-# ============================================ #
-def monitor_workflow(vm_id, token, owner, repo, tailscale_key=None):
-    """Theo dõi workflow và cập nhật IP Tailscale + Cloudflare tunnel"""
-    max_attempts = 36  # 6 phút (10s * 36)
+def monitor_workflow(vm_id, token, owner, repo):
+    max_attempts = 36
     attempt = 0
     
     while attempt < max_attempts and vm_id in vms:
@@ -341,93 +236,47 @@ def monitor_workflow(vm_id, token, owner, repo, tailscale_key=None):
                     if ip_match:
                         vms[vm_id]['tailscaleIP'] = ip_match.group(1)
                         vms[vm_id]['novncUrl'] = f'http://{ip_match.group(1)}:6080/vnc.html'
-                        
-                        # Khởi động Cloudflare tunnel
-                        logger.info(f"Starting Cloudflare tunnel for VM {vm_id}")
-                        tunnel_process, tunnel_url = start_cloudflare_tunnel(vm_id, 6080)
-                        if tunnel_process and tunnel_url:
-                            cloudflare_tunnels[vm_id] = tunnel_process
-                            vms[vm_id]['novncUrl'] = tunnel_url
-                            vms[vm_id]['cloudflare_tunnel'] = True
-                            logger.info(f"Cloudflare tunnel URL: {tunnel_url}")
-                    
-                    logger.info(f"VM {vm_id} is running with IP {vms[vm_id].get('tailscaleIP', 'N/A')}")
+                    logger.info(f"VM {vm_id} is running")
                     break
             elif status == 'completed' and conclusion != 'success':
                 if vm_id in vms:
                     vms[vm_id]['status'] = 'failed'
-                logger.warning(f"VM {vm_id} failed: {conclusion}")
                 break
-            elif status == 'in_progress':
-                if vm_id in vms and vms[vm_id]['status'] == 'creating':
-                    vms[vm_id]['status'] = 'creating'
-                    
         except Exception as e:
-            logger.error(f"Monitor error for {vm_id}: {e}")
+            logger.error(f"Monitor error: {e}")
     
     if vm_id in monitor_threads:
         del monitor_threads[vm_id]
-    logger.info(f"Monitor stopped for VM {vm_id}")
 
 # ============================================ #
 # API ENDPOINTS
 # ============================================ #
 @app.route('/')
 def serve_frontend():
-    """Phục vụ frontend"""
     return send_from_directory('../frontend', 'index.html')
-
-@app.route('/api/version', methods=['GET'])
-def get_version():
-    """Lấy thông tin phiên bản BETA"""
-    return jsonify({
-        'version': VERSION,
-        'build_date': BUILD_DATE,
-        'status': STATUS,
-        'features': [
-            'Tạo VM qua GitHub Actions',
-            'Monitor workflow realtime',
-            'Lấy IP Tailscale tự động',
-            'Tạo noVNC URL',
-            'Cloudflare Tunnel hỗ trợ',
-            'Đếm ngược 6h',
-            'Export thông tin TXT',
-            'BETA - Đang phát triển'
-        ]
-    })
 
 @app.route('/api/health', methods=['GET'])
 def health_check():
-    """Kiểm tra sức khỏe API"""
     return jsonify({
         'status': 'healthy',
-        'version': VERSION,
         'timestamp': datetime.now().isoformat(),
-        'vms_count': len(vms),
-        'monitor_threads': len(monitor_threads)
+        'vms_count': len(vms)
     })
 
 @app.route('/api/vps', methods=['GET'])
 def get_vms():
-    """Lấy danh sách VM"""
     logger.info(f"GET /api/vps - Total VMs: {len(vms)}")
     return jsonify({
         'success': True,
-        'vms': list(vms.values()),
-        'version': VERSION
+        'vms': list(vms.values())
     })
 
 @app.route('/api/vps', methods=['DELETE'])
 def delete_vm():
-    """Xóa VM"""
     vm_id = request.args.get('id')
     if vm_id and vm_id in vms:
-        # Dừng monitor thread nếu có
         if vm_id in monitor_threads:
             pass
-        # Dừng Cloudflare tunnel nếu có
-        if vm_id in cloudflare_tunnels:
-            stop_cloudflare_tunnel(vm_id)
         del vms[vm_id]
         logger.info(f"DELETE /api/vps - Deleted VM: {vm_id}")
         return jsonify({'success': True, 'message': 'Đã xóa VM'})
@@ -435,7 +284,6 @@ def delete_vm():
 
 @app.route('/api/vps', methods=['POST'])
 def create_vm():
-    """Tạo VM mới - Gọi GitHub API thật"""
     global vm_counter
     
     data = request.get_json()
@@ -444,21 +292,18 @@ def create_vm():
     username = data.get('vmUsername', '')
     password = data.get('vmPassword', '')
     
-    logger.info(f"POST /api/vps - BETA - Creating VM with username: {username or 'auto'}")
+    logger.info(f"POST /api/vps - Creating VM with username: {username or 'auto'}")
     
-    # Validate input
     if not github_token:
         return jsonify({'success': False, 'error': 'Vui lòng nhập GitHub Token'})
     if not tailscale_key:
         return jsonify({'success': False, 'error': 'Vui lòng nhập Tailscale Key'})
     
-    # Tạo username/password mặc định
     if not username:
         username = generate_username()
     if not password:
         password = generate_password()
     
-    # Xác thực GitHub token
     token_valid, user_info = verify_github_token(github_token)
     if not token_valid:
         return jsonify({'success': False, 'error': 'GitHub Token không hợp lệ hoặc đã hết hạn'})
@@ -466,47 +311,29 @@ def create_vm():
     owner = user_info.get('login')
     repo_name = generate_repo_name()
     
-    logger.info(f"GitHub user: {owner}, Repo: {repo_name}")
-    
-    # Tạo repository
-    repo_success, repo_data = create_github_repo(github_token, repo_name, f'VM by {username} (BETA)')
+    repo_success, repo_data = create_github_repo(github_token, repo_name, f'VM by {username}')
     if not repo_success:
-        logger.error(f"Failed to create repo: {repo_name}")
         return jsonify({'success': False, 'error': 'Không thể tạo repository trên GitHub'})
     
     repo_url = repo_data.get('html_url')
-    logger.info(f"Repository created: {repo_url}")
-    
-    # Đợi GitHub xử lý
     time.sleep(2)
     
-    # Tạo workflow file
     workflow_success = create_workflow_file(github_token, owner, repo_name, username, password)
     if not workflow_success:
-        logger.error(f"Failed to create workflow file for {repo_name}")
         return jsonify({'success': False, 'error': 'Không thể tạo workflow file'})
     
-    logger.info(f"Workflow file created for {repo_name}")
-    
-    # Đợi GitHub index workflow
     time.sleep(2)
     
-    # Trigger workflow
     trigger_success = trigger_workflow(github_token, owner, repo_name, tailscale_key)
     if not trigger_success:
-        logger.error(f"Failed to trigger workflow for {repo_name}")
         return jsonify({'success': False, 'error': 'Không thể trigger GitHub Actions'})
     
-    logger.info(f"Workflow triggered for {repo_name}")
-    
-    # Lấy run ID để monitor
     run_id = None
     try:
         time.sleep(3)
         runs = get_workflow_runs(github_token, owner, repo_name)
         if runs:
             run_id = runs[0].get('id')
-            logger.info(f"Run ID: {run_id}")
     except Exception as e:
         logger.error(f"Error getting run ID: {e}")
     
@@ -524,28 +351,22 @@ def create_vm():
         'runId': run_id,
         'tailscaleIP': None,
         'novncUrl': None,
-        'cloudflare_tunnel': False,
         'createdAt': datetime.now().isoformat(),
-        'expiresAt': expires_at.isoformat(),
-        'version': VERSION
+        'expiresAt': expires_at.isoformat()
     }
     
     vms[new_vm['id']] = new_vm
     
-    # Bắt đầu monitor thread
     if run_id:
-        thread = threading.Thread(target=monitor_workflow, args=(new_vm['id'], github_token, owner, repo_name, tailscale_key))
+        thread = threading.Thread(target=monitor_workflow, args=(new_vm['id'], github_token, owner, repo_name))
         thread.daemon = True
         thread.start()
         monitor_threads[new_vm['id']] = thread
-        logger.info(f"Monitor thread started for VM {new_vm['id']}")
-    
-    logger.info(f"VM {new_vm['id']} created successfully for user {username}")
     
     return jsonify({
         'success': True,
         **new_vm,
-        'message': f'✅ VM "{username}" đang được tạo! Quá trình tạo mất 3-5 phút. (BETA)'
+        'message': f'✅ VM "{username}" đang được tạo! Quá trình tạo mất 3-5 phút.'
     })
 
 # ============================================ #
@@ -557,27 +378,13 @@ if __name__ == '__main__':
     
     print("")
     print("=" * 60)
-    print("🔬 SINGULARITY CLUB BACKEND - BETA VERSION 1.0")
-    print("=" * 60)
-    print(f"📌 Phiên bản: {VERSION}")
-    print(f"📅 Ngày build: {BUILD_DATE}")
-    print(f"⚠️  Trạng thái: {STATUS}")
+    print("🚀 SINGULARITY CLUB BACKEND")
     print("=" * 60)
     print(f"📡 Server: http://{HOST}:{PORT}")
     print(f"🔗 API: http://{HOST}:{PORT}/api/vps")
     print(f"🌐 Frontend: http://{HOST}:{PORT}")
     print(f"💚 Health: http://{HOST}:{PORT}/api/health")
-    print(f"ℹ️  Version: http://{HOST}:{PORT}/api/version")
     print("=" * 60)
-    print("✨ Tính năng:")
-    print("   - Tạo VM qua GitHub Actions")
-    print("   - Monitor workflow realtime")
-    print("   - Lấy IP Tailscale tự động")
-    print("   - Hỗ trợ Cloudflare Tunnel")
-    print("   - Đếm ngược 6h")
-    print("   - Export thông tin TXT")
-    print("=" * 60)
-    print("⚠️  BETA VERSION - Có thể có lỗi phát sinh")
     print("⚠️  Nhấn Ctrl+C để dừng server")
     print("=" * 60)
     print("")
