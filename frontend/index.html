@@ -23,13 +23,14 @@
             --terminal-red: #e74c3c;
             --terminal-yellow: #f1c40f;
             --gradient-1: linear-gradient(135deg, #2ecc71, #1abc9c);
-            --glass-bg: rgba(10, 17, 24, 0.85);
+            --glass-bg: rgba(10, 17, 24, 0.9);
             --glass-border: rgba(46, 204, 113, 0.15);
             --shadow-glow: 0 0 20px rgba(46, 204, 113, 0.2);
             --border-radius-sm: 10px;
             --border-radius-md: 14px;
             --border-radius-lg: 18px;
             --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
         body {
@@ -447,72 +448,97 @@
         .page-btn.active { background: var(--terminal-green); color: #050a0f; border-color: var(--terminal-green); }
         
         /* ============================================ */
-        /* PIP DEBUG PANEL - CHỈ 1 CÁI DUY NHẤT */
+        /* FLOATING BUTTONS */
         /* ============================================ */
-        .pip-debug {
+        .float-buttons {
             position: fixed;
-            width: 380px;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            gap: 12px;
+            z-index: 1000;
+        }
+        .float-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--terminal-green);
+            color: var(--terminal-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 1.2rem;
+            box-shadow: var(--shadow-glow);
+        }
+        .float-btn:hover {
+            transform: scale(1.1);
+            background: rgba(46, 204, 113, 0.2);
+            box-shadow: 0 0 20px var(--terminal-green);
+        }
+        .float-btn.active {
+            background: var(--terminal-green);
+            color: #050a0f;
+            box-shadow: 0 0 20px var(--terminal-green);
+        }
+        
+        /* ============================================ */
+        /* DEBUG PANEL - SLIDE FROM RIGHT */
+        /* ============================================ */
+        .debug-panel {
+            position: fixed;
+            top: 0;
+            right: -420px;
+            width: 400px;
+            height: 100vh;
             background: var(--glass-bg);
             backdrop-filter: blur(16px);
-            border: 1px solid var(--terminal-green);
-            border-radius: var(--border-radius-lg);
-            z-index: 1000;
-            box-shadow: 0 0 30px rgba(46, 204, 113, 0.3);
-            transition: all 0.3s ease;
-            cursor: move;
+            border-left: 1px solid var(--terminal-green);
+            z-index: 1001;
+            transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            box-shadow: -5px 0 30px rgba(0, 0, 0, 0.5);
         }
-        .pip-debug.collapsed { width: auto; border-radius: 40px; }
-        .pip-debug.collapsed .pip-debug-content { display: none; }
-        .pip-debug.collapsed .pip-debug-header { border-radius: 40px; padding: 8px 16px; }
+        .debug-panel.open { right: 0; }
         
-        .pip-debug-header {
+        .debug-header {
+            padding: 16px 20px;
+            background: rgba(0, 0, 0, 0.5);
+            border-bottom: 1px solid var(--glass-border);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 16px;
-            background: rgba(0, 0, 0, 0.5);
-            border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
-            cursor: move;
-            user-select: none;
         }
-        .pip-debug-title { font-family: monospace; font-size: 0.75rem; color: var(--terminal-green); }
-        .pip-debug-controls { display: flex; gap: 8px; cursor: default; }
-        .pip-debug-btn {
+        .debug-title { font-family: monospace; font-size: 0.8rem; color: var(--terminal-green); }
+        .debug-controls { display: flex; gap: 10px; }
+        .debug-controls button {
             background: none;
             border: none;
             color: #8b949e;
             cursor: pointer;
             font-size: 0.7rem;
             transition: var(--transition);
-            width: 24px;
-            height: 24px;
+            padding: 4px 8px;
             border-radius: 4px;
         }
-        .pip-debug-btn:hover { color: var(--terminal-green); background: rgba(46, 204, 113, 0.1); }
-        .pip-debug-resize {
-            position: absolute;
-            bottom: 0;
-            right: 0;
-            width: 16px;
-            height: 16px;
-            cursor: nw-resize;
-            background: var(--terminal-green);
-            border-radius: 0 0 8px 0;
-            opacity: 0.5;
-        }
-        .pip-debug-content {
-            padding: 12px;
-            max-height: 300px;
+        .debug-controls button:hover { color: var(--terminal-green); background: rgba(46, 204, 113, 0.1); }
+        
+        .debug-content {
+            flex: 1;
             overflow-y: auto;
+            padding: 16px;
             font-family: monospace;
             font-size: 0.7rem;
-            cursor: default;
         }
-        .pip-debug-content::-webkit-scrollbar { width: 4px; }
-        .pip-debug-content::-webkit-scrollbar-track { background: var(--glass-border); }
-        .pip-debug-content::-webkit-scrollbar-thumb { background: var(--terminal-green); }
+        .debug-content::-webkit-scrollbar { width: 4px; }
+        .debug-content::-webkit-scrollbar-track { background: var(--glass-border); }
+        .debug-content::-webkit-scrollbar-thumb { background: var(--terminal-green); }
         
-        .debug-log { padding: 6px 0; border-bottom: 1px solid var(--glass-border); display: flex; gap: 10px; animation: fadeIn 0.2s ease; }
+        .debug-log { padding: 8px 0; border-bottom: 1px solid var(--glass-border); display: flex; gap: 10px; animation: fadeIn 0.2s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
         .debug-time { color: #8b949e; min-width: 70px; }
         .debug-success { color: var(--terminal-green); }
@@ -521,88 +547,137 @@
         .debug-warning { color: var(--terminal-yellow); }
         
         /* ============================================ */
-        /* TERMINAL CONTAINER - CÓ THỂ CLONE VÔ HẠN */
+        /* TERMINAL PANEL - SLIDE FROM LEFT */
         /* ============================================ */
-        .terminals-container {
+        .terminal-panel {
             position: fixed;
-            bottom: 20px;
-            left: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            z-index: 999;
-            max-height: 80vh;
-            overflow-y: auto;
-            pointer-events: none;
-        }
-        .terminals-container::-webkit-scrollbar { width: 4px; }
-        
-        .terminal-widget {
-            width: 320px;
+            top: 0;
+            left: -420px;
+            width: 400px;
+            height: 100vh;
             background: var(--glass-bg);
             backdrop-filter: blur(16px);
-            border: 1px solid var(--terminal-green);
-            border-radius: var(--border-radius-lg);
-            transition: var(--transition);
-            pointer-events: auto;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
-            animation: slideInRight 0.3s ease;
+            border-right: 1px solid var(--terminal-green);
+            z-index: 1001;
+            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            box-shadow: 5px 0 30px rgba(0, 0, 0, 0.5);
         }
-        @keyframes slideInRight { from { opacity: 0; transform: translateX(-50px); } to { opacity: 1; transform: translateX(0); } }
-        .terminal-widget.minimized { height: 48px; overflow: hidden; }
+        .terminal-panel.open { left: 0; }
         
-        .terminal-widget-header {
+        .terminal-panel-header {
+            padding: 16px 20px;
+            background: rgba(0, 0, 0, 0.5);
+            border-bottom: 1px solid var(--glass-border);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 14px;
-            background: rgba(0, 0, 0, 0.5);
-            border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
-            cursor: pointer;
         }
-        .terminal-widget-title {
-            font-family: monospace;
-            font-size: 0.7rem;
-            color: var(--terminal-green);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .terminal-widget-controls { display: flex; gap: 6px; }
-        .terminal-widget-controls button {
+        .terminal-panel-title { font-family: monospace; font-size: 0.8rem; color: var(--terminal-green); }
+        .terminal-panel-controls { display: flex; gap: 10px; }
+        .terminal-panel-controls button {
             background: none;
             border: none;
             color: #8b949e;
             cursor: pointer;
             font-size: 0.7rem;
             transition: var(--transition);
-            width: 22px;
-            height: 22px;
+            padding: 4px 8px;
             border-radius: 4px;
         }
-        .terminal-widget-controls button:hover { color: var(--terminal-green); background: rgba(46, 204, 113, 0.1); }
+        .terminal-panel-controls button:hover { color: var(--terminal-green); background: rgba(46, 204, 113, 0.1); }
         
-        .terminal-widget-content {
-            padding: 10px;
-            max-height: 280px;
+        /* Tabs */
+        .terminal-tabs {
+            display: flex;
+            background: rgba(0, 0, 0, 0.3);
+            border-bottom: 1px solid var(--glass-border);
+            overflow-x: auto;
+        }
+        .terminal-tab {
+            padding: 10px 16px;
+            font-family: monospace;
+            font-size: 0.7rem;
+            color: #8b949e;
+            cursor: pointer;
+            border-right: 1px solid var(--glass-border);
+            transition: var(--transition);
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .terminal-tab.active {
+            color: var(--terminal-green);
+            background: rgba(46, 204, 113, 0.1);
+            border-bottom: 2px solid var(--terminal-green);
+        }
+        .terminal-tab:hover:not(.active) { background: rgba(46, 204, 113, 0.05); color: #c9d1d9; }
+        .terminal-tab-close {
+            background: none;
+            border: none;
+            color: inherit;
+            cursor: pointer;
+            font-size: 0.6rem;
+            opacity: 0.6;
+        }
+        .terminal-tab-close:hover { opacity: 1; color: var(--terminal-red); }
+        
+        /* Terminal Content */
+        .terminal-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .terminal-pane {
+            display: none;
+            flex-direction: column;
+            height: 100%;
+        }
+        .terminal-pane.active { display: flex; }
+        
+        .terminal-log-area {
+            flex: 1;
             overflow-y: auto;
+            padding: 12px;
             font-family: monospace;
             font-size: 0.65rem;
         }
-        .terminal-widget-content::-webkit-scrollbar { width: 4px; }
+        .terminal-log-area::-webkit-scrollbar { width: 4px; }
         
-        .terminal-log-line { padding: 4px 0; color: #c9d1d9; border-bottom: 1px solid var(--glass-border); font-size: 0.6rem; word-break: break-all; }
+        .terminal-log-line { padding: 4px 0; color: #c9d1d9; border-bottom: 1px solid var(--glass-border); word-break: break-all; }
         .terminal-log-line.command { color: var(--terminal-green); }
         .terminal-log-line.error { color: var(--terminal-red); }
         .terminal-log-line.success { color: var(--terminal-green); }
+        
+        .vm-selector {
+            padding: 8px 12px;
+            background: rgba(0, 0, 0, 0.3);
+            border-bottom: 1px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.65rem;
+        }
+        .vm-selector select {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--glass-border);
+            border-radius: 4px;
+            color: var(--terminal-green);
+            font-family: monospace;
+            font-size: 0.65rem;
+            padding: 4px 8px;
+        }
         
         .terminal-input-line {
             display: flex;
             align-items: center;
             gap: 8px;
-            margin-top: 8px;
-            padding-top: 8px;
+            padding: 10px 12px;
             border-top: 1px solid var(--glass-border);
+            background: rgba(0, 0, 0, 0.2);
         }
         .terminal-prompt { color: var(--terminal-green); font-weight: bold; font-size: 0.7rem; }
         .terminal-input {
@@ -616,54 +691,13 @@
         }
         .terminal-input:focus { border-bottom: 1px solid var(--terminal-green); }
         
-        .vm-selector {
-            margin-bottom: 8px;
-            padding: 6px;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: var(--border-radius-sm);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.6rem;
-        }
-        .vm-selector select {
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid var(--glass-border);
-            border-radius: 4px;
-            color: var(--terminal-green);
-            font-family: monospace;
-            font-size: 0.6rem;
-            padding: 4px 8px;
-        }
-        
-        .clone-terminal-btn {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            background: var(--glass-bg);
-            backdrop-filter: blur(16px);
-            border: 1px solid var(--terminal-green);
-            border-radius: 40px;
-            padding: 8px 16px;
-            color: var(--terminal-green);
-            cursor: pointer;
-            font-family: monospace;
-            font-size: 0.7rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            z-index: 1001;
-            transition: var(--transition);
-        }
-        .clone-terminal-btn:hover { background: rgba(46, 204, 113, 0.2); transform: scale(1.02); }
-        
         .footer { text-align: center; padding: 20px; margin-top: 24px; border-top: 1px solid var(--glass-border); color: #8b949e; font-size: 0.6rem; font-family: monospace; }
         
         @media (max-width: 640px) {
             .container { padding: 12px; }
             .glass-card-body { padding: 16px; }
-            .pip-debug { width: calc(100% - 40px); right: 20px; left: 20px; }
-            .terminal-widget { width: calc(100% - 40px); }
+            .debug-panel, .terminal-panel { width: 100%; left: -100%; right: -100%; }
+            .float-buttons { bottom: 20px; right: 20px; }
         }
     </style>
 </head>
@@ -693,8 +727,8 @@
             </div>
             <div class="terminal-output typing-text">
                 <span style="color: var(--terminal-green);">[QUANTUM@SINGULARITY]$</span> System initialized.<br>
-                <span style="color: var(--terminal-green);">[INFO]</span> Terminal mode v5.0 Pro activated.<br>
-                <span style="color: var(--terminal-green);">[INFO]</span> PiP Debug (1 only) | Cloneable Terminals (unlimited)
+                <span style="color: var(--terminal-green);">[INFO]</span> Terminal mode v6.0 Pro activated.<br>
+                <span style="color: var(--terminal-green);">[INFO]</span> Click buttons to open Debug Panel or Terminal Panel.
             </div>
         </div>
 
@@ -734,32 +768,43 @@
             </div>
         </div>
         
-        <div class="footer"><span style="color: var(--terminal-green);">$</span> singularity@quantum:~/vps$ <span style="color: #8b949e;">-- quantum terminal v5.0 pro -- pip debug (1 only) -- cloneable terminals --</span></div>
+        <div class="footer"><span style="color: var(--terminal-green);">$</span> singularity@quantum:~/vps$ <span style="color: #8b949e;">-- quantum terminal v6.0 pro --</span></div>
     </div>
     
-    <!-- Nút Clone Terminal -->
-    <button class="clone-terminal-btn" id="cloneTerminalBtn"><i class="fas fa-plus-circle"></i> New Terminal</button>
+    <!-- Floating Buttons -->
+    <div class="float-buttons">
+        <button class="float-btn" id="terminalFloatBtn" title="Terminal"><i class="fas fa-terminal"></i></button>
+        <button class="float-btn" id="debugFloatBtn" title="Debug"><i class="fas fa-bug"></i></button>
+    </div>
     
-    <!-- Container cho các terminal widgets (có thể clone vô hạn) -->
-    <div class="terminals-container" id="terminalsContainer"></div>
-    
-    <!-- PiP Debug Panel - CHỈ 1 CÁI DUY NHẤT -->
-    <div class="pip-debug" id="pipDebug" style="bottom: 80px; right: 20px;">
-        <div class="pip-debug-header" id="pipDebugHeader">
-            <div class="pip-debug-title"><i class="fas fa-terminal"></i> quantum-debug@console:~$</div>
-            <div class="pip-debug-controls">
-                <button class="pip-debug-btn" id="pipFilterBtn"><i class="fas fa-filter"></i></button>
-                <button class="pip-debug-btn" id="pipClearBtn"><i class="fas fa-trash-alt"></i></button>
-                <button class="pip-debug-btn" id="pipCollapseBtn"><i class="fas fa-minus"></i></button>
+    <!-- Debug Panel (Slide from right) -->
+    <div class="debug-panel" id="debugPanel">
+        <div class="debug-header">
+            <div class="debug-title"><i class="fas fa-terminal"></i> quantum-debug@console:~$</div>
+            <div class="debug-controls">
+                <button id="debugFilterBtn"><i class="fas fa-filter"></i> all</button>
+                <button id="debugClearBtn"><i class="fas fa-trash-alt"></i></button>
+                <button id="debugCloseBtn"><i class="fas fa-times"></i></button>
             </div>
         </div>
-        <div class="pip-debug-content" id="pipDebugContent">
-            <div class="debug-log"><span class="debug-time">--:--:--</span><span class="debug-info">🚀 Quantum Terminal v5.0 Pro initialized</span></div>
+        <div class="debug-content" id="debugContent">
+            <div class="debug-log"><span class="debug-time">--:--:--</span><span class="debug-info">🚀 Quantum Terminal v6.0 Pro initialized</span></div>
             <div class="debug-log"><span class="debug-time">--:--:--</span><span class="debug-info">📡 API endpoint: /api/vps</span></div>
-            <div class="debug-log"><span class="debug-time">--:--:--</span><span class="debug-info">🪟 PiP Debug Panel (1 only) - Drag to move, resize</span></div>
-            <div class="debug-log"><span class="debug-time">--:--:--</span><span class="debug-info">📟 Cloneable Terminals - Click [+] to create new terminal</span></div>
+            <div class="debug-log"><span class="debug-time">--:--:--</span><span class="debug-info">🪟 Debug Panel - Click button to open/close</span></div>
         </div>
-        <div class="pip-debug-resize" id="pipResize"></div>
+    </div>
+    
+    <!-- Terminal Panel (Slide from left) -->
+    <div class="terminal-panel" id="terminalPanel">
+        <div class="terminal-panel-header">
+            <div class="terminal-panel-title"><i class="fas fa-terminal"></i> quantum@terminal:~$</div>
+            <div class="terminal-panel-controls">
+                <button id="newTerminalBtn"><i class="fas fa-plus"></i> New Tab</button>
+                <button id="terminalCloseBtn"><i class="fas fa-times"></i></button>
+            </div>
+        </div>
+        <div class="terminal-tabs" id="terminalTabs"></div>
+        <div class="terminal-content" id="terminalContent"></div>
     </div>
 
     <script>
@@ -779,10 +824,10 @@
         let countdownIntervals = {};
         let currentPage = 1;
         let passwordVisible = {};
-        let autoRefreshInterval = null;
         let currentDebugFilter = 'all';
-        let terminalCounter = 0;
         let terminals = [];
+        let nextTerminalId = 1;
+        let activeTerminalId = 1;
         const ITEMS_PER_PAGE = 4;
         
         // DOM Elements
@@ -806,12 +851,13 @@
             createProgressText: document.getElementById('createProgressText'),
             createProgressSteps: document.getElementById('createProgressSteps'),
             pagination: document.getElementById('pagination'),
-            pipDebugContent: document.getElementById('pipDebugContent'),
-            terminalsContainer: document.getElementById('terminalsContainer')
+            debugContent: document.getElementById('debugContent'),
+            terminalTabs: document.getElementById('terminalTabs'),
+            terminalContent: document.getElementById('terminalContent')
         };
         
         // ============================================ //
-        // DEBUG LOG (PiP Panel)
+        // DEBUG LOG
         // ============================================ //
         function addDebugLog(msg, type = 'info') {
             const time = new Date().toLocaleTimeString();
@@ -819,9 +865,9 @@
             const div = document.createElement('div');
             div.className = 'debug-log';
             div.innerHTML = `<span class="debug-time">${time}</span><span class="debug-${type}">${msg}</span>`;
-            elements.pipDebugContent.insertBefore(div, elements.pipDebugContent.firstChild);
-            if (elements.pipDebugContent.children.length > 100) {
-                elements.pipDebugContent.removeChild(elements.pipDebugContent.lastChild);
+            elements.debugContent.insertBefore(div, elements.debugContent.firstChild);
+            if (elements.debugContent.children.length > 100) {
+                elements.debugContent.removeChild(elements.debugContent.lastChild);
             }
         }
         
@@ -831,51 +877,24 @@
         }
         
         // ============================================ //
-        // TERMINAL WIDGET - CÓ THỂ CLONE
+        // TERMINAL CLASS
         // ============================================ //
-        class TerminalWidget {
-            constructor(container, vmId = null) {
-                this.id = `terminal_${++terminalCounter}`;
-                this.container = container;
-                this.vmId = vmId;
+        class TerminalInstance {
+            constructor(id, name) {
+                this.id = id;
+                this.name = name;
+                this.vmId = null;
                 this.history = [];
                 this.historyIndex = -1;
-                this.minimized = false;
-                this.createElement();
+                this.logs = ['Quantum Terminal v1.0 ready.', 'Type "help" for available commands.'];
+                this.createPane();
             }
             
-            createElement() {
-                this.element = document.createElement('div');
-                this.element.className = 'terminal-widget';
-                this.element.id = this.id;
-                
-                // Header
-                const header = document.createElement('div');
-                header.className = 'terminal-widget-header';
-                header.onclick = (e) => {
-                    if (e.target.closest('.terminal-widget-controls')) return;
-                    this.toggleMinimize();
-                };
-                
-                const title = document.createElement('div');
-                title.className = 'terminal-widget-title';
-                const vmName = this.vmId ? (vms.find(v => v.id === this.vmId)?.name || 'No VM') : 'No VM';
-                title.innerHTML = `<i class="fas fa-terminal"></i> terminal@${vmName.substring(0, 12)}`;
-                
-                const controls = document.createElement('div');
-                controls.className = 'terminal-widget-controls';
-                controls.innerHTML = `
-                    <button class="terminal-clear-btn" title="Clear"><i class="fas fa-eraser"></i></button>
-                    <button class="terminal-minimize-btn" title="Minimize"><i class="fas fa-window-minimize"></i></button>
-                    <button class="terminal-close-btn" title="Close"><i class="fas fa-times"></i></button>
-                `;
-                
-                header.appendChild(title);
-                header.appendChild(controls);
-                
-                // Content
-                const content = document.createElement('div');
-                content.className = 'terminal-widget-content';
+            createPane() {
+                // Pane
+                this.pane = document.createElement('div');
+                this.pane.className = 'terminal-pane';
+                this.pane.id = `terminal_pane_${this.id}`;
                 
                 // VM Selector
                 const selectorDiv = document.createElement('div');
@@ -884,19 +903,16 @@
                     <span><i class="fas fa-server"></i> Target VM:</span>
                     <select class="vm-select" id="vmSelect_${this.id}">
                         <option value="">-- Select VM --</option>
-                        ${vms.map(vm => `<option value="${vm.id}" ${this.vmId === vm.id ? 'selected' : ''}>${vm.name || vm.id.substring(0, 12)} [${vm.status}]</option>`).join('')}
+                        ${vms.map(vm => `<option value="${vm.id}">${vm.name || vm.id.substring(0, 12)} [${vm.status}]</option>`).join('')}
                     </select>
                 `;
-                content.appendChild(selectorDiv);
+                this.pane.appendChild(selectorDiv);
                 
                 // Log area
                 this.logArea = document.createElement('div');
                 this.logArea.className = 'terminal-log-area';
-                content.appendChild(this.logArea);
-                
-                this.addLog('Quantum Terminal v1.0 ready.');
-                this.addLog(`Controlling VM: ${this.vmId ? (vms.find(v => v.id === this.vmId)?.name || 'Selected VM') : 'None'}`);
-                this.addLog('Type "help" for available commands.');
+                this.renderLogs();
+                this.pane.appendChild(this.logArea);
                 
                 // Input line
                 const inputLine = document.createElement('div');
@@ -905,19 +921,17 @@
                     <span class="terminal-prompt">$</span>
                     <input type="text" class="terminal-input" id="terminalInput_${this.id}" placeholder="type command...">
                 `;
-                content.appendChild(inputLine);
+                this.pane.appendChild(inputLine);
                 
-                this.element.appendChild(header);
-                this.element.appendChild(content);
-                this.container.appendChild(this.element);
+                elements.terminalContent.appendChild(this.pane);
                 
                 // Event listeners
                 const select = document.getElementById(`vmSelect_${this.id}`);
                 select.onchange = (e) => {
                     this.vmId = e.target.value || null;
-                    const newVmName = this.vmId ? (vms.find(v => v.id === this.vmId)?.name || 'Selected VM') : 'None';
-                    this.addLog(`Target VM changed to: ${newVmName}`, 'info');
-                    title.innerHTML = `<i class="fas fa-terminal"></i> terminal@${newVmName.substring(0, 12)}`;
+                    const vm = this.vmId ? vms.find(v => v.id === this.vmId) : null;
+                    this.addLog(`Target VM changed to: ${vm?.name || 'None'}`, 'info');
+                    this.updateTabName();
                 };
                 
                 const input = document.getElementById(`terminalInput_${this.id}`);
@@ -944,40 +958,37 @@
                         }
                     }
                 });
-                
-                controls.querySelector('.terminal-clear-btn').onclick = () => {
-                    this.logArea.innerHTML = '';
-                    this.addLog('Terminal cleared.');
-                };
-                controls.querySelector('.terminal-minimize-btn').onclick = () => this.toggleMinimize();
-                controls.querySelector('.terminal-close-btn').onclick = () => this.close();
             }
             
-            addLog(msg, type = 'output') {
-                const div = document.createElement('div');
-                div.className = `terminal-log-line ${type === 'command' ? 'command' : (type === 'error' ? 'error' : (type === 'success' ? 'success' : ''))}`;
-                if (type === 'command') {
-                    div.innerHTML = `<span style="color: var(--terminal-green);">$</span> ${msg}`;
-                } else {
-                    div.innerHTML = msg;
+            renderLogs() {
+                if (!this.logArea) return;
+                this.logArea.innerHTML = '';
+                this.logs.forEach(log => {
+                    const div = document.createElement('div');
+                    div.className = `terminal-log-line ${log.type || ''}`;
+                    if (log.isCommand) {
+                        div.innerHTML = `<span style="color: var(--terminal-green);">$</span> ${log.text}`;
+                    } else {
+                        div.innerHTML = log.text;
+                    }
+                    this.logArea.appendChild(div);
+                });
+                this.logArea.scrollTop = this.logArea.scrollHeight;
+            }
+            
+            addLog(text, type = 'output') {
+                this.logs.push({ text, type, isCommand: type === 'command' });
+                if (this.logs.length > 200) this.logs.shift();
+                if (this.pane.classList.contains('active')) this.renderLogs();
+            }
+            
+            updateTabName() {
+                const vm = this.vmId ? vms.find(v => v.id === this.vmId) : null;
+                const tabName = vm ? vm.name.substring(0, 15) : 'no-vm';
+                const tab = document.querySelector(`.terminal-tab[data-id="${this.id}"]`);
+                if (tab) {
+                    tab.querySelector('.tab-name').textContent = tabName;
                 }
-                this.logArea.appendChild(div);
-                div.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                if (this.logArea.children.length > 100) {
-                    this.logArea.removeChild(this.logArea.firstChild);
-                }
-            }
-            
-            toggleMinimize() {
-                this.minimized = !this.minimized;
-                this.element.classList.toggle('minimized', this.minimized);
-            }
-            
-            close() {
-                this.element.remove();
-                const index = terminals.findIndex(t => t.id === this.id);
-                if (index !== -1) terminals.splice(index, 1);
-                addDebugLog(`Terminal ${this.id} closed`, 'info');
             }
             
             processCommand(cmd) {
@@ -1039,9 +1050,8 @@
                                 this.vmId = selectedVm.id;
                                 const selectEl = document.getElementById(`vmSelect_${this.id}`);
                                 if (selectEl) selectEl.value = selectedVm.id;
-                                const title = this.element.querySelector('.terminal-widget-title');
-                                if (title) title.innerHTML = `<i class="fas fa-terminal"></i> terminal@${selectedVm.name.substring(0, 12)}`;
                                 this.addLog(`Selected VM: ${selectedVm.name}`, 'success');
+                                this.updateTabName();
                             } else {
                                 this.addLog(`VM not found: ${arg}`, 'error');
                             }
@@ -1147,12 +1157,12 @@
                         }
                         break;
                     case 'clear':
-                        this.logArea.innerHTML = '';
+                        this.logs = [];
                         this.addLog('Terminal cleared.');
                         break;
                     case 'neofetch':
                         this.addLog(`         ./+o+-       quantum@terminal`);
-                        this.addLog(`       yyyyy/ -yyyyyy+  OS: Quantum Terminal v5.0`);
+                        this.addLog(`       yyyyy/ -yyyyyy+  OS: Quantum Terminal v6.0`);
                         this.addLog(`      :+ssssssssssssss- CPU: 4 vCore`);
                         this.addLog(`    +ssssssssssssssssss/ RAM: 8GB`);
                         this.addLog(`   +sssssssssssssssssss/ SSD: 64GB NVMe`);
@@ -1162,13 +1172,100 @@
                     default:
                         this.addLog(`Command not found: ${cmd}. Type 'help' for available commands.`, 'error');
                 }
+                if (this.pane.classList.contains('active')) this.renderLogs();
+            }
+            
+            activate() {
+                this.pane.classList.add('active');
+                this.renderLogs();
+                const input = document.getElementById(`terminalInput_${this.id}`);
+                if (input) setTimeout(() => input.focus(), 100);
+            }
+            
+            deactivate() {
+                this.pane.classList.remove('active');
+            }
+            
+            getTabHtml() {
+                const vm = this.vmId ? vms.find(v => v.id === this.vmId) : null;
+                const tabName = vm ? vm.name.substring(0, 15) : 'no-vm';
+                return `
+                    <div class="terminal-tab ${activeTerminalId === this.id ? 'active' : ''}" data-id="${this.id}">
+                        <i class="fas fa-terminal"></i>
+                        <span class="tab-name">${tabName}</span>
+                        <button class="terminal-tab-close" data-id="${this.id}">&times;</button>
+                    </div>
+                `;
             }
         }
         
-        function createNewTerminal(vmId = null) {
-            const newTerminal = new TerminalWidget(elements.terminalsContainer, vmId);
-            terminals.push(newTerminal);
+        // ============================================ //
+        // TERMINAL MANAGER
+        // ============================================ //
+        function createNewTerminal() {
+            const id = nextTerminalId++;
+            const name = `Terminal ${id}`;
+            const terminal = new TerminalInstance(id, name);
+            terminals.push(terminal);
+            
+            // Update tabs
+            renderTerminalTabs();
+            
+            // Switch to new tab
+            switchToTerminal(id);
             addDebugLog(`New terminal created (Total: ${terminals.length})`, 'info');
+        }
+        
+        function renderTerminalTabs() {
+            elements.terminalTabs.innerHTML = '';
+            terminals.forEach(terminal => {
+                elements.terminalTabs.innerHTML += terminal.getTabHtml();
+            });
+            
+            // Add event listeners to tab close buttons
+            document.querySelectorAll('.terminal-tab-close').forEach(btn => {
+                btn.onclick = (e) => {
+                    e.stopPropagation();
+                    const id = parseInt(btn.dataset.id);
+                    closeTerminal(id);
+                };
+            });
+            
+            // Add event listeners to tabs
+            document.querySelectorAll('.terminal-tab').forEach(tab => {
+                tab.onclick = (e) => {
+                    if (e.target.classList.contains('terminal-tab-close')) return;
+                    const id = parseInt(tab.dataset.id);
+                    switchToTerminal(id);
+                };
+            });
+        }
+        
+        function switchToTerminal(id) {
+            activeTerminalId = id;
+            terminals.forEach(terminal => {
+                if (terminal.id === id) {
+                    terminal.activate();
+                } else {
+                    terminal.deactivate();
+                }
+            });
+            renderTerminalTabs();
+        }
+        
+        function closeTerminal(id) {
+            const index = terminals.findIndex(t => t.id === id);
+            if (index !== -1) {
+                terminals[index].pane.remove();
+                terminals.splice(index, 1);
+                if (terminals.length === 0) {
+                    createNewTerminal();
+                } else {
+                    switchToTerminal(terminals[0].id);
+                }
+                renderTerminalTabs();
+                addDebugLog(`Terminal ${id} closed`, 'info');
+            }
         }
         
         // ============================================ //
@@ -1371,13 +1468,14 @@
             }).join('');
             saveToLocal();
             
-            // Update VM selector in all terminals
+            // Update VM selectors in terminals
             terminals.forEach(terminal => {
                 const select = document.getElementById(`vmSelect_${terminal.id}`);
                 if (select) {
                     const currentVal = select.value;
                     select.innerHTML = `<option value="">-- Select VM --</option>${vms.map(vm => `<option value="${vm.id}" ${currentVal === vm.id ? 'selected' : ''}>${vm.name || vm.id.substring(0, 12)} [${vm.status}]</option>`).join('')}`;
                 }
+                terminal.updateTabName();
             });
         }
         
@@ -1490,77 +1588,50 @@
         }
         
         // ============================================ //
-        // PIP DEBUG PANEL - DRAG, RESIZE, COLLAPSE
+        // PANEL CONTROLS
         // ============================================ //
-        const pipDebug = document.getElementById('pipDebug');
-        let isDragging = false;
-        let dragOffsetX, dragOffsetY;
-        let isResizing = false;
-        let resizeStartX, resizeStartY, resizeStartWidth, resizeStartHeight;
+        const debugPanel = document.getElementById('debugPanel');
+        const terminalPanel = document.getElementById('terminalPanel');
+        const debugFloatBtn = document.getElementById('debugFloatBtn');
+        const terminalFloatBtn = document.getElementById('terminalFloatBtn');
         
-        pipDebug.querySelector('#pipDebugHeader').addEventListener('mousedown', (e) => {
-            if (e.target.closest('.pip-debug-controls')) return;
-            isDragging = true;
-            dragOffsetX = e.clientX - pipDebug.offsetLeft;
-            dragOffsetY = e.clientY - pipDebug.offsetTop;
-            pipDebug.style.cursor = 'grabbing';
-        });
-        
-        document.addEventListener('mousemove', (e) => {
-            if (isDragging) {
-                let newLeft = e.clientX - dragOffsetX;
-                let newTop = e.clientY - dragOffsetY;
-                newLeft = Math.max(0, Math.min(window.innerWidth - pipDebug.offsetWidth, newLeft));
-                newTop = Math.max(0, Math.min(window.innerHeight - pipDebug.offsetHeight, newTop));
-                pipDebug.style.left = newLeft + 'px';
-                pipDebug.style.top = newTop + 'px';
-                pipDebug.style.right = 'auto';
-                pipDebug.style.bottom = 'auto';
-            }
-            if (isResizing) {
-                let newWidth = resizeStartWidth + (e.clientX - resizeStartX);
-                let newHeight = resizeStartHeight + (e.clientY - resizeStartY);
-                newWidth = Math.max(280, Math.min(600, newWidth));
-                newHeight = Math.max(200, Math.min(500, newHeight));
-                pipDebug.style.width = newWidth + 'px';
-            }
-        });
-        
-        document.addEventListener('mouseup', () => {
-            isDragging = false;
-            isResizing = false;
-            pipDebug.style.cursor = '';
-        });
-        
-        document.getElementById('pipResize').addEventListener('mousedown', (e) => {
-            e.stopPropagation();
-            isResizing = true;
-            resizeStartX = e.clientX;
-            resizeStartY = e.clientY;
-            resizeStartWidth = pipDebug.offsetWidth;
-            resizeStartHeight = pipDebug.offsetHeight;
-        });
-        
-        let pipCollapsed = false;
-        document.getElementById('pipCollapseBtn').onclick = () => {
-            pipCollapsed = !pipCollapsed;
-            pipDebug.classList.toggle('collapsed', pipCollapsed);
-            document.getElementById('pipCollapseBtn').innerHTML = pipCollapsed ? '<i class="fas fa-plus"></i>' : '<i class="fas fa-minus"></i>';
-            addDebugLog(`Debug panel ${pipCollapsed ? 'collapsed' : 'expanded'}`, 'info');
+        debugFloatBtn.onclick = () => {
+            debugPanel.classList.toggle('open');
+            debugFloatBtn.classList.toggle('active', debugPanel.classList.contains('open'));
         };
         
+        terminalFloatBtn.onclick = () => {
+            terminalPanel.classList.toggle('open');
+            terminalFloatBtn.classList.toggle('active', terminalPanel.classList.contains('open'));
+        };
+        
+        document.getElementById('debugCloseBtn').onclick = () => {
+            debugPanel.classList.remove('open');
+            debugFloatBtn.classList.remove('active');
+        };
+        
+        document.getElementById('terminalCloseBtn').onclick = () => {
+            terminalPanel.classList.remove('open');
+            terminalFloatBtn.classList.remove('active');
+        };
+        
+        // Debug controls
         let filterIdx = 0;
         const filters = ['all', 'info', 'success', 'warning', 'error'];
-        document.getElementById('pipFilterBtn').onclick = () => {
+        document.getElementById('debugFilterBtn').onclick = () => {
             filterIdx = (filterIdx + 1) % filters.length;
             currentDebugFilter = filters[filterIdx];
-            document.getElementById('pipFilterBtn').innerHTML = `<i class="fas fa-filter"></i> ${currentDebugFilter}`;
+            document.getElementById('debugFilterBtn').innerHTML = `<i class="fas fa-filter"></i> ${currentDebugFilter}`;
             addDebugLog(`Filter: ${currentDebugFilter}`, 'info');
         };
         
-        document.getElementById('pipClearBtn').onclick = () => {
-            elements.pipDebugContent.innerHTML = '';
+        document.getElementById('debugClearBtn').onclick = () => {
+            elements.debugContent.innerHTML = '';
             addDebugLog('Debug console cleared', 'info');
+        };
+        
+        document.getElementById('newTerminalBtn').onclick = () => {
+            createNewTerminal();
         };
         
         // ============================================ //
@@ -1581,21 +1652,19 @@
         let searchTimeout;
         elements.searchInput.oninput = () => { clearTimeout(searchTimeout); searchTimeout = setTimeout(() => { currentPage = 1; renderVMList(); }, 300); };
         
-        document.getElementById('cloneTerminalBtn').onclick = () => createNewTerminal();
-        
         // Init
         refreshFormCredentials();
         loadFromLocal();
         loadVMs();
         setInterval(loadVMs, 15000);
         
-        addDebugLog('🚀 Quantum Terminal v5.0 Pro initialized', 'success');
-        addDebugLog('🪟 PiP Debug Panel (1 only) - Drag to move, resize, collapse', 'info');
-        addDebugLog('📟 Cloneable Terminals - Click "New Terminal" to create unlimited terminals', 'success');
-        addDebugLog('💻 Terminal commands: help, ls, info, select, start, stop, restart, ping, logs, vnc, rdp, delete, neofetch', 'info');
-        
-        // Tạo terminal mặc định đầu tiên
+        // Create initial terminal
         createNewTerminal();
+        
+        addDebugLog('🚀 Quantum Terminal v6.0 Pro initialized', 'success');
+        addDebugLog('🪟 Click button to open Debug Panel (slide from right)', 'info');
+        addDebugLog('📟 Click button to open Terminal Panel (slide from left)', 'info');
+        addDebugLog('💻 Terminal commands: help, ls, info, select, start, stop, restart, ping, logs, vnc, rdp, delete, neofetch', 'info');
     </script>
 </body>
 </html>
