@@ -3,16 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Singularity Club | Holographic VPS Pro</title>
+    <title>Singularity Club | Cloudflare Terminal</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
-        /* ============================================ */
-        /* HOLOGRAPHIC THEME - Premium Purple */
-        /* ============================================ */
         :root {
             --primary: #a855f7;
             --primary-light: #c084fc;
@@ -21,7 +18,6 @@
             --secondary: #e879f9;
             --bg: #0a0a1a;
             --bg-card: rgba(20, 15, 45, 0.7);
-            --bg-card-hover: rgba(35, 25, 60, 0.85);
             --border: rgba(168, 85, 247, 0.15);
             --border-hover: rgba(168, 85, 247, 0.4);
             --text: #f0f0ff;
@@ -29,11 +25,8 @@
             --success: #10b981;
             --warning: #f59e0b;
             --error: #ef4444;
-            --info: #3b82f6;
             --shadow-primary: 0 0 25px rgba(168, 85, 247, 0.25);
-            --shadow-glow: 0 0 30px rgba(168, 85, 247, 0.15);
             --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-            --transition-slow: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             --radius-sm: 12px;
             --radius-md: 16px;
             --radius-lg: 20px;
@@ -49,7 +42,6 @@
             position: relative;
         }
         
-        /* Holographic Background */
         body::before {
             content: '';
             position: fixed;
@@ -62,7 +54,6 @@
             z-index: -1;
         }
         
-        /* Floating Orbs */
         .orb {
             position: fixed;
             border-radius: 50%;
@@ -76,27 +67,29 @@
         .orb-3 { width: 200px; height: 200px; background: rgba(139, 92, 246, 0.12); top: 50%; left: 50%; transform: translate(-50%, -50%); animation-delay: -10s; }
         @keyframes floatOrb { 0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.5; } 50% { transform: translate(30px, -30px) scale(1.1); opacity: 0.8; } }
         
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: rgba(168, 85, 247, 0.1); border-radius: 10px; }
         ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
         
         .container { max-width: 1400px; margin: 0 auto; padding: 24px; position: relative; z-index: 2; }
         
-        /* ============================================ */
-        /* DYNAMIC ISLAND - Giống iPhone 14 Pro */
-        /* ============================================ */
-        .dynamic-island {
+        /* Top Bar */
+        .top-bar {
             position: fixed;
             top: 12px;
             left: 50%;
             transform: translateX(-50%);
+            display: flex;
+            gap: 12px;
+            z-index: 1000;
+        }
+        
+        .dynamic-island {
             width: 120px;
             height: 36px;
             background: rgba(0, 0, 0, 0.75);
             backdrop-filter: blur(20px);
             border-radius: 40px;
-            z-index: 1000;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -121,142 +114,149 @@
             justify-content: center;
             font-size: 0.8rem;
         }
-        .dynamic-island-text {
-            font-size: 0.7rem;
-            font-weight: 500;
-            color: var(--text);
-            white-space: nowrap;
-            overflow: hidden;
-        }
-        .dynamic-island-badge {
-            position: absolute;
-            top: -4px;
-            right: -4px;
-            width: 12px;
-            height: 12px;
-            background: var(--error);
-            border-radius: 50%;
-            border: 2px solid var(--bg);
-            display: none;
-        }
-        .dynamic-island.has-notif .dynamic-island-badge { display: block; animation: pulse 1s infinite; }
-        @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.2); opacity: 0.7; } }
+        .dynamic-island-text { font-size: 0.7rem; font-weight: 500; color: var(--text); }
         
-        /* ============================================ */
-        /* DEBUG MODAL - Hiện khi bấm Dynamic Island */
-        /* ============================================ */
-        .debug-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(8px);
-            z-index: 1001;
+        .vm-toggle-btn {
+            width: 36px;
+            height: 36px;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(20px);
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            visibility: hidden;
-            opacity: 0;
+            cursor: pointer;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(168, 85, 247, 0.3);
         }
-        .debug-modal.open {
-            visibility: visible;
-            opacity: 1;
-        }
-        .debug-modal-content {
-            width: 500px;
-            max-width: 90%;
+        .vm-toggle-btn:hover { transform: scale(1.1); background: rgba(168, 85, 247, 0.2); border-color: var(--primary); }
+        .vm-toggle-btn.active { background: var(--primary); box-shadow: 0 0 15px var(--primary); }
+        
+        /* VM Popup */
+        .vm-popup {
+            position: fixed;
+            top: 60px;
+            left: 50%;
+            transform: translateX(-50%) scale(0.9);
+            width: 280px;
             background: var(--bg-card);
             backdrop-filter: blur(20px);
             border: 1px solid var(--border);
-            border-radius: var(--radius-xl);
-            overflow: hidden;
-            transform: scale(0.95);
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: var(--radius-lg);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             box-shadow: var(--shadow-primary);
         }
-        .debug-modal.open .debug-modal-content {
-            transform: scale(1);
-        }
-        .debug-modal-header {
+        .vm-popup.open { opacity: 1; visibility: visible; transform: translateX(-50%) scale(1); }
+        .vm-popup-header {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.8rem;
+            font-weight: 600;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 16px 20px;
+        }
+        .vm-popup-close { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 1rem; }
+        .vm-list-popup { max-height: 300px; overflow-y: auto; padding: 8px; }
+        .vm-popup-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 12px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: var(--transition);
+            margin-bottom: 4px;
+        }
+        .vm-popup-item:hover { background: rgba(168, 85, 247, 0.15); transform: translateX(4px); }
+        .vm-popup-name { font-size: 0.75rem; font-family: monospace; }
+        .vm-popup-status { font-size: 0.65rem; padding: 2px 8px; border-radius: 20px; }
+        .vm-popup-status.running { background: rgba(16, 185, 129, 0.2); color: var(--success); }
+        .vm-popup-status.creating { background: rgba(245, 158, 11, 0.2); color: var(--warning); animation: blink 1s infinite; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        
+        /* Terminals Container */
+        .terminals-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            align-items: flex-end;
+            z-index: 998;
+        }
+        
+        .terminal-tab {
+            width: 320px;
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: slideInRight 0.3s ease;
+            box-shadow: var(--shadow-primary);
+        }
+        @keyframes slideInRight { from { opacity: 0; transform: translateX(100px); } to { opacity: 1; transform: translateX(0); } }
+        .terminal-tab.minimized { height: 44px; }
+        .terminal-tab.minimized .terminal-body { display: none; }
+        
+        .terminal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 12px;
             background: rgba(0, 0, 0, 0.3);
+            cursor: pointer;
             border-bottom: 1px solid var(--border);
         }
-        .debug-modal-title {
-            font-size: 0.9rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: var(--primary-light);
-        }
-        .debug-modal-close {
+        .terminal-title { font-size: 0.7rem; font-weight: 600; display: flex; align-items: center; gap: 6px; color: var(--primary-light); }
+        .terminal-controls { display: flex; gap: 6px; }
+        .terminal-controls button {
             background: none;
             border: none;
             color: var(--text-muted);
-            font-size: 1.2rem;
             cursor: pointer;
+            font-size: 0.7rem;
             transition: var(--transition);
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
+            width: 22px;
+            height: 22px;
+            border-radius: 4px;
+        }
+        .terminal-controls button:hover { color: var(--primary); background: rgba(168, 85, 247, 0.1); }
+        .terminal-controls button.delete:hover { color: var(--error); }
+        
+        .terminal-body { padding: 12px; max-height: 300px; overflow-y: auto; font-family: monospace; font-size: 0.65rem; }
+        .terminal-body::-webkit-scrollbar { width: 4px; }
+        .terminal-line { padding: 4px 0; border-bottom: 1px solid var(--border); word-break: break-all; }
+        .terminal-line.command { color: var(--primary-light); }
+        .terminal-line.error { color: var(--error); }
+        .terminal-line.success { color: var(--success); }
+        
+        .terminal-input-line {
             display: flex;
             align-items: center;
-            justify-content: center;
+            gap: 6px;
+            padding: 8px 12px;
+            border-top: 1px solid var(--border);
         }
-        .debug-modal-close:hover {
-            background: rgba(239, 68, 68, 0.2);
-            color: var(--error);
-            transform: rotate(90deg);
-        }
-        .debug-modal-content-scroll {
-            padding: 16px 20px;
-            max-height: 60vh;
-            overflow-y: auto;
+        .terminal-prompt { color: var(--primary-light); font-size: 0.7rem; }
+        .terminal-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: var(--text);
             font-family: monospace;
             font-size: 0.7rem;
+            outline: none;
         }
-        .debug-log {
-            padding: 8px 0;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            gap: 12px;
-            animation: fadeIn 0.2s ease;
-        }
-        @keyframes fadeIn { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
-        .debug-time { color: var(--text-muted); min-width: 70px; font-size: 0.6rem; }
-        .debug-success { color: var(--success); }
-        .debug-error { color: var(--error); }
-        .debug-info { color: var(--info); }
-        .debug-warning { color: var(--warning); }
-        .debug-modal-footer {
-            padding: 12px 20px;
-            border-top: 1px solid var(--border);
-            display: flex;
-            justify-content: flex-end;
-            gap: 12px;
-        }
-        .debug-modal-footer button {
-            background: rgba(168, 85, 247, 0.15);
-            border: none;
-            color: var(--primary-light);
-            padding: 6px 12px;
-            border-radius: var(--radius-sm);
-            cursor: pointer;
-            font-size: 0.7rem;
-            transition: var(--transition);
-        }
-        .debug-modal-footer button:hover { background: rgba(168, 85, 247, 0.3); }
+        .terminal-input:focus { border-bottom: 1px solid var(--primary); }
         
-        /* ============================================ */
-        /* HEADER */
-        /* ============================================ */
+        /* Header */
         .header {
             text-align: center;
             margin-bottom: 32px;
@@ -312,9 +312,7 @@
         }
         .badge:hover { transform: translateY(-2px); border-color: var(--primary); box-shadow: var(--shadow-primary); }
         
-        /* ============================================ */
-        /* STATS CARDS */
-        /* ============================================ */
+        /* Stats */
         .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 32px; }
         @media (max-width: 768px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
         
@@ -344,15 +342,7 @@
         .stat-label { font-size: 0.7rem; color: var(--text-muted); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
         .stat-value { font-size: 2rem; font-weight: 700; background: linear-gradient(135deg, var(--primary), var(--secondary)); -webkit-background-clip: text; background-clip: text; color: transparent; }
         
-        /* ============================================ */
-        /* TWO COLUMNS */
-        /* ============================================ */
-        .two-columns { display: grid; grid-template-columns: 1fr 1.2fr; gap: 28px; }
-        @media (max-width: 900px) { .two-columns { grid-template-columns: 1fr; } }
-        
-        /* ============================================ */
-        /* FORM CARD */
-        /* ============================================ */
+        /* Form */
         .form-card {
             background: var(--bg-card);
             backdrop-filter: blur(12px);
@@ -396,7 +386,7 @@
         }
         .random-btn:hover { background: rgba(168, 85, 247, 0.3); transform: translateY(-2px); }
         
-        /* Progress Bar */
+        /* Progress */
         .progress-container { margin-top: 20px; display: none; }
         .progress-steps { display: flex; justify-content: space-between; margin-bottom: 12px; gap: 8px; }
         .progress-step {
@@ -432,7 +422,6 @@
         @keyframes shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
         .progress-text { font-size: 0.65rem; text-align: center; margin-top: 8px; color: var(--text-muted); }
         
-        /* Buttons */
         .btn {
             padding: 14px 24px;
             border-radius: var(--radius-md);
@@ -489,261 +478,15 @@
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .quick-btn:hover { background: rgba(168, 85, 247, 0.2); border-color: var(--primary); transform: translateY(-2px); }
         
-        /* ============================================ */
-        /* VM CONTROLS */
-        /* ============================================ */
-        .vm-controls { display: flex; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; }
-        .vm-search {
-            flex: 1;
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid var(--border);
-            border-radius: 30px;
-            padding: 10px 16px;
-            color: var(--text);
-            font-size: 0.8rem;
-            transition: var(--transition);
-        }
-        .vm-search:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 2px var(--primary-glow); }
-        .vm-filter, .vm-sort {
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid var(--border);
-            border-radius: 30px;
-            padding: 10px 16px;
-            color: var(--text);
-            font-size: 0.75rem;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-        .vm-filter:hover, .vm-sort:hover { border-color: var(--primary); transform: translateY(-1px); }
-        .vm-count {
-            background: rgba(168, 85, 247, 0.15);
-            border-radius: 30px;
-            padding: 10px 16px;
-            font-size: 0.75rem;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        
-        /* ============================================ */
-        /* VM LIST */
-        /* ============================================ */
-        .vm-list { display: flex; flex-direction: column; gap: 14px; max-height: 550px; overflow-y: auto; padding-right: 6px; }
-        
-        .vm-item {
-            background: rgba(0, 0, 0, 0.25);
-            border-radius: var(--radius-lg);
-            border: 1px solid var(--border);
-            overflow: hidden;
-            transition: var(--transition-slow);
-            animation: slideIn 0.3s ease;
-        }
-        @keyframes slideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .vm-item:hover { border-color: var(--primary); background: rgba(168, 85, 247, 0.05); transform: translateX(4px); }
-        
-        .vm-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 16px 20px;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-        .vm-header:hover { background: rgba(168, 85, 247, 0.05); }
-        
-        .vm-info { display: flex; align-items: center; gap: 14px; }
-        .vm-icon {
-            width: 44px;
-            height: 44px;
-            background: linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(232, 121, 249, 0.2));
-            border-radius: var(--radius-md);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: var(--transition);
-        }
-        .vm-item:hover .vm-icon { transform: scale(1.05) rotate(3deg); }
-        .vm-name { font-weight: 600; font-size: 0.9rem; }
-        .vm-time { font-size: 0.6rem; color: var(--text-muted); margin-top: 4px; }
-        .vm-status {
-            font-size: 0.65rem;
-            padding: 4px 12px;
-            border-radius: 30px;
-            font-weight: 500;
-        }
-        .status-creating { background: rgba(245, 158, 11, 0.2); color: var(--warning); animation: blink 1.5s infinite; }
-        .status-running { background: rgba(16, 185, 129, 0.2); color: var(--success); }
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
-        
-        .vm-expand-icon { transition: transform 0.3s ease; color: var(--text-muted); }
-        .vm-item.open .vm-expand-icon { transform: rotate(180deg); }
-        
-        /* ============================================ */
-        /* VM DETAIL - 1 TAB DUY NHẤT với đầy đủ thông tin */
-        /* ============================================ */
-        .vm-detail {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            border-top: 1px solid transparent;
-        }
-        .vm-item.open .vm-detail {
-            max-height: 600px;
-            border-top-color: var(--border);
-            padding: 20px;
-        }
-        
-        /* Info Grid - 2 cột cho gọn */
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
-            margin-bottom: 16px;
-        }
-        @media (max-width: 640px) { .info-grid { grid-template-columns: 1fr; } }
-        
-        .info-card {
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: var(--radius-md);
-            padding: 14px;
-            transition: var(--transition);
-        }
-        .info-card:hover { background: rgba(0, 0, 0, 0.35); transform: translateX(2px); }
-        .info-title {
-            font-size: 0.65rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--primary-light);
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .info-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 0;
-            border-bottom: 1px solid var(--border);
-        }
-        .info-row:last-child { border-bottom: none; }
-        .info-label { font-size: 0.7rem; color: var(--text-muted); display: flex; align-items: center; gap: 6px; }
-        .info-value { font-family: monospace; font-size: 0.75rem; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-        
-        /* Countdown Timer */
-        .countdown-timer {
-            font-family: monospace;
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: var(--warning);
-            background: rgba(245, 158, 11, 0.15);
-            padding: 4px 10px;
-            border-radius: var(--radius-sm);
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-        
-        /* Copy Button */
-        .copy-btn {
-            background: rgba(168, 85, 247, 0.15);
-            border: none;
-            color: var(--primary-light);
-            padding: 4px 10px;
-            border-radius: var(--radius-sm);
-            font-size: 0.65rem;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-        .copy-btn:hover { background: rgba(168, 85, 247, 0.3); transform: scale(1.02); }
-        .copy-btn.copied { background: var(--success); color: white; animation: bounce 0.3s ease; }
-        @keyframes bounce { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
-        
-        /* Eye Button */
-        .eye-btn {
-            background: rgba(168, 85, 247, 0.15);
-            border: none;
-            color: var(--primary-light);
-            padding: 4px 8px;
-            border-radius: var(--radius-sm);
-            cursor: pointer;
-            transition: var(--transition);
-        }
-        .eye-btn:hover { background: rgba(168, 85, 247, 0.3); transform: scale(1.05); }
-        
-        /* Action Buttons */
-        .action-buttons {
-            display: flex;
-            gap: 12px;
-            margin-top: 16px;
-            flex-wrap: wrap;
-        }
-        .action-btn {
-            flex: 1;
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-            padding: 8px 12px;
-            font-size: 0.7rem;
-            cursor: pointer;
-            text-decoration: none;
-            color: var(--text);
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            transition: var(--transition);
-        }
-        .action-btn:hover { transform: translateY(-2px); border-color: var(--primary); }
-        .action-btn.github:hover { background: rgba(168, 85, 247, 0.2); color: var(--primary); }
-        .action-btn.delete:hover { background: rgba(239, 68, 68, 0.2); color: var(--error); }
-        
-        /* VM Config - Cấu hình mới: 4 core, 16GB RAM, 25GB SSD, 1.2Gbps */
-        .vm-config {
-            display: flex;
-            gap: 12px;
-            margin-top: 16px;
-            padding: 10px 12px;
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: var(--radius-sm);
-            font-size: 0.65rem;
-            color: var(--text-muted);
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-        .vm-config span {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: rgba(168, 85, 247, 0.1);
-            padding: 4px 10px;
-            border-radius: 30px;
-        }
-        
-        /* Pagination */
-        .pagination { display: flex; justify-content: center; gap: 8px; margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border); }
-        .page-btn {
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-            padding: 6px 12px;
-            font-size: 0.7rem;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-        .page-btn:hover { background: rgba(168, 85, 247, 0.2); border-color: var(--primary); transform: translateY(-2px); }
-        .page-btn.active { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border-color: transparent; }
-        
-        /* Footer */
         .footer { text-align: center; padding: 24px; margin-top: 32px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 0.65rem; }
         
         @media (max-width: 640px) {
             .container { padding: 16px; }
             .form-card { padding: 20px; }
-            .info-grid { grid-template-columns: 1fr; }
-            .dynamic-island { width: 100px; }
-            .dynamic-island:hover { width: 120px; }
+            .terminal-tab { width: 280px; }
         }
+        
+        @keyframes slideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
@@ -751,49 +494,47 @@
     <div class="orb orb-2"></div>
     <div class="orb orb-3"></div>
     
-    <!-- Dynamic Island - Giống iPhone 14 Pro -->
-    <div class="dynamic-island" id="dynamicIsland">
-        <div class="dynamic-island-icon"><i class="fas fa-gem"></i></div>
-        <div class="dynamic-island-text" id="islandText">SINGULARITY</div>
-        <div class="dynamic-island-badge" id="islandBadge"></div>
-    </div>
-    
-    <!-- Debug Modal - Hiện khi bấm vào Dynamic Island -->
-    <div class="debug-modal" id="debugModal">
-        <div class="debug-modal-content">
-            <div class="debug-modal-header">
-                <div class="debug-modal-title"><i class="fas fa-terminal"></i> Quantum Debug Console</div>
-                <button class="debug-modal-close" id="debugModalClose"><i class="fas fa-times"></i></button>
-            </div>
-            <div class="debug-modal-content-scroll" id="debugModalContent">
-                <div class="debug-log"><span class="debug-time">--:--:--</span><span class="debug-info">🚀 Holographic System initialized</span></div>
-                <div class="debug-log"><span class="debug-time">--:--:--</span><span class="debug-info">📡 API endpoint: /api/vps</span></div>
-                <div class="debug-log"><span class="debug-time">--:--:--</span><span class="debug-info">🎨 Dynamic Island ready - Click to open debug</span></div>
-            </div>
-            <div class="debug-modal-footer">
-                <button id="clearDebugBtn"><i class="fas fa-trash-alt"></i> Clear</button>
-            </div>
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="dynamic-island" id="dynamicIsland">
+            <div class="dynamic-island-icon"><i class="fas fa-cloud"></i></div>
+            <div class="dynamic-island-text" id="islandText">CLOUDFLARE</div>
+        </div>
+        <div class="vm-toggle-btn" id="vmToggleBtn">
+            <i class="fas fa-terminal"></i>
         </div>
     </div>
     
+    <!-- VM Popup -->
+    <div class="vm-popup" id="vmPopup">
+        <div class="vm-popup-header">
+            <span><i class="fas fa-server"></i> Virtual Machines</span>
+            <button class="vm-popup-close" id="vmPopupClose">&times;</button>
+        </div>
+        <div class="vm-list-popup" id="vmListPopup">
+            <div style="text-align:center; padding:20px; color:var(--text-muted);">Chưa có VM nào</div>
+        </div>
+    </div>
+    
+    <!-- Terminals Container -->
+    <div class="terminals-container" id="terminalsContainer"></div>
+    
     <div class="container">
-        <!-- Header -->
         <div class="header">
             <div class="logo"><i class="fas fa-infinity"></i> SINGULARITY CLUB</div>
-            <div class="subtitle">Holographic Virtual Machine Platform • Powered by GitHub Actions</div>
+            <div class="subtitle">Cloudflare Tunnel • Holographic Virtual Machine Platform</div>
             <div class="badge-container">
                 <div class="badge"><i class="fab fa-github"></i> GitHub Actions</div>
+                <div class="badge"><i class="fas fa-cloud"></i> Cloudflare Tunnel</div>
                 <div class="badge"><i class="fas fa-network-wired"></i> Tailscale</div>
                 <div class="badge"><i class="fas fa-shield-alt"></i> Holographic Security</div>
-                <div class="badge"><i class="fas fa-chart-line"></i> Live Monitor</div>
                 <div class="badge"><i class="fas fa-hourglass-half"></i> 6h Countdown</div>
-                <div class="badge"><i class="fas fa-gem"></i> Dynamic Island</div>
+                <div class="badge"><i class="fas fa-terminal"></i> Terminal Mode</div>
             </div>
         </div>
 
-        <!-- Stats -->
         <div class="stats-grid">
-            <div class="stat-card" onclick="refreshList()">
+            <div class="stat-card" onclick="refreshStats()">
                 <div class="stat-label"><i class="fas fa-microchip"></i> TOTAL VMS</div>
                 <div class="stat-value" id="statTotal">0</div>
             </div>
@@ -811,90 +552,59 @@
             </div>
         </div>
 
-        <div class="two-columns">
-            <!-- Form tạo VM -->
-            <div class="form-card">
-                <div class="card-title"><i class="fas fa-gem"></i> Khởi tạo Virtual Machine</div>
-                <div class="input-group">
-                    <label class="input-label"><i class="fab fa-github"></i> GitHub Token</label>
-                    <input type="password" class="input-field" id="githubToken" placeholder="ghp_xxxxxxxxxxxx">
-                    <div style="font-size:0.6rem; color:var(--text-muted); margin-top:4px;">Cần quyền repo và workflow</div>
-                </div>
-                <div class="input-group">
-                    <label class="input-label"><i class="fas fa-network-wired"></i> Tailscale Key</label>
-                    <input type="password" class="input-field" id="tailscaleKey" placeholder="tskey-xxxxxxxxxxxx">
-                    <div style="font-size:0.6rem; color:var(--text-muted); margin-top:4px;">Lấy từ <a href="https://login.tailscale.com/admin/authkeys" target="_blank" style="color:var(--primary);">login.tailscale.com</a></div>
-                </div>
-                <div class="input-row">
-                    <div class="input-group">
-                        <label class="input-label"><i class="fas fa-user"></i> Tên đăng nhập</label>
-                        <input type="text" class="input-field" id="vmUsername" placeholder="username">
-                    </div>
-                    <button class="random-btn" id="randomUserBtn"><i class="fas fa-dice"></i> Random</button>
-                </div>
-                <div class="input-row">
-                    <div class="input-group">
-                        <label class="input-label"><i class="fas fa-lock"></i> Mật khẩu</label>
-                        <input type="password" class="input-field" id="vmPassword" placeholder="password">
-                    </div>
-                    <button class="random-btn" id="randomPassBtn"><i class="fas fa-dice"></i> Random</button>
-                </div>
-                
-                <!-- Progress Bar -->
-                <div class="progress-container" id="createProgressContainer">
-                    <div class="progress-steps" id="createProgressSteps">
-                        <div class="progress-step"><i class="fas fa-key"></i> Token</div>
-                        <div class="progress-step"><i class="fas fa-folder-plus"></i> Repo</div>
-                        <div class="progress-step"><i class="fas fa-file-code"></i> Workflow</div>
-                        <div class="progress-step"><i class="fas fa-play"></i> Trigger</div>
-                        <div class="progress-step"><i class="fas fa-check-circle"></i> Done</div>
-                    </div>
-                    <div class="progress-bar-bg"><div class="progress-fill" id="createProgressFill"></div></div>
-                    <div class="progress-text" id="createProgressText">Sẵn sàng</div>
-                </div>
-                
-                <button class="btn btn-primary" id="createBtn"><i class="fas fa-play"></i> Tạo VM Ngay</button>
-                
-                <div class="quick-actions">
-                    <div class="quick-btn" id="demoBtn"><i class="fas fa-flask"></i> Demo</div>
-                    <div class="quick-btn" id="clearBtn"><i class="fas fa-eraser"></i> Xóa</div>
-                    <div class="quick-btn" id="refreshBtn"><i class="fas fa-sync-alt"></i> Làm mới</div>
-                    <div class="quick-btn" id="saveConfigBtn"><i class="fas fa-save"></i> Lưu</div>
-                    <div class="quick-btn" id="loadConfigBtn"><i class="fas fa-folder-open"></i> Tải</div>
-                </div>
+        <div class="form-card">
+            <div class="card-title"><i class="fas fa-cloud"></i> Khởi tạo Virtual Machine</div>
+            <div class="input-group">
+                <label class="input-label"><i class="fab fa-github"></i> GitHub Token</label>
+                <input type="password" class="input-field" id="githubToken" placeholder="ghp_xxxxxxxxxxxx">
+                <div style="font-size:0.6rem; color:var(--text-muted); margin-top:4px;">Cần quyền repo và workflow</div>
             </div>
-
-            <!-- Danh sách VM -->
-            <div class="form-card">
-                <div class="card-title">
-                    <span><i class="fas fa-server"></i> Virtual Machines</span>
-                    <button class="refresh-vm-btn" id="manualRefreshBtn" style="background:none; border:none; color:var(--primary); cursor:pointer;"><i class="fas fa-sync-alt"></i></button>
+            <div class="input-group">
+                <label class="input-label"><i class="fas fa-network-wired"></i> Tailscale Key</label>
+                <input type="password" class="input-field" id="tailscaleKey" placeholder="tskey-xxxxxxxxxxxx">
+                <div style="font-size:0.6rem; color:var(--text-muted); margin-top:4px;">Lấy từ <a href="https://login.tailscale.com/admin/authkeys" target="_blank" style="color:var(--primary);">login.tailscale.com</a></div>
+            </div>
+            <div class="input-row">
+                <div class="input-group">
+                    <label class="input-label"><i class="fas fa-user"></i> Tên đăng nhập</label>
+                    <input type="text" class="input-field" id="vmUsername" placeholder="username">
                 </div>
-                <div class="vm-controls">
-                    <input type="text" class="vm-search" id="searchInput" placeholder="🔍 Tìm kiếm VM...">
-                    <select class="vm-filter" id="filterSelect">
-                        <option value="all">📋 Tất cả</option>
-                        <option value="running">✅ Đang chạy</option>
-                        <option value="creating">⚙️ Đang tạo</option>
-                    </select>
-                    <select class="vm-sort" id="sortSelect">
-                        <option value="newest">🕐 Mới nhất</option>
-                        <option value="expiring">⏰ Sắp hết hạn</option>
-                    </select>
-                    <div class="vm-count"><i class="fas fa-chart-simple"></i> <span id="vmCount">0</span></div>
+                <button class="random-btn" id="randomUserBtn"><i class="fas fa-dice"></i> Random</button>
+            </div>
+            <div class="input-row">
+                <div class="input-group">
+                    <label class="input-label"><i class="fas fa-lock"></i> Mật khẩu</label>
+                    <input type="password" class="input-field" id="vmPassword" placeholder="password">
                 </div>
-                <div class="vm-list" id="vmList">
-                    <div class="empty-state" style="text-align:center; padding:60px; color:var(--text-muted);">
-                        <i class="fas fa-gem" style="font-size:2.5rem; margin-bottom:12px; opacity:0.5;"></i><br>
-                        ✨ Chưa có VM nào<br>Tạo VM đầu tiên bên trái ✨
-                    </div>
+                <button class="random-btn" id="randomPassBtn"><i class="fas fa-dice"></i> Random</button>
+            </div>
+            
+            <div class="progress-container" id="createProgressContainer">
+                <div class="progress-steps" id="createProgressSteps">
+                    <div class="progress-step"><i class="fas fa-key"></i> Token</div>
+                    <div class="progress-step"><i class="fas fa-folder-plus"></i> Repo</div>
+                    <div class="progress-step"><i class="fas fa-file-code"></i> Workflow</div>
+                    <div class="progress-step"><i class="fas fa-play"></i> Trigger</div>
+                    <div class="progress-step"><i class="fas fa-cloud"></i> Tunnel</div>
+                    <div class="progress-step"><i class="fas fa-check-circle"></i> Done</div>
                 </div>
-                <div class="pagination" id="pagination"></div>
+                <div class="progress-bar-bg"><div class="progress-fill" id="createProgressFill"></div></div>
+                <div class="progress-text" id="createProgressText">Sẵn sàng</div>
+            </div>
+            
+            <button class="btn btn-primary" id="createBtn"><i class="fas fa-play"></i> Tạo VM Ngay</button>
+            
+            <div class="quick-actions">
+                <div class="quick-btn" id="demoBtn"><i class="fas fa-flask"></i> Demo</div>
+                <div class="quick-btn" id="clearBtn"><i class="fas fa-eraser"></i> Xóa</div>
+                <div class="quick-btn" id="refreshBtn"><i class="fas fa-sync-alt"></i> Làm mới</div>
+                <div class="quick-btn" id="saveConfigBtn"><i class="fas fa-save"></i> Lưu</div>
+                <div class="quick-btn" id="loadConfigBtn"><i class="fas fa-folder-open"></i> Tải</div>
             </div>
         </div>
         
         <div class="footer">
-            <div>© 2026 Singularity Club | <i class="fas fa-gem"></i> Holographic Edition | Dynamic Island | 4 vCore | 16GB RAM | 25GB SSD | 1.2Gbps</div>
+            <div>© 2026 Singularity Club | <i class="fas fa-cloud"></i> Cloudflare Tunnel Edition | 4 vCore | 16GB RAM | 25GB SSD | 1.2Gbps</div>
         </div>
     </div>
 
@@ -903,20 +613,15 @@
         // CONFIG
         // ============================================ //
         const API_URL = '/api/vps';
-        const STORAGE_KEY = 'singularity_vms_holographic';
-        const CONFIG_KEY = 'singularity_config_holographic';
+        const STORAGE_KEY = 'singularity_vms_cloudflare';
+        const CONFIG_KEY = 'singularity_config_cloudflare';
         
         let vms = [];
-        let currentFilter = 'all';
-        let currentSort = 'newest';
         let totalCreations = 0;
         let successfulCreations = 0;
-        let currentOpenVM = null;
         let countdownIntervals = {};
-        let currentPage = 1;
-        let passwordVisible = {};
-        const ITEMS_PER_PAGE = 4;
-        let notificationCount = 0;
+        let terminals = [];
+        let nextTerminalId = 1;
         
         // DOM Elements
         const elements = {
@@ -925,11 +630,6 @@
             vmUsername: document.getElementById('vmUsername'),
             vmPassword: document.getElementById('vmPassword'),
             createBtn: document.getElementById('createBtn'),
-            vmList: document.getElementById('vmList'),
-            searchInput: document.getElementById('searchInput'),
-            filterSelect: document.getElementById('filterSelect'),
-            sortSelect: document.getElementById('sortSelect'),
-            vmCount: document.getElementById('vmCount'),
             statTotal: document.getElementById('statTotal'),
             statActive: document.getElementById('statActive'),
             statCreating: document.getElementById('statCreating'),
@@ -938,72 +638,247 @@
             createProgressFill: document.getElementById('createProgressFill'),
             createProgressText: document.getElementById('createProgressText'),
             createProgressSteps: document.getElementById('createProgressSteps'),
-            pagination: document.getElementById('pagination'),
-            debugModalContent: document.getElementById('debugModalContent'),
             islandText: document.getElementById('islandText'),
-            islandBadge: document.getElementById('islandBadge')
+            vmListPopup: document.getElementById('vmListPopup'),
+            terminalsContainer: document.getElementById('terminalsContainer')
         };
         
         // ============================================ //
-        // DYNAMIC ISLAND FUNCTIONS
+        // DYNAMIC ISLAND
         // ============================================ //
-        function updateIsland(text, hasNotif = false) {
+        function updateIsland(text) {
             elements.islandText.textContent = text;
-            if (hasNotif) {
-                notificationCount++;
-                elements.islandBadge.style.display = 'block';
-            } else {
-                elements.islandBadge.style.display = 'none';
-            }
-        }
-        
-        function addDebugLog(msg, type = 'info') {
-            const time = new Date().toLocaleTimeString();
-            const div = document.createElement('div');
-            div.className = 'debug-log';
-            div.innerHTML = `<span class="debug-time">${time}</span><span class="debug-${type}">${msg}</span>`;
-            elements.debugModalContent.insertBefore(div, elements.debugModalContent.firstChild);
-            if (elements.debugModalContent.children.length > 100) {
-                elements.debugModalContent.removeChild(elements.debugModalContent.lastChild);
-            }
-            updateIsland(`Debug: ${msg.substring(0, 20)}`, true);
         }
         
         function showIslandMessage(msg, type = 'info', duration = 2000) {
-            updateIsland(msg, true);
-            setTimeout(() => {
-                updateIsland('SINGULARITY', false);
-            }, duration);
-            addDebugLog(msg, type);
+            updateIsland(msg);
             if (type === 'success') {
-                canvasConfetti({ particleCount: 80, spread: 60, origin: { y: 0.6 }, colors: ['#a855f7', '#e879f9', '#c084fc'] });
+                canvasConfetti({ particleCount: 80, spread: 60, origin: { y: 0.6 }, colors: ['#a855f7', '#e879f9'] });
+            }
+            setTimeout(() => updateIsland('CLOUDFLARE'), duration);
+        }
+        
+        // ============================================ //
+        // TERMINAL CLASS
+        // ============================================ //
+        class Terminal {
+            constructor(vmId, vmName) {
+                this.id = nextTerminalId++;
+                this.vmId = vmId;
+                this.vmName = vmName;
+                this.minimized = false;
+                this.createElement();
+            }
+            
+            createElement() {
+                this.element = document.createElement('div');
+                this.element.className = 'terminal-tab';
+                this.element.id = `terminal_${this.id}`;
+                
+                const header = document.createElement('div');
+                header.className = 'terminal-header';
+                header.onclick = (e) => {
+                    if (e.target.closest('.terminal-controls')) return;
+                    this.toggleMinimize();
+                };
+                
+                const title = document.createElement('div');
+                title.className = 'terminal-title';
+                title.innerHTML = `<i class="fas fa-cloud"></i> ${this.vmName.substring(0, 15)}`;
+                
+                const controls = document.createElement('div');
+                controls.className = 'terminal-controls';
+                controls.innerHTML = `
+                    <button class="minimize-btn"><i class="fas fa-window-minimize"></i></button>
+                    <button class="delete-btn"><i class="fas fa-times"></i></button>
+                `;
+                
+                header.appendChild(title);
+                header.appendChild(controls);
+                
+                const body = document.createElement('div');
+                body.className = 'terminal-body';
+                
+                this.logArea = document.createElement('div');
+                body.appendChild(this.logArea);
+                
+                this.addLog(`Terminal opened for: ${this.vmName}`, 'info');
+                this.addLog('Commands: help, info, ipconfig, vnc, delete, clear', 'info');
+                
+                const inputLine = document.createElement('div');
+                inputLine.className = 'terminal-input-line';
+                inputLine.innerHTML = `
+                    <span class="terminal-prompt">$</span>
+                    <input type="text" class="terminal-input" id="terminalInput_${this.id}" placeholder="type command...">
+                `;
+                body.appendChild(inputLine);
+                
+                this.element.appendChild(header);
+                this.element.appendChild(body);
+                elements.terminalsContainer.appendChild(this.element);
+                
+                const minimizeBtn = controls.querySelector('.minimize-btn');
+                minimizeBtn.onclick = (e) => { e.stopPropagation(); this.toggleMinimize(); };
+                
+                const deleteBtn = controls.querySelector('.delete-btn');
+                deleteBtn.onclick = (e) => { e.stopPropagation(); this.close(); };
+                
+                const input = document.getElementById(`terminalInput_${this.id}`);
+                input.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        this.processCommand(input.value);
+                        input.value = '';
+                    }
+                });
+            }
+            
+            addLog(msg, type = 'output') {
+                const div = document.createElement('div');
+                div.className = `terminal-line ${type === 'command' ? 'command' : (type === 'error' ? 'error' : (type === 'success' ? 'success' : ''))}`;
+                if (type === 'command') {
+                    div.innerHTML = `<span style="color: var(--primary-light);">$</span> ${msg}`;
+                } else {
+                    div.innerHTML = msg;
+                }
+                this.logArea.appendChild(div);
+                div.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                if (this.logArea.children.length > 50) {
+                    this.logArea.removeChild(this.logArea.firstChild);
+                }
+            }
+            
+            toggleMinimize() {
+                this.minimized = !this.minimized;
+                this.element.classList.toggle('minimized', this.minimized);
+            }
+            
+            close() {
+                this.element.remove();
+                const index = terminals.findIndex(t => t.id === this.id);
+                if (index !== -1) terminals.splice(index, 1);
+            }
+            
+            processCommand(cmd) {
+                const parts = cmd.trim().toLowerCase().split(' ');
+                const command = parts[0];
+                const vm = vms.find(v => v.id === this.vmId);
+                
+                this.addLog(cmd, 'command');
+                
+                switch(command) {
+                    case 'help':
+                        this.addLog('Commands: help, info, ipconfig, vnc, delete, clear');
+                        break;
+                    case 'info':
+                        if (vm) {
+                            this.addLog(`Name: ${vm.name}`);
+                            this.addLog(`Status: ${vm.status}`);
+                            this.addLog(`Username: ${vm.username}`);
+                            this.addLog(`Cloudflare: ${vm.novncUrl || 'N/A'}`);
+                        } else {
+                            this.addLog('VM not found', 'error');
+                        }
+                        break;
+                    case 'ipconfig':
+                        if (vm && vm.tailscaleIP) {
+                            this.addLog(`IPv4: ${vm.tailscaleIP}`);
+                            this.addLog(`Gateway: 100.64.0.1`);
+                        } else {
+                            this.addLog('Network not ready', 'error');
+                        }
+                        break;
+                    case 'vnc':
+                        if (vm && vm.novncUrl) {
+                            window.open(vm.novncUrl, '_blank');
+                            this.addLog('Opening Cloudflare noVNC...', 'success');
+                        } else {
+                            this.addLog('Cloudflare URL not ready', 'error');
+                        }
+                        break;
+                    case 'delete':
+                        if (vm && confirm(`Delete ${vm.name}?`)) {
+                            this.addLog(`Deleting...`, 'warning');
+                            setTimeout(() => {
+                                const idx = vms.findIndex(v => v.id === vm.id);
+                                if (idx !== -1) vms.splice(idx, 1);
+                                this.close();
+                                renderVMPopup();
+                                updateStats();
+                                showIslandMessage(`Deleted ${vm.name}`, 'warning', 2000);
+                            }, 1000);
+                        }
+                        break;
+                    case 'clear':
+                        this.logArea.innerHTML = '';
+                        this.addLog('Terminal cleared.');
+                        break;
+                    default:
+                        this.addLog(`Command not found: ${cmd}. Type 'help'`, 'error');
+                }
             }
         }
         
         // ============================================ //
-        // DEBUG MODAL
+        // VM POPUP
         // ============================================ //
-        const debugModal = document.getElementById('debugModal');
-        const dynamicIsland = document.getElementById('dynamicIsland');
-        
-        dynamicIsland.onclick = () => {
-            debugModal.classList.add('open');
-        };
-        
-        document.getElementById('debugModalClose').onclick = () => {
-            debugModal.classList.remove('open');
-        };
-        
-        document.getElementById('clearDebugBtn').onclick = () => {
-            elements.debugModalContent.innerHTML = '';
-            addDebugLog('Debug console cleared', 'info');
-        };
-        
-        debugModal.onclick = (e) => {
-            if (e.target === debugModal) {
-                debugModal.classList.remove('open');
+        function renderVMPopup() {
+            if (vms.length === 0) {
+                elements.vmListPopup.innerHTML = '<div style="text-align:center; padding:20px; color:var(--text-muted);">Chưa có VM nào</div>';
+                return;
             }
-        };
+            
+            elements.vmListPopup.innerHTML = vms.map(vm => `
+                <div class="vm-popup-item" data-id="${vm.id}">
+                    <span class="vm-popup-name">${vm.name || vm.id.substring(0, 12)}</span>
+                    <span class="vm-popup-status ${vm.status}">${vm.status}</span>
+                </div>
+            `).join('');
+            
+            document.querySelectorAll('.vm-popup-item').forEach(item => {
+                item.onclick = () => {
+                    const vmId = item.dataset.id;
+                    const vm = vms.find(v => v.id === vmId);
+                    if (vm) {
+                        const existing = terminals.find(t => t.vmId === vmId);
+                        if (existing) {
+                            existing.element.classList.remove('minimized');
+                            existing.toggleMinimize();
+                        } else {
+                            const newTerminal = new Terminal(vmId, vm.name || vm.id.substring(0, 12));
+                            terminals.push(newTerminal);
+                            showIslandMessage(`Terminal opened`, 'success', 1500);
+                        }
+                        closeVMPopup();
+                    }
+                };
+            });
+        }
+        
+        // ============================================ //
+        // POPUP CONTROLS
+        // ============================================ //
+        const vmToggleBtn = document.getElementById('vmToggleBtn');
+        const vmPopup = document.getElementById('vmPopup');
+        const vmPopupClose = document.getElementById('vmPopupClose');
+        
+        function toggleVMPopup() {
+            vmPopup.classList.toggle('open');
+            vmToggleBtn.classList.toggle('active');
+            if (vmPopup.classList.contains('open')) renderVMPopup();
+        }
+        
+        function closeVMPopup() {
+            vmPopup.classList.remove('open');
+            vmToggleBtn.classList.remove('active');
+        }
+        
+        vmToggleBtn.onclick = toggleVMPopup;
+        vmPopupClose.onclick = closeVMPopup;
+        document.addEventListener('click', (e) => {
+            if (!vmPopup.contains(e.target) && !vmToggleBtn.contains(e.target) && vmPopup.classList.contains('open')) {
+                closeVMPopup();
+            }
+        });
         
         // ============================================ //
         // UTILITIES
@@ -1043,15 +918,6 @@
             elements.statRate.textContent = rate + '%';
         }
         
-        function formatRelativeTime(date) {
-            const now = new Date();
-            const diff = Math.floor((now - date) / 1000);
-            if (diff < 60) return `${diff}s trước`;
-            if (diff < 3600) return `${Math.floor(diff / 60)}p trước`;
-            if (diff < 86400) return `${Math.floor(diff / 3600)}h trước`;
-            return `${Math.floor(diff / 86400)}d trước`;
-        }
-        
         function formatCountdown(ms) {
             if (ms <= 0) return 'Đã hết hạn';
             const hours = Math.floor(ms / (1000 * 60 * 60));
@@ -1064,21 +930,8 @@
             const vm = vms.find(v => v.id === vmId);
             if (!vm || vm.status !== 'running') return;
             const remaining = vm.expiresAt - Date.now();
-            const countdownElement = document.getElementById(`countdown-${vmId}`);
-            if (countdownElement) {
-                if (remaining <= 0) {
-                    countdownElement.innerHTML = '<i class="fas fa-hourglass-end"></i> Đã hết hạn';
-                    if (countdownIntervals[vmId]) clearInterval(countdownIntervals[vmId]);
-                } else {
-                    countdownElement.innerHTML = `<i class="fas fa-hourglass-half"></i> ${formatCountdown(remaining)}`;
-                    if (remaining < 5 * 60 * 1000) {
-                        countdownElement.style.color = '#ef4444';
-                    } else if (remaining < 15 * 60 * 1000) {
-                        countdownElement.style.color = '#f59e0b';
-                    } else {
-                        countdownElement.style.color = '#10b981';
-                    }
-                }
+            if (remaining <= 0 && countdownIntervals[vmId]) {
+                clearInterval(countdownIntervals[vmId]);
             }
         }
         
@@ -1094,10 +947,10 @@
                             if (countdownIntervals[vm.id]) clearInterval(countdownIntervals[vm.id]);
                             countdownIntervals[vm.id] = setInterval(() => updateCountdown(vm.id), 1000);
                         }
-                        if (!passwordVisible[vm.id]) passwordVisible[vm.id] = false;
                     });
-                    renderVMList();
-                } catch(e) { addDebugLog('Load error: ' + e.message, 'error'); }
+                    updateStats();
+                    renderVMPopup();
+                } catch(e) {}
             }
         }
         
@@ -1112,217 +965,11 @@
             }
         }
         
-        // ============================================ //
-        // COPY
-        // ============================================ //
-        window.copyText = async function(text, btn) {
-            try {
-                await navigator.clipboard.writeText(text);
-                const original = btn.innerHTML;
-                btn.innerHTML = '<i class="fas fa-check"></i> Đã copy';
-                btn.classList.add('copied');
-                showIslandMessage(`Đã sao chép: ${text.length > 20 ? text.substring(0, 20) + '...' : text}`, 'success', 2000);
-                setTimeout(() => {
-                    btn.innerHTML = original;
-                    btn.classList.remove('copied');
-                }, 1500);
-            } catch(e) {
-                showIslandMessage('Sao chép thất bại', 'error', 2000);
-            }
-        };
-        
-        window.togglePassword = function(vmId, btn) {
-            passwordVisible[vmId] = !passwordVisible[vmId];
-            const span = document.getElementById(`password-${vmId}`);
-            if (span) {
-                if (passwordVisible[vmId]) {
-                    const vm = vms.find(v => v.id === vmId);
-                    span.textContent = vm?.password || '';
-                    btn.innerHTML = '<i class="fas fa-eye-slash"></i>';
-                } else {
-                    span.textContent = '••••••••';
-                    btn.innerHTML = '<i class="fas fa-eye"></i>';
-                }
-            }
-        };
-        
-        window.toggleVM = function(id) {
-            const item = document.querySelector(`.vm-item[data-id="${id}"]`);
-            if (!item) return;
-            if (currentOpenVM && currentOpenVM !== id) {
-                const prev = document.querySelector(`.vm-item[data-id="${currentOpenVM}"]`);
-                if (prev) prev.classList.remove('open');
-            }
-            item.classList.toggle('open');
-            currentOpenVM = item.classList.contains('open') ? id : null;
-        };
-        
-        // ============================================ //
-        // RENDER
-        // ============================================ //
-        function renderPagination(totalItems) {
-            const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
-            if (totalPages <= 1) { elements.pagination.innerHTML = ''; return; }
-            let html = '';
-            for (let i = 1; i <= totalPages; i++) {
-                html += `<button class="page-btn ${i === currentPage ? 'active' : ''}" onclick="goToPage(${i})">${i}</button>`;
-            }
-            elements.pagination.innerHTML = html;
-        }
-        
-        window.goToPage = function(page) { currentPage = page; renderVMList(); };
-        
-        function renderVMList() {
-            let filtered = [...vms];
-            const search = elements.searchInput.value.toLowerCase();
-            if (search) {
-                filtered = filtered.filter(v => (v.name || '').toLowerCase().includes(search) || (v.username || '').toLowerCase().includes(search));
-            }
-            if (currentFilter !== 'all') {
-                filtered = filtered.filter(v => v.status === currentFilter);
-            }
-            if (currentSort === 'newest') {
-                filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-            } else if (currentSort === 'expiring') {
-                filtered.sort((a, b) => (a.expiresAt || 0) - (b.expiresAt || 0));
-            }
-            
-            elements.vmCount.textContent = filtered.length;
+        function refreshStats() {
             updateStats();
-            renderPagination(filtered.length);
-            
-            const start = (currentPage - 1) * ITEMS_PER_PAGE;
-            const paginated = filtered.slice(start, start + ITEMS_PER_PAGE);
-            
-            if (paginated.length === 0) {
-                elements.vmList.innerHTML = `<div class="empty-state" style="text-align:center; padding:60px; color:var(--text-muted);"><i class="fas fa-gem" style="font-size:2.5rem; margin-bottom:12px; opacity:0.5;"></i><br>✨ Chưa có VM nào<br>Tạo VM đầu tiên bên trái ✨</div>`;
-                return;
-            }
-            
-            elements.vmList.innerHTML = paginated.map(vm => {
-                const created = new Date(vm.createdAt);
-                const remaining = vm.expiresAt ? (vm.expiresAt - Date.now()) : 0;
-                const isCreating = vm.status === 'creating';
-                const isRunning = vm.status === 'running';
-                
-                return `
-                    <div class="vm-item ${isCreating ? 'creating-pulse' : ''}" data-id="${vm.id}">
-                        <div class="vm-header" onclick="toggleVM('${vm.id}')">
-                            <div class="vm-info">
-                                <div class="vm-icon"><i class="fas ${isRunning ? 'fa-play-circle' : 'fa-spinner fa-pulse'}"></i></div>
-                                <div>
-                                    <div class="vm-name">${vm.name || vm.id.substring(0, 15)}</div>
-                                    <div class="vm-time"><i class="far fa-calendar-alt"></i> ${formatRelativeTime(created)}</div>
-                                </div>
-                            </div>
-                            <div style="display: flex; gap: 10px; align-items: center;">
-                                <span class="vm-status status-${vm.status}">${vm.status}</span>
-                                <i class="fas fa-chevron-down vm-expand-icon"></i>
-                            </div>
-                        </div>
-                        <div class="vm-detail">
-                            <!-- 2 cột thông tin -->
-                            <div class="info-grid">
-                                <!-- Cột trái: Thông tin đăng nhập -->
-                                <div class="info-card">
-                                    <div class="info-title"><i class="fas fa-user"></i> THÔNG TIN ĐĂNG NHẬP</div>
-                                    <div class="info-row">
-                                        <div class="info-label"><i class="fas fa-user"></i> Username</div>
-                                        <div class="info-value">${vm.username}<button class="copy-btn" onclick="copyText('${vm.username.replace(/'/g, "\\'")}', this)">Sao chép</button></div>
-                                    </div>
-                                    <div class="info-row">
-                                        <div class="info-label"><i class="fas fa-lock"></i> Password</div>
-                                        <div class="info-value">
-                                            <span id="password-${vm.id}">${passwordVisible[vm.id] ? vm.password : '••••••••'}</span>
-                                            <button class="eye-btn" onclick="togglePassword('${vm.id}', this)"><i class="fas ${passwordVisible[vm.id] ? 'fa-eye-slash' : 'fa-eye'}"></i></button>
-                                            <button class="copy-btn" onclick="copyText('${vm.password.replace(/'/g, "\\'")}', this)">Sao chép</button>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <!-- Cột phải: Kết nối -->
-                                <div class="info-card">
-                                    <div class="info-title"><i class="fas fa-network-wired"></i> KẾT NỐI</div>
-                                    <div class="info-row">
-                                        <div class="info-label"><i class="fas fa-ip"></i> Tailscale IP</div>
-                                        <div class="info-value">
-                                            ${vm.tailscaleIP ? `<span>${vm.tailscaleIP}</span><button class="copy-btn" onclick="copyText('${vm.tailscaleIP}', this)">Sao chép</button>` : '<span style="opacity:0.5;">Đang cấu hình...</span>'}
-                                        </div>
-                                    </div>
-                                    <div class="info-row">
-                                        <div class="info-label"><i class="fas fa-desktop"></i> noVNC Console</div>
-                                        <div class="info-value">
-                                            ${vm.novncUrl ? `<a href="${vm.novncUrl}" target="_blank" style="color:var(--primary);">Mở noVNC</a><button class="copy-btn" onclick="copyText('${vm.novncUrl}', this)">Sao chép URL</button>` : '<span style="opacity:0.5;">Đang cấu hình...</span>'}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Hàng 2: Thời gian + Config -->
-                            <div class="info-grid">
-                                <div class="info-card">
-                                    <div class="info-title"><i class="fas fa-clock"></i> THỜI GIAN</div>
-                                    <div class="info-row">
-                                        <div class="info-label"><i class="far fa-calendar-check"></i> Tạo lúc</div>
-                                        <div class="info-value">${created.toLocaleString()}</div>
-                                    </div>
-                                    <div class="info-row">
-                                        <div class="info-label"><i class="far fa-hourglass-half"></i> Hết hạn</div>
-                                        <div class="info-value">
-                                            <span id="countdown-${vm.id}" class="countdown-timer">${isRunning ? formatCountdown(remaining) : (isCreating ? 'Đang tạo...' : 'Chưa có')}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <!-- Cấu hình VM mới -->
-                                <div class="info-card">
-                                    <div class="info-title"><i class="fas fa-microchip"></i> CẤU HÌNH VM</div>
-                                    <div class="info-row">
-                                        <div class="info-label"><i class="fas fa-microchip"></i> CPU</div>
-                                        <div class="info-value">4 vCore</div>
-                                    </div>
-                                    <div class="info-row">
-                                        <div class="info-label"><i class="fas fa-memory"></i> RAM</div>
-                                        <div class="info-value">16GB</div>
-                                    </div>
-                                    <div class="info-row">
-                                        <div class="info-label"><i class="fas fa-hdd"></i> SSD</div>
-                                        <div class="info-value">25GB NVMe</div>
-                                    </div>
-                                    <div class="info-row">
-                                        <div class="info-label"><i class="fas fa-tachometer-alt"></i> Bandwidth</div>
-                                        <div class="info-value">1.2 Gbps</div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Action Buttons -->
-                            <div class="action-buttons">
-                                ${vm.repoUrl ? `<a href="${vm.repoUrl}" target="_blank" class="action-btn github"><i class="fab fa-github"></i> Repository</a>` : '<button class="action-btn github" disabled style="opacity:0.5;"><i class="fab fa-github"></i> Repository</button>'}
-                                ${vm.workflowUrl ? `<a href="${vm.workflowUrl}" target="_blank" class="action-btn github"><i class="fas fa-code-branch"></i> GitHub Actions</a>` : ''}
-                                <button class="action-btn delete" onclick="deleteVM('${vm.id}')"><i class="fas fa-trash-alt"></i> Xóa VM</button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-            saveToLocal();
+            renderVMPopup();
+            showIslandMessage('Refreshed', 'info', 1500);
         }
-        
-        window.deleteVM = function(id) {
-            if (!confirm('Bạn có chắc muốn xóa VM này?')) return;
-            const vm = vms.find(v => v.id === id);
-            if (countdownIntervals[id]) clearInterval(countdownIntervals[id]);
-            vms = vms.filter(v => v.id !== id);
-            if (currentOpenVM === id) currentOpenVM = null;
-            delete passwordVisible[id];
-            const start = (currentPage - 1) * ITEMS_PER_PAGE;
-            if (start >= vms.length && currentPage > 1) currentPage--;
-            renderVMList();
-            showIslandMessage(`Đã xóa VM ${vm?.name || ''}`, 'warning', 2000);
-        };
-        
-        window.refreshList = function() { currentPage = 1; renderVMList(); showIslandMessage('Đã làm mới danh sách', 'info', 1500); };
         
         // ============================================ //
         // CREATE VM
@@ -1333,18 +980,20 @@
             let username = elements.vmUsername.value.trim();
             let password = elements.vmPassword.value.trim();
             
-            if (!githubToken) { showIslandMessage('Thiếu GitHub Token', 'error', 2000); return; }
-            if (!tailscaleKey) { showIslandMessage('Thiếu Tailscale Key', 'error', 2000); return; }
+            if (!githubToken) { showIslandMessage('Missing GitHub Token', 'error', 2000); return; }
+            if (!tailscaleKey) { showIslandMessage('Missing Tailscale Key', 'error', 2000); return; }
             if (!username) username = randomUsername();
             if (!password) password = randomPassword();
             
             elements.createProgressContainer.style.display = 'block';
             elements.createBtn.disabled = true;
             elements.createBtn.innerHTML = '<span class="spinner"></span> Đang tạo VM...';
-            updateCreateProgress(0, 10, '🔑 Đang xác thực token...');
-            setTimeout(() => updateCreateProgress(1, 30, '📁 Đang tạo repository...'), 800);
-            setTimeout(() => updateCreateProgress(2, 55, '📝 Đang tạo workflow...'), 2000);
-            setTimeout(() => updateCreateProgress(3, 80, '🚀 Đang trigger...'), 3500);
+            
+            updateCreateProgress(0, 5, '🔑 Đang xác thực token...');
+            setTimeout(() => updateCreateProgress(1, 20, '📁 Đang tạo repository...'), 2000);
+            setTimeout(() => updateCreateProgress(2, 40, '📝 Đang tạo workflow...'), 5000);
+            setTimeout(() => updateCreateProgress(3, 60, '🚀 Đang trigger GitHub Actions...'), 8000);
+            setTimeout(() => updateCreateProgress(4, 80, '☁️ Đang tạo Cloudflare Tunnel...'), 12000);
             
             const expiresAtTime = Date.now() + 6 * 60 * 60 * 1000;
             const newVM = {
@@ -1355,83 +1004,73 @@
                 createdAt: new Date().toISOString(), expiresAt: expiresAtTime
             };
             vms.unshift(newVM);
-            passwordVisible[newVM.id] = false;
-            renderVMList();
+            saveToLocal();
+            updateStats();
+            renderVMPopup();
             totalCreations++;
-            showIslandMessage(`Đang tạo VM: ${username}`, 'info', 3000);
+            showIslandMessage(`Creating VM: ${username}`, 'info', 3000);
             
-            // Simulate API call
-            setTimeout(() => {
-                const idx = vms.findIndex(v => v.id === newVM.id);
-                if (idx !== -1) {
-                    vms[idx].status = 'running';
-                    vms[idx].tailscaleIP = `100.64.${Math.floor(Math.random() * 255)}.${Math.floor(Math.random() * 255)}`;
-                    vms[idx].novncUrl = `http://${vms[idx].tailscaleIP}:6080/vnc.html`;
-                    vms[idx].repoUrl = 'https://github.com/demo/windows-vm';
-                    vms[idx].workflowUrl = 'https://github.com/demo/windows-vm/actions';
-                    vms[idx].expiresAt = Date.now() + 6 * 60 * 60 * 1000;
-                    successfulCreations++;
-                    renderVMList();
-                    if (countdownIntervals[idx]) clearInterval(countdownIntervals[idx]);
-                    countdownIntervals[idx] = setInterval(() => updateCountdown(vms[idx].id), 1000);
-                    showIslandMessage(`VM "${username}" đã sẵn sàng!`, 'success', 3000);
-                    refreshFormCredentials();
+            try {
+                const res = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ githubToken, tailscaleKey, vmUsername: username, vmPassword: password })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    const idx = vms.findIndex(v => v.id === newVM.id);
+                    if (idx !== -1) {
+                        vms[idx] = { ...vms[idx], ...data };
+                        vms[idx].status = 'running';
+                        vms[idx].tailscaleIP = data.tailscaleIP;
+                        vms[idx].novncUrl = data.novncUrl;
+                        vms[idx].repoUrl = data.repoUrl;
+                        vms[idx].workflowUrl = data.workflowUrl;
+                        vms[idx].expiresAt = Date.now() + 6 * 60 * 60 * 1000;
+                        successfulCreations++;
+                        saveToLocal();
+                        updateStats();
+                        renderVMPopup();
+                        if (countdownIntervals[idx]) clearInterval(countdownIntervals[idx]);
+                        countdownIntervals[idx] = setInterval(() => updateCountdown(vms[idx].id), 1000);
+                        updateCreateProgress(5, 100, '✅ Hoàn tất! VM đã sẵn sàng');
+                        showIslandMessage(`VM "${username}" đã sẵn sàng với Cloudflare Tunnel!`, 'success', 4000);
+                        refreshFormCredentials();
+                        setTimeout(() => { elements.createProgressContainer.style.display = 'none'; }, 2000);
+                    }
+                } else {
+                    updateCreateProgress(0, 0, '❌ Thất bại!');
+                    showIslandMessage(data.error || 'Tạo VM thất bại', 'error', 3000);
                 }
+            } catch(e) {
+                updateCreateProgress(0, 0, '❌ Lỗi kết nối!');
+                showIslandMessage('Lỗi kết nối server', 'error', 3000);
+            } finally {
                 elements.createBtn.disabled = false;
                 elements.createBtn.innerHTML = '<i class="fas fa-play"></i> Tạo VM Ngay';
-                elements.createProgressContainer.style.display = 'none';
-                elements.githubToken.value = '';
-                elements.tailscaleKey.value = '';
-            }, 5000);
-        }
-        
-        async function loadVMs() {
-            try {
-                const res = await fetch(API_URL);
-                if (!res.ok) return;
-                const data = await res.json();
-                if (data.success && data.vms) {
-                    for (const newVm of data.vms) {
-                        const idx = vms.findIndex(v => v.id === newVm.id);
-                        if (idx !== -1) vms[idx] = { ...vms[idx], ...newVm };
-                        else { vms.push(newVm); passwordVisible[newVm.id] = false; }
-                    }
-                    vms = vms.filter(v => data.vms.some(nv => nv.id === v.id));
-                    renderVMList();
-                }
-            } catch(e) { addDebugLog('Load error: ' + e.message, 'error'); }
+                setTimeout(() => { elements.createProgressContainer.style.display = 'none'; }, 5000);
+            }
         }
         
         // ============================================ //
         // EVENT LISTENERS
         // ============================================ //
         document.getElementById('createBtn').onclick = createVM;
-        document.getElementById('randomUserBtn').onclick = () => { elements.vmUsername.value = randomUsername(); showIslandMessage('Username ngẫu nhiên', 'info', 1500); };
-        document.getElementById('randomPassBtn').onclick = () => { elements.vmPassword.value = randomPassword(); showIslandMessage('Password ngẫu nhiên', 'info', 1500); };
-        document.getElementById('demoBtn').onclick = () => { elements.githubToken.value = 'ghp_demo_token_123456789'; elements.tailscaleKey.value = 'tskey_demo_key_123456789'; showIslandMessage('Đã điền token demo', 'info', 1500); };
-        document.getElementById('clearBtn').onclick = () => { elements.githubToken.value = ''; elements.tailscaleKey.value = ''; elements.vmUsername.value = ''; elements.vmPassword.value = ''; showIslandMessage('Đã xóa form', 'info', 1500); };
-        document.getElementById('refreshBtn').onclick = () => { loadVMs(); showIslandMessage('Đang làm mới...', 'info', 1500); };
-        document.getElementById('manualRefreshBtn').onclick = () => { loadVMs(); showIslandMessage('Đang đồng bộ...', 'info', 1500); };
-        document.getElementById('saveConfigBtn').onclick = () => { localStorage.setItem(CONFIG_KEY, JSON.stringify({ githubToken: elements.githubToken.value, tailscaleKey: elements.tailscaleKey.value })); showIslandMessage('Đã lưu cấu hình', 'success', 1500); };
-        document.getElementById('loadConfigBtn').onclick = () => { const cfg = JSON.parse(localStorage.getItem(CONFIG_KEY) || '{}'); if (cfg.githubToken) elements.githubToken.value = cfg.githubToken; if (cfg.tailscaleKey) elements.tailscaleKey.value = cfg.tailscaleKey; showIslandMessage('Đã tải cấu hình', 'success', 1500); };
-        
-        elements.filterSelect.onchange = (e) => { currentFilter = e.target.value; currentPage = 1; renderVMList(); };
-        elements.sortSelect.onchange = (e) => { currentSort = e.target.value; currentPage = 1; renderVMList(); };
-        let searchTimeout;
-        elements.searchInput.oninput = () => { clearTimeout(searchTimeout); searchTimeout = setTimeout(() => { currentPage = 1; renderVMList(); }, 300); };
+        document.getElementById('randomUserBtn').onclick = () => { elements.vmUsername.value = randomUsername(); showIslandMessage('Username generated', 'info', 1500); };
+        document.getElementById('randomPassBtn').onclick = () => { elements.vmPassword.value = randomPassword(); showIslandMessage('Password generated', 'info', 1500); };
+        document.getElementById('demoBtn').onclick = () => { elements.githubToken.value = 'ghp_demo_token'; elements.tailscaleKey.value = 'tskey_demo_key'; showIslandMessage('Demo tokens filled', 'info', 1500); };
+        document.getElementById('clearBtn').onclick = () => { elements.githubToken.value = ''; elements.tailscaleKey.value = ''; elements.vmUsername.value = ''; elements.vmPassword.value = ''; showIslandMessage('Form cleared', 'info', 1500); };
+        document.getElementById('refreshBtn').onclick = () => { refreshStats(); };
+        document.getElementById('saveConfigBtn').onclick = () => { localStorage.setItem(CONFIG_KEY, JSON.stringify({ githubToken: elements.githubToken.value, tailscaleKey: elements.tailscaleKey.value })); showIslandMessage('Config saved', 'success', 1500); };
+        document.getElementById('loadConfigBtn').onclick = () => { const cfg = JSON.parse(localStorage.getItem(CONFIG_KEY) || '{}'); if (cfg.githubToken) elements.githubToken.value = cfg.githubToken; if (cfg.tailscaleKey) elements.tailscaleKey.value = cfg.tailscaleKey; showIslandMessage('Config loaded', 'success', 1500); };
         
         // Init
         refreshFormCredentials();
         loadFromLocal();
-        loadVMs();
-        setInterval(loadVMs, 15000);
+        setInterval(() => { updateStats(); renderVMPopup(); }, 10000);
         
-        addDebugLog('🚀 Holographic System v1.0 initialized', 'success');
-        addDebugLog('📱 Dynamic Island active - Click to open debug console', 'info');
-        addDebugLog('⚙️ VM Config: 4 vCore | 16GB RAM | 25GB SSD | 1.2Gbps', 'info');
-        addDebugLog('🎨 Holographic UI with purple gradient theme', 'success');
-        
-        updateIsland('SINGULARITY', false);
+        showIslandMessage('Cloudflare Tunnel Mode Activated', 'success', 3000);
+        updateIsland('CLOUDFLARE');
     </script>
 </body>
 </html>
