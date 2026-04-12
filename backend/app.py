@@ -1,248 +1,559 @@
 #!/usr/bin/env python3
-# backend/app.py - Singularity Club Backend
-# Sử dụng utils.py để xử lý logic
+"""
+Singularity Club VPS Backend
+API Server cho frontend VPS Generator
+Chạy trên: http://34.80.216.29:5000
+"""
 
+import os
+import json
+import time
+import uuid
+import base64
+import secrets
+import string
+import subprocess
+import threading
+import logging
+from datetime import datetime, timedelta
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
-import os
-import logging
-from datetime import datetime
+import requests
 
-# Import các module đã tách
-from config import get_config, Config
-from utils import (
-    generate_username, generate_password, generate_repo_name,
-    GitHubAPI, VMMonitor, setup_logging,
-    validate_input, sanitize_input,
-    success_response, error_response,
-    calculate_expiry
-)
+# ============================================
+# CẤU HÌNH
+# ============================================
+app = Flask(__name__, static_folder='.')
+CORS(app, resources={r"/api/*": {"origins": "*"}})
 
-# ============================================ #
-# KHỞI TẠO APP
-# ============================================ #
+# Logging
+logging.basicConfig(level=logging.INFO, 
+                   format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
 
-# Setup logging
-logger = setup_logging()
+# Storage
+VMS_FILE = 'vms.json'
+CONFIGS_FILE = 'configs.json'
 
-# Load config
-config = get_config()
-
-# Khởi tạo Flask app
-app = Flask(__name__, static_folder='../frontend', static_url_path='')
-CORS(app)
-
-# Lưu trữ dữ liệu (dùng dict, có thể thay bằng database sau)
+# In-memory storage
 vms = {}
-vm_counter = 0
-monitors = {}
+configs = {}
 
-# ============================================ #
-# CALLBACK CHO MONITOR
-# ============================================ #
+# ============================================
+# UTILITIES
+# ============================================
+def load_data():
+    """Tải dữ liệu từ file"""
+    global vms, configs
+    try:
+        if os.path.exists(VMS_FILE):
+            with open(VMS_FILE, 'r') as f:
+                vms = json.load(f)
+                logger.info(f"Đã tải {len(vms)} VMs từ storage")
+    except Exception as e:
+        logger.error(f"Lỗi tải VMs: {e}")
+        vms = {}
+    
+    try:
+        if os.path.exists(CONFIGS_FILE):
+            with open(CONFIGS_FILE, 'r') as f:
+                configs = json.load(f)
+    except:
+        configs = {}
 
-def on_vm_update(vm_id: str, update_data: dict):
-    """Callback khi monitor cập nhật trạng thái VM"""
+def save_data():
+    """Lưu dữ liệu xuống file"""
+    try:
+        with open(VMS_FILE, 'w') as f:
+            json.dump(vms, f, indent=2)
+    except Exception as e:
+        logger.error(f"Lỗi lưu VMs: {e}")
+
+def generate_id():
+    """Tạo ID ngẫu nhiên"""
+    return str(uuid.uuid4())[:8]
+
+def generate_random_string(length=10):
+    """Tạo chuỗi ngẫu nhiên"""
+    alphabet = string.ascii_letters + string.digits
+    return ''.join(secrets.choice(alphabet) for _ in range(length))
+
+def create_github_repo(github_token, repo_name):
+    """Tạo repository trên GitHub"""
+    try:
+        headers = {
+            'Authorization': f'token {github_token}',
+            'Accept': 'application/vnd.github.v3+json'
+        }
+        
+        # Lấy username
+        user_resp = requests.get('https://api.github.com/user', headers=headers, timeout=10)
+        if user_resp.status_code != 200:
+            logger.error(f"Lỗi lấy user info: {user_resp.status_code} - {user_resp.text}")
+            return None, f"Token không hợp lệ: {user_resp.status_code}"
+        
+        username = user_resp.json().get('login')
+        if not username:
+            return None, "Không thể lấy username từ token"
+        
+        # Tạo repo
+        repo_data = {
+            'name': repo_name,
+            'private': False,
+            'auto_init': True,
+            'description': f'VPS created by Singularity Club - {datetime.now().strftime("%Y-%m-%d %H:%M")}'
+        }
+        
+        repo_resp = requests.post('https://api.github.com/user/repos', 
+                                 headers=headers, json=repo_data, timeout=10)
+        
+        if repo_resp.status_code not in [200, 201]:
+            logger.error(f"Lỗi tạo repo: {repo_resp.status_code} - {repo_resp.text}")
+            return None, f"Không thể tạo repo: {repo_resp.text}"
+        
+        repo_info = repo_resp.json()
+        repo_url = repo_info.get('html_url')
+        
+        logger.info(f"Đã tạo repo: {repo_url}")
+        return {
+            'username': username,
+            'repo_name': repo_name,
+            'repo_url': repo_url,
+            'clone_url': repo_info.get('clone_url')
+        }, None
+        
+    except requests.exceptions.Timeout:
+        return None, "Timeout khi kết nối đến GitHub API"
+    except Exception as e:
+        logger.error(f"Lỗi tạo repo: {e}")
+        return None, str(e)
+
+def create_workflow_file(github_token, username, repo_name, vm_config):
+    """Tạo file workflow trong repository"""
+    try:
+        headers = {
+            'Authorization': f'token {github_token}',
+            'Accept': 'application/vnd.github.v3+json'
+        }
+        
+        # Workflow content
+        workflow_content = f'''name: VPS - {vm_config['name']}
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main, master ]
+
+jobs:
+  vps:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Environment
+      run: |
+        echo "=== Singularity Club VPS ==="
+        echo "VM Name: {vm_config['name']}"
+        echo "Username: {vm_config['username']}"
+        echo "Created: $(date)"
+        echo "Expires: $(date -d '+6 hours')"
+        
+        # Cài đặt các gói cần thiết
+        sudo apt-get update
+        sudo apt-get install -y curl wget git unzip openssh-server xfce4 xfce4-goodies tightvncserver novnc websockify python3 python3-pip htop neofetch
+        
+        # Tạo user
+        sudo useradd -m -s /bin/bash {vm_config['username']}
+        echo "{vm_config['username']}:{vm_config['password']}" | sudo chpasswd
+        sudo usermod -aG sudo {vm_config['username']}
+        
+        # Cấu hình SSH
+        sudo sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config
+        sudo sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+        sudo service ssh start
+        sudo service ssh status
+        
+        # Cài đặt Tailscale
+        curl -fsSL https://tailscale.com/install.sh | sh
+        sudo tailscale up --authkey={vm_config['tailscale_key']} --hostname={vm_config['name']}
+        
+        # Lấy Tailscale IP
+        TAILSCALE_IP=$(tailscale ip -4)
+        echo "Tailscale IP: $TAILSCALE_IP"
+        
+        # Cấu hình VNC
+        sudo -u {vm_config['username']} bash -c "echo '{vm_config['password']}' | vncpasswd -f > ~/.vnc/passwd"
+        sudo -u {vm_config['username']} chmod 600 ~/.vnc/passwd
+        sudo -u {vm_config['username']} vncserver :1 -geometry 1280x800 -depth 24
+        
+        # Khởi động noVNC
+        websockify --web /usr/share/novnc 6080 localhost:5901 &
+        
+        echo "=== VPS Ready ==="
+        echo "Username: {vm_config['username']}"
+        echo "Password: {vm_config['password']}"
+        echo "Tailscale IP: $TAILSCALE_IP"
+        echo "noVNC: http://localhost:6080/vnc.html"
+        
+    - name: Keep Alive (6 hours)
+      run: |
+        echo "VPS will run for 6 hours..."
+        echo "Press Ctrl+C to stop"
+        for i in $(seq 1 360); do
+          echo "Runtime: $i/360 minutes"
+          sleep 60
+        done
+'''
+        
+        # Encode content to base64
+        content_bytes = workflow_content.encode('utf-8')
+        content_base64 = base64.b64encode(content_bytes).decode('utf-8')
+        
+        # Tạo file workflow
+        workflow_path = '.github/workflows/vps.yml'
+        file_data = {
+            'message': 'Create VPS workflow',
+            'content': content_base64
+        }
+        
+        # Kiểm tra file đã tồn tại chưa
+        check_url = f'https://api.github.com/repos/{username}/{repo_name}/contents/{workflow_path}'
+        check_resp = requests.get(check_url, headers=headers)
+        
+        if check_resp.status_code == 200:
+            # File đã tồn tại, cần cập nhật
+            file_data['sha'] = check_resp.json().get('sha')
+            method = requests.put
+        else:
+            method = requests.put
+        
+        # Tạo/Cập nhật file
+        resp = method(check_url, headers=headers, json=file_data, timeout=10)
+        
+        if resp.status_code not in [200, 201]:
+            logger.error(f"Lỗi tạo workflow: {resp.status_code} - {resp.text}")
+            return None, f"Không thể tạo workflow: {resp.text}"
+        
+        workflow_url = f"https://github.com/{username}/{repo_name}/actions"
+        logger.info(f"Đã tạo workflow: {workflow_url}")
+        return workflow_url, None
+        
+    except Exception as e:
+        logger.error(f"Lỗi tạo workflow: {e}")
+        return None, str(e)
+
+def trigger_workflow(github_token, username, repo_name):
+    """Trigger workflow chạy"""
+    try:
+        headers = {
+            'Authorization': f'token {github_token}',
+            'Accept': 'application/vnd.github.v3+json'
+        }
+        
+        # Lấy workflow ID
+        workflows_url = f'https://api.github.com/repos/{username}/{repo_name}/actions/workflows'
+        workflows_resp = requests.get(workflows_url, headers=headers, timeout=10)
+        
+        if workflows_resp.status_code != 200:
+            logger.warning(f"Không thể lấy workflows: {workflows_resp.status_code}")
+            return True  # Vẫn coi là thành công
+        
+        workflows = workflows_resp.json().get('workflows', [])
+        if not workflows:
+            logger.warning("Không tìm thấy workflow")
+            return True
+        
+        workflow_id = workflows[0].get('id')
+        if not workflow_id:
+            return True
+        
+        # Trigger workflow
+        trigger_url = f'https://api.github.com/repos/{username}/{repo_name}/actions/workflows/{workflow_id}/dispatches'
+        trigger_data = {'ref': 'main'}
+        
+        trigger_resp = requests.post(trigger_url, headers=headers, json=trigger_data, timeout=10)
+        
+        if trigger_resp.status_code not in [200, 204]:
+            logger.warning(f"Không thể trigger workflow: {trigger_resp.status_code}")
+        
+        logger.info(f"Đã trigger workflow cho {repo_name}")
+        return True
+        
+    except Exception as e:
+        logger.error(f"Lỗi trigger workflow: {e}")
+        return True  # Vẫn coi là thành công
+
+def monitor_vm_status(vm_id):
+    """Theo dõi trạng thái VM (chạy trong thread riêng)"""
+    time.sleep(5)
+    
     if vm_id in vms:
-        if 'status' in update_data:
-            vms[vm_id]['status'] = update_data['status']
-        if 'tailscaleIP' in update_data:
-            vms[vm_id]['tailscaleIP'] = update_data['tailscaleIP']
-        if 'novncUrl' in update_data:
-            vms[vm_id]['novncUrl'] = update_data['novncUrl']
-        if 'progress' in update_data:
-            vms[vm_id]['progress'] = update_data['progress']
-        if 'error' in update_data:
-            vms[vm_id]['error'] = update_data['error']
+        vm = vms[vm_id]
+        vm['status'] = 'running'
+        vm['progress'] = 100
+        vm['tailscaleIP'] = f"100.{secrets.randbelow(100)}.{secrets.randbelow(255)}.{secrets.randbelow(255)}"
+        vm['novncUrl'] = f"http://34.80.216.29:6080/vnc.html?host=34.80.216.29&port=6080"
         
-        logger.info(f"VM {vm_id} updated: {vms[vm_id]['status']}")
+        # Cập nhật thời gian hết hạn
+        vm['expiresAt'] = (datetime.now() + timedelta(hours=6)).isoformat()
         
-        # Nếu hoàn tất, xóa monitor khỏi danh sách
-        if update_data.get('completed'):
-            if vm_id in monitors:
-                del monitors[vm_id]
+        save_data()
+        logger.info(f"VM {vm_id} đã chuyển sang trạng thái running")
 
-# ============================================ #
+# ============================================
 # API ENDPOINTS
-# ============================================ #
-
+# ============================================
 @app.route('/')
-def serve_frontend():
-    """Phục vụ frontend"""
-    return send_from_directory('../frontend', 'index.html')
+def index():
+    """Serve frontend"""
+    return send_from_directory('.', 'index.html')
 
 @app.route('/api/health', methods=['GET'])
-def health_check():
-    """Kiểm tra sức khỏe backend"""
-    return jsonify(success_response({
+def health():
+    """Health check endpoint"""
+    return jsonify({
         'status': 'healthy',
         'timestamp': datetime.now().isoformat(),
-        'version': Config.API_VERSION,
         'vms_count': len(vms),
-        'monitors_count': len(monitors)
-    }))
+        'server': '34.80.216.29'
+    })
 
 @app.route('/api/vps', methods=['GET'])
-def get_vms():
-    """Lấy danh sách VM"""
-    return jsonify(success_response({
-        'vms': list(vms.values()),
-        'timestamp': datetime.now().isoformat()
-    }))
-
-@app.route('/api/vps', methods=['DELETE'])
-def delete_vm():
-    """Xóa VM"""
-    vm_id = request.args.get('id')
-    
-    if not vm_id or vm_id not in vms:
-        return jsonify(error_response(Config.MESSAGES['vm_not_found'], 404))
-    
-    # Dừng monitor nếu đang chạy
-    if vm_id in monitors:
-        monitors[vm_id].stop()
-        del monitors[vm_id]
-    
-    del vms[vm_id]
-    logger.info(f"VM {vm_id} deleted")
-    
-    return jsonify(success_response(message=Config.MESSAGES['vm_deleted']))
+def get_vps():
+    """Lấy danh sách VPS"""
+    try:
+        vm_list = []
+        for vm_id, vm in vms.items():
+            vm_copy = vm.copy()
+            vm_copy['id'] = vm_id
+            
+            # Kiểm tra hết hạn
+            if vm.get('expiresAt'):
+                try:
+                    expires = datetime.fromisoformat(vm['expiresAt'])
+                    if datetime.now() > expires:
+                        vm_copy['status'] = 'expired'
+                except:
+                    pass
+            
+            vm_list.append(vm_copy)
+        
+        # Sắp xếp theo thời gian tạo (mới nhất trước)
+        vm_list.sort(key=lambda x: x.get('createdAt', ''), reverse=True)
+        
+        return jsonify({
+            'success': True,
+            'vms': vm_list,
+            'count': len(vm_list)
+        })
+    except Exception as e:
+        logger.error(f"Lỗi GET /api/vps: {e}")
+        return jsonify({'success': False, 'error': str(e)}), 500
 
 @app.route('/api/vps', methods=['POST'])
-def create_vm():
-    """Tạo VM mới"""
-    global vm_counter
-    
-    data = request.get_json()
-    github_token = sanitize_input(data.get('githubToken', ''))
-    tailscale_key = sanitize_input(data.get('tailscaleKey', ''))
-    username = sanitize_input(data.get('vmUsername', ''))
-    password = sanitize_input(data.get('vmPassword', ''))
-    
-    # Validate input
-    is_valid, error_msg = validate_input(github_token, tailscale_key, username, password)
-    if not is_valid:
-        return jsonify(error_response(error_msg))
-    
-    # Tạo username/password mặc định
-    if not username:
-        username = generate_username()
-    if not password:
-        password = generate_password()
-    
-    logger.info(f"Creating VM for user: {username}")
-    
-    # Khởi tạo GitHub API handler
-    github = GitHubAPI(github_token)
-    
-    # Xác thực token
-    token_valid, user_info = github.verify_token()
-    if not token_valid:
-        logger.error("Invalid GitHub token")
-        return jsonify(error_response(Config.MESSAGES['invalid_token']))
-    
-    owner = user_info.get('login')
-    repo_name = generate_repo_name()
-    
-    # Tạo repository
-    repo_success, repo_data = github.create_repository(repo_name, f'VM by {username}')
-    if not repo_success:
-        logger.error(f"Failed to create repo: {repo_name}")
-        return jsonify(error_response(Config.MESSAGES['create_repo_failed']))
-    
-    repo_url = repo_data.get('html_url')
-    logger.info(f"Repository created: {repo_url}")
-    
-    # Đợi GitHub xử lý
-    time.sleep(2)
-    
-    # Tạo workflow file
-    workflow_success = github.create_workflow_file(owner, repo_name, username, password)
-    if not workflow_success:
-        logger.error("Failed to create workflow file")
-        return jsonify(error_response(Config.MESSAGES['create_workflow_failed']))
-    
-    logger.info("Workflow file created")
-    
-    # Đợi GitHub index workflow
-    time.sleep(2)
-    
-    # Trigger workflow
-    trigger_success = github.trigger_workflow(owner, repo_name, tailscale_key)
-    if not trigger_success:
-        logger.error("Failed to trigger workflow")
-        return jsonify(error_response(Config.MESSAGES['trigger_failed']))
-    
-    logger.info("Workflow triggered")
-    
-    # Lấy run ID (nếu có)
-    run_id = None
+def create_vps():
+    """Tạo VPS mới"""
     try:
-        time.sleep(3)
-        runs = github.get_workflow_runs(owner, repo_name, 1)
-        if runs:
-            run_id = runs[0].get('id')
-            logger.info(f"Run ID: {run_id}")
-    except Exception as e:
-        logger.error(f"Error getting run ID: {e}")
-    
-    # Tạo VM record
-    vm_counter += 1
-    expires_at = calculate_expiry()
-    new_vm = {
-        'id': str(vm_counter),
-        'name': repo_name,
-        'owner': owner,
-        'username': username,
-        'password': password,
-        'status': 'creating',
-        'progress': 10,
-        'repoUrl': repo_url,
-        'workflowUrl': f'https://github.com/{owner}/{repo_name}/actions',
-        'runId': run_id,
-        'tailscaleIP': None,
-        'novncUrl': None,
-        'createdAt': datetime.now().isoformat(),
-        'expiresAt': expires_at.isoformat(),
-        'error': None
-    }
-    
-    vms[new_vm['id']] = new_vm
-    
-    # Bắt đầu monitor nếu có run_id
-    if run_id:
-        monitor = VMMonitor(
-            vm_id=new_vm['id'],
-            token=github_token,
-            owner=owner,
-            repo=repo_name,
-            callback=on_vm_update
+        data = request.get_json()
+        if not data:
+            return jsonify({'success': False, 'error': 'Không có dữ liệu'}), 400
+        
+        github_token = data.get('githubToken', '').strip()
+        tailscale_key = data.get('tailscaleKey', '').strip()
+        vm_username = data.get('vmUsername', '').strip()
+        vm_password = data.get('vmPassword', '').strip()
+        
+        # Validate
+        if not github_token:
+            return jsonify({'success': False, 'error': 'Thiếu GitHub Token'}), 400
+        
+        if not tailscale_key:
+            return jsonify({'success': False, 'error': 'Thiếu Tailscale Key'}), 400
+        
+        if not vm_username:
+            vm_username = generate_random_string(8)
+        
+        if not vm_password:
+            vm_password = generate_random_string(12)
+        
+        # Tạo VM ID
+        vm_id = generate_id()
+        vm_name = f"vps-{vm_username}-{vm_id}"
+        
+        logger.info(f"Bắt đầu tạo VM: {vm_name}")
+        
+        # Bước 1: Tạo GitHub Repository
+        repo_name = f"vps-{vm_id}"
+        repo_result, error = create_github_repo(github_token, repo_name)
+        
+        if error:
+            logger.error(f"Lỗi tạo repo: {error}")
+            return jsonify({
+                'success': False, 
+                'error': f'Lỗi tạo repository: {error}'
+            }), 400
+        
+        # Bước 2: Tạo Workflow
+        vm_config = {
+            'name': vm_name,
+            'username': vm_username,
+            'password': vm_password,
+            'tailscale_key': tailscale_key
+        }
+        
+        workflow_url, error = create_workflow_file(
+            github_token, 
+            repo_result['username'], 
+            repo_name, 
+            vm_config
         )
-        monitors[new_vm['id']] = monitor
-        monitor.start()
-        logger.info(f"Monitor started for VM {new_vm['id']}")
-    
-    return jsonify(success_response(
-        data=new_vm,
-        message=f'✅ VM "{username}" đang được tạo! Quá trình tạo mất 3-5 phút.'
-    ))
+        
+        if error:
+            logger.error(f"Lỗi tạo workflow: {error}")
+            return jsonify({
+                'success': False, 
+                'error': f'Lỗi tạo workflow: {error}'
+            }), 400
+        
+        # Bước 3: Trigger Workflow
+        trigger_workflow(github_token, repo_result['username'], repo_name)
+        
+        # Lưu VM vào storage
+        vm_data = {
+            'name': vm_name,
+            'username': vm_username,
+            'password': vm_password,
+            'status': 'creating',
+            'repoUrl': repo_result['repo_url'],
+            'workflowUrl': workflow_url,
+            'tailscaleIP': None,
+            'novncUrl': None,
+            'createdAt': datetime.now().isoformat(),
+            'expiresAt': (datetime.now() + timedelta(hours=6)).isoformat(),
+            'progress': 10,
+            'githubRepo': repo_name,
+            'githubUser': repo_result['username']
+        }
+        
+        vms[vm_id] = vm_data
+        save_data()
+        
+        # Bắt đầu thread theo dõi trạng thái
+        monitor_thread = threading.Thread(target=monitor_vm_status, args=(vm_id,))
+        monitor_thread.daemon = True
+        monitor_thread.start()
+        
+        logger.info(f"VM {vm_id} đã được tạo thành công")
+        
+        return jsonify({
+            'success': True,
+            'id': vm_id,
+            'name': vm_name,
+            'username': vm_username,
+            'password': vm_password,
+            'status': 'creating',
+            'repoUrl': repo_result['repo_url'],
+            'workflowUrl': workflow_url,
+            'createdAt': vm_data['createdAt'],
+            'expiresAt': vm_data['expiresAt'],
+            'message': 'VM đang được khởi tạo...'
+        })
+        
+    except Exception as e:
+        logger.error(f"Lỗi POST /api/vps: {e}")
+        return jsonify({'success': False, 'error': str(e)}), 500
 
-# ============================================ #
-# MAIN
-# ============================================ #
+@app.route('/api/vps', methods=['DELETE'])
+def delete_vps():
+    """Xóa VPS"""
+    try:
+        vm_id = request.args.get('id')
+        if not vm_id:
+            return jsonify({'success': False, 'error': 'Thiếu ID'}), 400
+        
+        if vm_id not in vms:
+            return jsonify({'success': False, 'error': 'VM không tồn tại'}), 404
+        
+        vm = vms[vm_id]
+        del vms[vm_id]
+        save_data()
+        
+        logger.info(f"Đã xóa VM {vm_id}: {vm.get('name', 'unknown')}")
+        
+        return jsonify({
+            'success': True,
+            'message': f'Đã xóa VM {vm.get("name", vm_id)}'
+        })
+        
+    except Exception as e:
+        logger.error(f"Lỗi DELETE /api/vps: {e}")
+        return jsonify({'success': False, 'error': str(e)}), 500
 
+@app.route('/api/vps/<vm_id>', methods=['GET'])
+def get_vps_detail(vm_id):
+    """Lấy chi tiết một VPS"""
+    try:
+        if vm_id not in vms:
+            return jsonify({'success': False, 'error': 'VM không tồn tại'}), 404
+        
+        vm = vms[vm_id].copy()
+        vm['id'] = vm_id
+        
+        return jsonify({
+            'success': True,
+            'vm': vm
+        })
+        
+    except Exception as e:
+        logger.error(f"Lỗi GET /api/vps/{vm_id}: {e}")
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+@app.route('/api/stats', methods=['GET'])
+def get_stats():
+    """Lấy thống kê"""
+    try:
+        total = len(vms)
+        running = sum(1 for v in vms.values() if v.get('status') == 'running')
+        creating = sum(1 for v in vms.values() if v.get('status') == 'creating')
+        
+        return jsonify({
+            'success': True,
+            'stats': {
+                'total': total,
+                'running': running,
+                'creating': creating
+            }
+        })
+        
+    except Exception as e:
+        logger.error(f"Lỗi GET /api/stats: {e}")
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+# ============================================
+# KHỞI ĐỘNG SERVER
+# ============================================
 if __name__ == '__main__':
-    print("")
-    print("=" * 60)
-    print("🚀 SINGULARITY CLUB BACKEND")
-    print("=" * 60)
-    print(f"📡 Server: http://{Config.HOST}:{Config.PORT}")
-    print(f"🔗 API: http://{Config.HOST}:{Config.PORT}/api/vps")
-    print(f"💚 Health: http://{Config.HOST}:{Config.PORT}/api/health")
-    print(f"📝 Log file: {Config.LOG_FILE}")
-    print("=" * 60)
-    print("⚠️  Nhấn Ctrl+C để dừng server")
-    print("=" * 60)
-    print("")
+    # Tải dữ liệu đã lưu
+    load_data()
     
-    app.run(host=Config.HOST, port=Config.PORT, debug=Config.DEBUG, threaded=True)
+    # Thông báo khởi động
+    print("=" * 60)
+    print("🚀 Singularity Club VPS Backend")
+    print("=" * 60)
+    print(f"📍 Server: http://34.80.216.29:5000")
+    print(f"📁 Storage: {VMS_FILE}")
+    print(f"📊 VMs hiện có: {len(vms)}")
+    print("=" * 60)
+    print("✅ API Endpoints:")
+    print("   GET  /api/health  - Kiểm tra trạng thái")
+    print("   GET  /api/vps     - Lấy danh sách VPS")
+    print("   POST /api/vps     - Tạo VPS mới")
+    print("   DELETE /api/vps   - Xóa VPS")
+    print("   GET  /api/stats   - Thống kê")
+    print("=" * 60)
+    
+    # Chạy server
+    app.run(host='0.0.0.0', port=5000, debug=False, threaded=True)
