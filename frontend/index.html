@@ -2,19 +2,22 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Singularity Club | Quantum VPS Platform</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#0a0a0f">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Singularity Club | Quantum VPS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1"></script>
-    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <style>
-        * { 
-            margin: 0; 
-            padding: 0; 
-            box-sizing: border-box; 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        
+
         :root {
             --primary: #00d4ff;
             --primary-dark: #0099cc;
@@ -27,8 +30,8 @@
             --info: #3a86ff;
             --bg: #0a0a0f;
             --bg-secondary: #12121a;
-            --card: rgba(20, 20, 30, 0.9);
-            --card-hover: rgba(30, 30, 45, 0.95);
+            --card: rgba(20, 20, 30, 0.95);
+            --card-hover: rgba(30, 30, 45, 0.98);
             --border: rgba(0, 212, 255, 0.15);
             --border-glow: rgba(0, 212, 255, 0.4);
             --text: #e0e0ff;
@@ -36,308 +39,99 @@
             --text-muted: #8888aa;
             --shadow-primary: 0 0 30px rgba(0, 212, 255, 0.3);
             --shadow-secondary: 0 0 30px rgba(255, 0, 110, 0.2);
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
             --radius-sm: 8px;
             --radius-md: 12px;
             --radius-lg: 16px;
             --radius-xl: 20px;
             --radius-2xl: 24px;
-            --glow: 0 0 20px rgba(0, 212, 255, 0.5);
         }
-        
+
         body {
             background: var(--bg);
-            font-family: 'Space Grotesk', 'Inter', sans-serif;
+            font-family: 'Space Grotesk', sans-serif;
             color: var(--text);
             min-height: 100vh;
             position: relative;
             overflow-x: hidden;
-        }
-        
-        /* Particles Background */
-        #particles-js {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            pointer-events: none;
-        }
-        
-        /* Animated Grid Background */
-        .grid-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
             background-image: 
-                linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
-            background-size: 50px 50px;
-            z-index: 0;
-            pointer-events: none;
-            animation: gridMove 20s linear infinite;
+                radial-gradient(circle at 20% 30%, rgba(0, 212, 255, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(255, 0, 110, 0.03) 0%, transparent 50%);
         }
-        
-        @keyframes gridMove {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(50px, 50px); }
-        }
-        
-        /* Scanline Effect */
-        .scanline {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(to bottom, transparent 50%, rgba(0, 0, 0, 0.02) 50%);
-            background-size: 100% 4px;
-            z-index: 1;
-            pointer-events: none;
-            opacity: 0.3;
-            animation: scanline 8s linear infinite;
-        }
-        
-        @keyframes scanline {
-            0% { background-position: 0 0; }
-            100% { background-position: 0 100%; }
-        }
-        
-        /* Glow Effects */
-        .glow-text {
-            text-shadow: 0 0 10px var(--primary), 0 0 20px var(--primary), 0 0 30px var(--primary);
-        }
-        
-        .glow-border {
-            box-shadow: 0 0 10px var(--primary), inset 0 0 10px var(--primary);
-        }
-        
-        /* Container */
-        .container { 
-            max-width: 1400px; 
-            margin: 0 auto; 
-            padding: 20px;
-            position: relative;
-            z-index: 10;
-        }
-        
+
         /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: var(--bg-secondary); border-radius: 10px; }
         ::-webkit-scrollbar-thumb { 
             background: linear-gradient(135deg, var(--primary), var(--secondary)); 
             border-radius: 10px;
-            box-shadow: var(--glow);
         }
-        ::-webkit-scrollbar-thumb:hover { background: linear-gradient(135deg, var(--primary-light), var(--secondary)); }
-        
-        /* Header với hiệu ứng */
-        .header { 
-            text-align: center; 
-            margin-bottom: 30px; 
-            padding: 30px; 
-            background: var(--card); 
-            border-radius: var(--radius-2xl); 
-            backdrop-filter: blur(20px);
+
+        /* Container */
+        .container { 
+            max-width: 1400px; 
+            margin: 0 auto; 
+            padding: 16px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Connection Status */
+        .connection-status {
+            position: fixed;
+            top: 16px;
+            right: 16px;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px;
+            background: var(--card);
             border: 1px solid var(--border);
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-            animation: headerGlow 3s ease-in-out infinite;
-        }
-        
-        @keyframes headerGlow {
-            0%, 100% { box-shadow: 0 10px 40px rgba(0, 212, 255, 0.1); }
-            50% { box-shadow: 0 10px 40px rgba(0, 212, 255, 0.2), 0 0 30px rgba(255, 0, 110, 0.1); }
-        }
-        
-        .header::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(0, 212, 255, 0.05), transparent);
-            animation: shimmer 3s infinite;
-        }
-        
-        @keyframes shimmer {
-            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
-            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
-        }
-        
-        .logo { 
-            font-size: 2.5rem; 
-            font-weight: 900; 
-            background: linear-gradient(135deg, #fff, var(--primary), var(--secondary), var(--accent));
-            -webkit-background-clip: text; 
-            background-clip: text; 
-            color: transparent;
-            animation: logoPulse 2s ease-in-out infinite;
-            position: relative;
-            z-index: 1;
-        }
-        
-        @keyframes logoPulse {
-            0%, 100% { filter: brightness(1); }
-            50% { filter: brightness(1.2); }
-        }
-        
-        .subtitle { 
-            color: var(--text-muted); 
-            font-size: 0.9rem; 
-            margin-top: 6px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
-        
-        .badge-container { 
-            display: flex; 
-            justify-content: center; 
-            gap: 15px; 
-            margin-top: 20px; 
-            flex-wrap: wrap; 
-        }
-        
-        .badge { 
-            background: linear-gradient(135deg, var(--card), var(--bg-secondary)); 
-            border: 1px solid var(--border); 
-            border-radius: 50px; 
-            padding: 8px 16px; 
-            font-size: 0.75rem;
+            border-radius: 50px;
             backdrop-filter: blur(10px);
-            transition: var(--transition);
+            font-size: 0.7rem;
             cursor: pointer;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .badge::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-            transition: left 0.5s;
-        }
-        
-        .badge:hover::before {
-            left: 100%;
-        }
-        
-        .badge:hover {
-            transform: translateY(-2px);
-            border-color: var(--primary);
-            box-shadow: var(--glow);
-        }
-        
-        /* Stats Cards với hiệu ứng 3D */
-        .stats-grid { 
-            display: grid; 
-            grid-template-columns: repeat(4, 1fr); 
-            gap: 20px; 
-            margin-bottom: 30px; 
-        }
-        
-        @media (max-width: 768px) { 
-            .stats-grid { grid-template-columns: repeat(2, 1fr); } 
-        }
-        
-        .stat-card { 
-            background: var(--card); 
-            border: 1px solid var(--border); 
-            border-radius: var(--radius-lg); 
-            padding: 20px; 
-            transition: var(--transition); 
-            cursor: pointer;
-            backdrop-filter: blur(10px);
-            position: relative;
-            overflow: hidden;
-            transform-style: preserve-3d;
-            transform: perspective(1000px) rotateX(0deg);
-        }
-        
-        .stat-card::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(circle at 50% 0%, rgba(0, 212, 255, 0.1), transparent);
-            opacity: 0;
             transition: var(--transition);
         }
-        
-        .stat-card:hover {
-            transform: perspective(1000px) rotateX(2deg) translateY(-5px);
+
+        .connection-status:hover {
             border-color: var(--primary);
             box-shadow: var(--shadow-primary);
         }
-        
-        .stat-card:hover::after {
-            opacity: 1;
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success);
+            animation: pulse 2s infinite;
         }
-        
-        .stat-label { 
-            font-size: 0.75rem; 
-            color: var(--text-muted); 
-            margin-bottom: 10px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+
+        .status-dot.offline {
+            background: var(--error);
+            animation: none;
         }
-        
-        .stat-value { 
-            font-size: 2.2rem; 
-            font-weight: 800; 
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text; 
-            background-clip: text; 
-            color: transparent;
-            position: relative;
-            display: inline-block;
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
         }
-        
-        .stat-value::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg, var(--primary), transparent);
-        }
-        
-        /* Two Columns Layout */
-        .two-columns { 
-            display: grid; 
-            grid-template-columns: 1fr 1.2fr; 
-            gap: 25px; 
-        }
-        
-        @media (max-width: 900px) { 
-            .two-columns { grid-template-columns: 1fr; } 
-        }
-        
-        /* Cards */
-        .card { 
+
+        /* Header */
+        .header { 
+            text-align: center; 
+            margin-bottom: 24px; 
+            padding: 24px 20px; 
             background: var(--card); 
-            border: 1px solid var(--border); 
-            border-radius: var(--radius-xl); 
-            padding: 28px; 
-            backdrop-filter: blur(20px);
-            transition: var(--transition);
+            border-radius: var(--radius-2xl); 
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--border);
             position: relative;
             overflow: hidden;
         }
-        
-        .card::before {
+
+        .header::before {
             content: '';
             position: absolute;
             top: 0;
@@ -345,25 +139,137 @@
             right: 0;
             height: 2px;
             background: linear-gradient(90deg, transparent, var(--primary), var(--secondary), transparent);
-            opacity: 0;
+        }
+
+        .logo { 
+            font-size: 2rem; 
+            font-weight: 700; 
+            background: linear-gradient(135deg, #fff, var(--primary), var(--secondary));
+            -webkit-background-clip: text; 
+            background-clip: text; 
+            color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        .subtitle { 
+            color: var(--text-muted); 
+            font-size: 0.8rem; 
+            margin-top: 6px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .badge-container { 
+            display: flex; 
+            justify-content: center; 
+            gap: 10px; 
+            margin-top: 16px; 
+            flex-wrap: wrap; 
+        }
+
+        .badge { 
+            background: rgba(0, 212, 255, 0.08); 
+            border: 1px solid var(--border); 
+            border-radius: 50px; 
+            padding: 6px 14px; 
+            font-size: 0.7rem;
+            backdrop-filter: blur(5px);
             transition: var(--transition);
         }
-        
-        .card:hover {
+
+        .badge i {
+            margin-right: 6px;
+            color: var(--primary);
+        }
+
+        .badge:hover {
+            border-color: var(--primary);
+            background: rgba(0, 212, 255, 0.12);
+            transform: translateY(-1px);
+        }
+
+        /* Stats */
+        .stats-grid { 
+            display: grid; 
+            grid-template-columns: repeat(4, 1fr); 
+            gap: 14px; 
+            margin-bottom: 24px; 
+        }
+
+        @media (max-width: 768px) { 
+            .stats-grid { grid-template-columns: repeat(2, 1fr); } 
+        }
+
+        .stat-card { 
+            background: var(--card); 
+            border: 1px solid var(--border); 
+            border-radius: var(--radius-lg); 
+            padding: 16px; 
+            transition: var(--transition); 
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card:hover {
             transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4), var(--shadow-primary);
-            border-color: var(--border-glow);
-            background: var(--card-hover);
+            border-color: var(--primary);
+            box-shadow: var(--shadow-primary);
         }
-        
-        .card:hover::before {
-            opacity: 1;
+
+        .stat-label { 
+            font-size: 0.7rem; 
+            color: var(--text-muted); 
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
-        
-        .card-title { 
-            font-size: 1.2rem; 
+
+        .stat-value { 
+            font-size: 2rem; 
             font-weight: 700; 
-            margin-bottom: 25px; 
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text; 
+            background-clip: text; 
+            color: transparent;
+            line-height: 1;
+        }
+
+        /* Two Columns */
+        .two-columns { 
+            display: grid; 
+            grid-template-columns: 1fr 1.2fr; 
+            gap: 20px; 
+        }
+
+        @media (max-width: 900px) { 
+            .two-columns { grid-template-columns: 1fr; } 
+        }
+
+        /* Cards */
+        .card { 
+            background: var(--card); 
+            border: 1px solid var(--border); 
+            border-radius: var(--radius-xl); 
+            padding: 22px; 
+            backdrop-filter: blur(15px);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .card:hover {
+            border-color: var(--border-glow);
+            box-shadow: var(--shadow-primary);
+        }
+
+        .card-title { 
+            font-size: 1.1rem; 
+            font-weight: 600; 
+            margin-bottom: 20px; 
             display: flex; 
             align-items: center; 
             gap: 10px;
@@ -372,159 +278,195 @@
             background-clip: text;
             color: transparent;
         }
-        
-        /* Form Elements với hiệu ứng */
-        .input-group { margin-bottom: 20px; position: relative; }
-        
+
+        /* Form */
+        .input-group { 
+            margin-bottom: 18px; 
+            position: relative; 
+        }
+
         .input-label { 
-            font-size: 0.8rem; 
+            font-size: 0.75rem; 
             color: var(--text-muted); 
-            margin-bottom: 8px; 
+            margin-bottom: 6px; 
             display: block;
             text-transform: uppercase;
             letter-spacing: 1px;
-            transition: var(--transition);
         }
-        
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
         .input-field { 
             width: 100%; 
             background: rgba(0, 0, 0, 0.4); 
             border: 1px solid var(--border); 
             border-radius: var(--radius-md); 
-            padding: 14px 16px; 
+            padding: 12px 14px; 
             color: var(--text); 
-            font-size: 0.9rem; 
+            font-size: 0.85rem; 
             transition: var(--transition);
             font-family: 'Space Grotesk', monospace;
             backdrop-filter: blur(5px);
         }
-        
+
         .input-field:focus { 
             outline: none; 
             border-color: var(--primary); 
-            box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1), var(--glow);
+            box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1), 0 0 15px rgba(0, 212, 255, 0.3);
             background: rgba(0, 0, 0, 0.6);
-            transform: translateY(-1px);
         }
-        
-        .input-field:hover {
-            border-color: var(--primary-light);
-            background: rgba(0, 0, 0, 0.5);
+
+        .input-field.valid {
+            border-color: var(--success);
         }
-        
+
+        .input-field.invalid {
+            border-color: var(--error);
+        }
+
+        .validation-icon {
+            position: absolute;
+            right: 12px;
+            font-size: 0.9rem;
+        }
+
+        .validation-icon.valid {
+            color: var(--success);
+        }
+
+        .validation-icon.invalid {
+            color: var(--error);
+        }
+
+        .input-hint {
+            font-size: 0.6rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .input-hint a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .input-hint a:hover {
+            text-decoration: underline;
+        }
+
         .input-row { 
             display: flex; 
-            gap: 12px; 
+            gap: 10px; 
             align-items: center; 
         }
-        
+
         .input-row .input-group { 
             flex: 1; 
             margin-bottom: 0; 
         }
-        
+
         .random-btn { 
-            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(131, 56, 236, 0.1)); 
+            background: rgba(0, 212, 255, 0.08); 
             border: 1px solid var(--border); 
             border-radius: var(--radius-md); 
-            padding: 14px 18px; 
+            padding: 12px 16px; 
             color: var(--primary); 
             cursor: pointer; 
-            font-size: 0.8rem; 
+            font-size: 0.75rem; 
             transition: var(--transition); 
             display: flex; 
             align-items: center; 
-            gap: 8px;
+            gap: 6px;
             backdrop-filter: blur(5px);
-            position: relative;
-            overflow: hidden;
+            white-space: nowrap;
         }
-        
-        .random-btn::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: radial-gradient(circle, rgba(0, 212, 255, 0.3), transparent);
-            transform: translate(-50%, -50%);
-            transition: width 0.3s, height 0.3s;
-        }
-        
-        .random-btn:hover::before {
-            width: 200px;
-            height: 200px;
-        }
-        
+
         .random-btn:hover { 
-            background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(131, 56, 236, 0.2));
+            background: rgba(0, 212, 255, 0.15);
             transform: translateY(-2px); 
             border-color: var(--primary);
-            box-shadow: var(--glow);
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
         }
-        
-        /* Progress Bar với animation */
+
+        .test-btn {
+            background: rgba(58, 134, 255, 0.08);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 12px 14px;
+            color: var(--info);
+            cursor: pointer;
+            font-size: 0.75rem;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            backdrop-filter: blur(5px);
+            white-space: nowrap;
+        }
+
+        .test-btn:hover {
+            background: rgba(58, 134, 255, 0.15);
+            transform: translateY(-2px);
+            border-color: var(--info);
+        }
+
+        .test-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Progress Container */
         .progress-container { 
             margin-top: 20px; 
             display: none;
             animation: slideDown 0.3s ease;
         }
-        
+
         @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        
+
         .progress-steps { 
             display: flex; 
             justify-content: space-between; 
             margin-bottom: 12px; 
-            gap: 8px; 
+            gap: 6px; 
         }
-        
+
         .progress-step { 
             flex: 1; 
             text-align: center; 
-            font-size: 0.6rem; 
+            font-size: 0.55rem; 
             opacity: 0.4; 
-            padding: 6px; 
+            padding: 5px; 
             border-radius: var(--radius-sm); 
             transition: var(--transition);
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.3px;
         }
-        
+
         .progress-step i { 
             display: block; 
             margin-bottom: 4px; 
-            font-size: 0.8rem; 
+            font-size: 0.7rem; 
         }
-        
+
         .progress-step.active { 
             opacity: 1; 
             color: var(--primary); 
             background: rgba(0, 212, 255, 0.1);
-            box-shadow: var(--glow);
             animation: pulse 1.5s infinite;
         }
-        
-        @keyframes pulse {
-            0%, 100% { opacity: 0.8; }
-            50% { opacity: 1; }
-        }
-        
+
         .progress-step.completed { 
             opacity: 1; 
             color: var(--success); 
         }
-        
+
         .progress-bar { 
             background: rgba(0, 0, 0, 0.4); 
             border-radius: 20px; 
@@ -532,16 +474,15 @@
             overflow: hidden;
             position: relative;
         }
-        
+
         .progress-fill { 
             background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
             width: 0%; 
             height: 100%; 
-            transition: width 0.5s ease;
+            transition: width 0.4s ease;
             position: relative;
-            box-shadow: var(--glow);
         }
-        
+
         .progress-fill::after { 
             content: ''; 
             position: absolute; 
@@ -552,236 +493,258 @@
             background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent); 
             animation: shimmer 1.5s infinite; 
         }
-        
-        .progress-text { 
-            font-size: 0.7rem; 
-            text-align: center; 
-            margin-top: 10px; 
-            color: var(--primary-light);
-            font-weight: 500;
+
+        @keyframes shimmer { 
+            0% { transform: translateX(-100%); } 
+            100% { transform: translateX(100%); } 
         }
-        
-        /* Buttons với hiệu ứng ripple */
+
+        .progress-text { 
+            font-size: 0.65rem; 
+            text-align: center; 
+            margin-top: 8px; 
+            color: var(--primary-light);
+        }
+
+        /* Buttons */
         .btn { 
-            padding: 14px 24px; 
+            padding: 13px 20px; 
             border-radius: var(--radius-md); 
-            font-weight: 700; 
-            font-size: 0.9rem; 
+            font-weight: 600; 
+            font-size: 0.85rem; 
             cursor: pointer; 
             transition: var(--transition); 
             border: none; 
             display: inline-flex; 
             align-items: center; 
             justify-content: center; 
-            gap: 10px; 
+            gap: 8px; 
             width: 100%; 
-            margin-top: 15px;
+            margin-top: 12px;
             position: relative;
             overflow: hidden;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
         }
-        
+
         .btn-primary { 
             background: linear-gradient(135deg, var(--primary), var(--secondary)); 
             color: white;
-            box-shadow: 0 5px 20px rgba(0, 212, 255, 0.3);
         }
-        
-        .btn-primary::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.3), transparent);
-            transform: translate(-50%, -50%);
-            transition: width 0.5s, height 0.5s;
+
+        .btn-primary:hover:not(:disabled) { 
+            transform: translateY(-2px); 
+            box-shadow: 0 8px 25px rgba(0, 212, 255, 0.4), 0 0 20px rgba(255, 0, 110, 0.2);
         }
-        
-        .btn-primary:hover::before {
-            width: 300px;
-            height: 300px;
-        }
-        
-        .btn-primary:hover { 
-            transform: translateY(-3px); 
-            box-shadow: 0 8px 30px rgba(0, 212, 255, 0.5), var(--shadow-secondary);
-        }
-        
+
         .btn-primary:disabled { 
             opacity: 0.6; 
             cursor: not-allowed; 
-            transform: none; 
         }
-        
-        /* Quick Actions */
+
         .quick-actions { 
             display: flex; 
-            gap: 12px; 
-            margin-top: 20px; 
+            gap: 8px; 
+            margin-top: 16px; 
             flex-wrap: wrap; 
         }
-        
+
         .quick-btn { 
             flex: 1; 
             background: rgba(0, 0, 0, 0.3); 
             border: 1px solid var(--border); 
             border-radius: var(--radius-sm); 
-            padding: 10px 12px; 
-            font-size: 0.75rem; 
+            padding: 8px 10px; 
+            font-size: 0.7rem; 
             cursor: pointer; 
             text-align: center; 
             transition: var(--transition); 
             display: flex; 
             align-items: center; 
             justify-content: center; 
-            gap: 6px;
+            gap: 5px;
             backdrop-filter: blur(5px);
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.3px;
         }
-        
+
         .quick-btn:hover { 
-            background: rgba(0, 212, 255, 0.15); 
+            background: rgba(0, 212, 255, 0.12); 
             border-color: var(--primary); 
-            transform: translateY(-2px);
-            box-shadow: var(--glow);
+            transform: translateY(-1px);
         }
-        
+
         /* VM Controls */
         .vm-controls { 
             display: flex; 
-            gap: 12px; 
-            margin-bottom: 20px; 
+            gap: 10px; 
+            margin-bottom: 18px; 
             flex-wrap: wrap; 
         }
-        
+
         .vm-search { 
             flex: 1; 
             background: rgba(0, 0, 0, 0.3); 
             border: 1px solid var(--border); 
             border-radius: 30px; 
-            padding: 10px 18px; 
+            padding: 10px 16px; 
             color: var(--text); 
-            font-size: 0.85rem; 
+            font-size: 0.8rem; 
             transition: var(--transition);
             backdrop-filter: blur(5px);
         }
-        
+
         .vm-search:focus { 
             outline: none; 
             border-color: var(--primary); 
-            box-shadow: var(--glow);
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
         }
-        
+
         .vm-filter, .vm-sort { 
             background: rgba(0, 0, 0, 0.3); 
             border: 1px solid var(--border); 
             border-radius: 30px; 
-            padding: 10px 18px; 
+            padding: 10px 16px; 
             color: var(--text); 
-            font-size: 0.8rem; 
+            font-size: 0.75rem; 
             cursor: pointer;
             backdrop-filter: blur(5px);
             transition: var(--transition);
         }
-        
+
         .vm-filter:hover, .vm-sort:hover { 
             border-color: var(--primary); 
-            box-shadow: var(--glow);
         }
-        
+
         .vm-count { 
-            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(131, 56, 236, 0.1)); 
+            background: rgba(0, 212, 255, 0.08); 
             border-radius: 30px; 
-            padding: 10px 18px; 
-            font-size: 0.8rem; 
+            padding: 10px 16px; 
+            font-size: 0.75rem; 
             display: flex; 
             align-items: center; 
-            gap: 8px;
+            gap: 6px;
             border: 1px solid var(--border);
         }
-        
-        /* VM List với animation */
+
+        .selection-toolbar {
+            display: none;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 16px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            margin-bottom: 15px;
+            animation: slideDown 0.2s ease;
+        }
+
+        .selection-toolbar.show {
+            display: flex;
+        }
+
+        .selection-count {
+            font-size: 0.8rem;
+            color: var(--primary);
+        }
+
+        .selection-actions {
+            display: flex;
+            gap: 8px;
+            margin-left: auto;
+        }
+
+        .selection-btn {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 6px 12px;
+            font-size: 0.7rem;
+            cursor: pointer;
+            color: var(--text);
+            transition: var(--transition);
+        }
+
+        .selection-btn.delete:hover {
+            background: rgba(255, 0, 84, 0.15);
+            border-color: var(--error);
+            color: var(--error);
+        }
+
+        .selection-btn.cancel {
+            background: transparent;
+        }
+
+        /* VM List */
         .vm-list { 
             display: flex; 
             flex-direction: column; 
-            gap: 15px; 
-            max-height: 550px; 
+            gap: 12px; 
+            max-height: 500px; 
             overflow-y: auto; 
-            padding-right: 8px; 
+            padding-right: 6px; 
         }
-        
+
         .vm-item { 
             background: rgba(0, 0, 0, 0.3); 
             border-radius: var(--radius-lg); 
             border: 1px solid var(--border); 
             overflow: hidden; 
             transition: var(--transition); 
-            animation: slideIn 0.4s ease;
+            animation: slideIn 0.3s ease;
             backdrop-filter: blur(5px);
             position: relative;
         }
-        
-        .vm-item::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--primary), transparent);
-            opacity: 0;
-            transition: var(--transition);
-        }
-        
-        .vm-item:hover {
+
+        .vm-item.selected {
             border-color: var(--primary);
             background: rgba(0, 212, 255, 0.05);
-            transform: translateX(5px);
-            box-shadow: var(--shadow-primary);
         }
-        
-        .vm-item:hover::before {
-            opacity: 1;
+
+        .vm-checkbox {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: var(--primary);
+            z-index: 1;
         }
-        
+
+        .vm-item.selection-mode .vm-header {
+            padding-left: 45px;
+        }
+
         @keyframes slideIn { 
-            from { 
-                opacity: 0; 
-                transform: translateX(-20px); 
-            } 
-            to { 
-                opacity: 1; 
-                transform: translateX(0); 
-            } 
+            from { opacity: 0; transform: translateX(-15px); } 
+            to { opacity: 1; transform: translateX(0); } 
         }
-        
+
         .vm-header { 
             display: flex; 
             justify-content: space-between; 
             align-items: center; 
-            padding: 16px 20px; 
+            padding: 14px 16px; 
             cursor: pointer;
             transition: var(--transition);
         }
-        
+
         .vm-header:hover {
-            background: rgba(0, 212, 255, 0.05);
+            background: rgba(0, 212, 255, 0.03);
         }
-        
+
         .vm-info { 
             display: flex; 
             align-items: center; 
-            gap: 15px; 
+            gap: 12px; 
         }
-        
+
         .vm-icon { 
-            width: 45px; 
-            height: 45px; 
-            background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(255, 0, 110, 0.2)); 
+            width: 40px; 
+            height: 40px; 
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.15), rgba(255, 0, 110, 0.15)); 
             border-radius: var(--radius-md); 
             display: flex; 
             align-items: center; 
@@ -789,279 +752,300 @@
             transition: var(--transition);
             border: 1px solid var(--border);
         }
-        
+
         .vm-item:hover .vm-icon { 
-            transform: scale(1.1) rotate(5deg); 
-            box-shadow: var(--glow);
+            transform: scale(1.05); 
         }
-        
+
         .vm-name { 
-            font-weight: 700; 
-            font-size: 0.95rem;
+            font-weight: 600; 
+            font-size: 0.9rem;
             background: linear-gradient(135deg, var(--text-bright), var(--primary-light));
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
         }
-        
+
         .vm-time { 
-            font-size: 0.65rem; 
+            font-size: 0.6rem; 
             color: var(--text-muted); 
-            margin-top: 4px;
+            margin-top: 3px;
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 4px;
         }
-        
+
         .vm-status { 
-            font-size: 0.7rem; 
-            padding: 4px 12px; 
+            font-size: 0.65rem; 
+            padding: 3px 10px; 
             border-radius: 50px; 
-            font-weight: 600;
+            font-weight: 500;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.3px;
             transition: var(--transition);
-            border: 1px solid transparent;
         }
-        
+
         .status-creating { 
-            background: rgba(254, 228, 64, 0.15); 
+            background: rgba(254, 228, 64, 0.12); 
             color: var(--warning); 
-            border-color: rgba(254, 228, 64, 0.3);
             animation: blink 1.5s infinite; 
         }
-        
+
         .status-running { 
-            background: rgba(0, 245, 212, 0.15); 
+            background: rgba(0, 245, 212, 0.12); 
             color: var(--success); 
-            border-color: rgba(0, 245, 212, 0.3);
-            box-shadow: 0 0 10px rgba(0, 245, 212, 0.2);
         }
-        
+
+        .status-expired {
+            background: rgba(136, 136, 170, 0.12);
+            color: var(--text-muted);
+        }
+
         @keyframes blink { 
             0%, 100% { opacity: 1; } 
             50% { opacity: 0.5; } 
         }
-        
+
         .vm-expand-icon { 
             transition: transform 0.3s; 
             color: var(--primary);
-            font-size: 1.1rem;
         }
-        
+
         .vm-item.open .vm-expand-icon { 
             transform: rotate(180deg); 
         }
-        
+
         .vm-detail { 
             max-height: 0; 
             overflow: hidden; 
-            transition: max-height 0.4s ease; 
+            transition: max-height 0.35s ease; 
             border-top: 1px solid transparent; 
         }
-        
+
         .vm-item.open .vm-detail { 
-            max-height: 500px; 
+            max-height: 450px; 
             border-top-color: var(--border); 
-            padding: 20px;
+            padding: 16px;
         }
-        
+
         /* Info Grid */
         .info-grid { 
             display: grid; 
             grid-template-columns: repeat(2, 1fr); 
-            gap: 15px; 
-            margin-bottom: 15px; 
+            gap: 12px; 
+            margin-bottom: 12px; 
         }
-        
+
         @media (max-width: 640px) { 
             .info-grid { grid-template-columns: 1fr; } 
         }
-        
+
         .info-box { 
             background: rgba(0, 0, 0, 0.25); 
             border-radius: var(--radius-md); 
-            padding: 15px; 
+            padding: 12px; 
             transition: var(--transition);
             border: 1px solid var(--border);
         }
-        
-        .info-box:hover { 
-            background: rgba(0, 0, 0, 0.4); 
-            transform: translateX(3px);
-            border-color: var(--primary);
-        }
-        
+
         .info-title { 
-            font-size: 0.7rem; 
+            font-size: 0.65rem; 
             text-transform: uppercase; 
-            letter-spacing: 1px; 
+            letter-spacing: 0.8px; 
             color: var(--primary-light); 
-            margin-bottom: 12px; 
+            margin-bottom: 10px; 
             display: flex; 
             align-items: center; 
-            gap: 8px;
+            gap: 6px;
         }
-        
-        .info-value { 
-            font-family: 'Space Grotesk', monospace; 
-            font-size: 0.85rem; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            flex-wrap: wrap; 
-            gap: 8px; 
-            word-break: break-all; 
-        }
-        
+
         .info-row { 
             display: flex; 
             justify-content: space-between; 
             align-items: center; 
-            padding: 8px 0; 
+            padding: 6px 0; 
             border-bottom: 1px solid var(--border); 
         }
-        
+
         .info-row:last-child { 
             border-bottom: none; 
         }
-        
+
         .info-label { 
-            font-size: 0.75rem; 
+            font-size: 0.7rem; 
             color: var(--text-muted); 
             display: flex; 
             align-items: center; 
-            gap: 8px; 
+            gap: 6px; 
         }
-        
-        .countdown-timer { 
+
+        .info-value { 
             font-family: 'Space Grotesk', monospace; 
             font-size: 0.8rem; 
-            font-weight: 700; 
-            color: var(--warning); 
-            background: rgba(254, 228, 64, 0.15); 
-            padding: 4px 10px; 
-            border-radius: var(--radius-sm); 
-            display: inline-block;
-            border: 1px solid rgba(254, 228, 64, 0.3);
-            animation: pulse 2s infinite;
+            display: flex; 
+            align-items: center; 
+            gap: 6px; 
         }
-        
-        /* Copy & Eye Buttons */
-        .copy-btn, .eye-btn { 
-            background: rgba(0, 212, 255, 0.1); 
+
+        .countdown-timer { 
+            font-family: 'Space Grotesk', monospace; 
+            font-size: 0.75rem; 
+            font-weight: 600; 
+            color: var(--warning); 
+            background: rgba(254, 228, 64, 0.12); 
+            padding: 3px 8px; 
+            border-radius: var(--radius-sm); 
+        }
+
+        .countdown-timer.warning {
+            color: var(--warning);
+            animation: pulse 1s infinite;
+        }
+
+        .countdown-timer.danger {
+            color: var(--error);
+            background: rgba(255, 0, 84, 0.12);
+            animation: pulse 0.8s infinite;
+        }
+
+        /* Copy Button */
+        .copy-btn { 
+            background: rgba(0, 212, 255, 0.08); 
             border: 1px solid var(--border); 
             color: var(--primary); 
-            padding: 4px 10px; 
+            padding: 4px 8px; 
             border-radius: var(--radius-sm); 
-            font-size: 0.7rem; 
+            font-size: 0.65rem; 
             cursor: pointer; 
             transition: var(--transition);
+            position: relative;
         }
-        
-        .copy-btn:hover, .eye-btn:hover { 
-            background: rgba(0, 212, 255, 0.2); 
-            transform: scale(1.05);
+
+        .copy-btn:hover { 
+            background: rgba(0, 212, 255, 0.15); 
             border-color: var(--primary);
-            box-shadow: var(--glow);
         }
-        
+
         .copy-btn.copied { 
             background: var(--success); 
             color: white; 
-            animation: bounce 0.3s ease; 
         }
-        
-        @keyframes bounce { 
-            0%, 100% { transform: scale(1); } 
-            50% { transform: scale(1.15); } 
+
+        /* Tooltip */
+        .tooltip {
+            position: relative;
         }
-        
+
+        .tooltip::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--card);
+            color: var(--text);
+            padding: 4px 8px;
+            border-radius: var(--radius-sm);
+            font-size: 0.6rem;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            border: 1px solid var(--border);
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        .tooltip:hover::after {
+            opacity: 1;
+            visibility: visible;
+            bottom: calc(100% + 5px);
+        }
+
         /* Action Buttons */
         .action-buttons { 
             display: flex; 
-            gap: 12px; 
-            margin-top: 15px; 
+            gap: 8px; 
+            margin-top: 12px; 
             flex-wrap: wrap; 
         }
-        
+
         .action-btn { 
             flex: 1; 
             background: rgba(0, 0, 0, 0.3); 
             border: 1px solid var(--border); 
             border-radius: var(--radius-sm); 
-            padding: 8px 12px; 
-            font-size: 0.7rem; 
+            padding: 8px 10px; 
+            font-size: 0.65rem; 
             cursor: pointer; 
             text-decoration: none; 
             color: var(--text); 
             display: inline-flex; 
             align-items: center; 
             justify-content: center; 
-            gap: 6px; 
+            gap: 5px; 
             transition: var(--transition);
             backdrop-filter: blur(5px);
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.3px;
         }
-        
+
         .action-btn:hover { 
-            transform: translateY(-2px); 
+            transform: translateY(-1px); 
             border-color: var(--primary); 
-            box-shadow: var(--glow);
         }
-        
-        .action-btn.github:hover { 
-            background: rgba(0, 212, 255, 0.15); 
-            color: var(--primary); 
+
+        .action-btn.copy-all {
+            background: rgba(0, 212, 255, 0.08);
+            color: var(--primary);
         }
-        
+
+        .action-btn.copy-all:hover {
+            background: rgba(0, 212, 255, 0.15);
+        }
+
         .action-btn.delete:hover { 
-            background: rgba(255, 0, 84, 0.15); 
+            background: rgba(255, 0, 84, 0.12); 
             color: var(--error); 
             border-color: var(--error);
         }
-        
-        .action-btn.repo:hover { 
-            background: rgba(0, 245, 212, 0.15); 
-            color: var(--success); 
-        }
-        
-        /* Terminal Input */
+
+        /* Terminal */
         .vm-progress { 
-            margin-top: 15px; 
+            margin-top: 12px; 
             padding: 10px; 
             background: rgba(0, 0, 0, 0.3); 
             border-radius: var(--radius-sm);
             border: 1px solid var(--border);
         }
-        
+
         .vm-progress-bar { 
             background: rgba(0, 0, 0, 0.4); 
             border-radius: 10px; 
-            height: 5px; 
+            height: 4px; 
             overflow: hidden; 
         }
-        
+
         .vm-progress-fill { 
             background: linear-gradient(90deg, var(--primary), var(--secondary)); 
             height: 100%; 
             width: 0%; 
             transition: width 0.3s;
-            box-shadow: var(--glow);
         }
-        
-        .vm-progress-text { 
-            font-size: 0.65rem; 
-            text-align: center; 
-            margin-top: 8px; 
-            color: var(--text-muted); 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            gap: 8px; 
+
+        .terminal-input-container {
+            display: flex;
+            align-items: center;
+            margin-top: 8px;
         }
-        
+
+        .terminal-prompt {
+            color: var(--primary);
+            font-family: monospace;
+            font-size: 0.7rem;
+            margin-right: 6px;
+        }
+
         .terminal-input {
             background: transparent;
             border: none;
@@ -1071,334 +1055,341 @@
             width: 100%;
             outline: none;
         }
-        
+
         .terminal-input::placeholder {
             color: var(--text-muted);
             opacity: 0.5;
         }
-        
-        /* Pagination */
-        .pagination { 
-            display: flex; 
-            justify-content: center; 
-            gap: 10px; 
-            margin-top: 20px; 
-            padding-top: 15px; 
-            border-top: 1px solid var(--border); 
+
+        /* Load More */
+        .load-more {
+            text-align: center;
+            margin-top: 16px;
         }
-        
-        .page-btn { 
-            background: rgba(0, 0, 0, 0.3); 
-            border: 1px solid var(--border); 
-            border-radius: var(--radius-sm); 
-            padding: 6px 12px; 
-            font-size: 0.7rem; 
-            cursor: pointer; 
-            transition: var(--transition);
-            backdrop-filter: blur(5px);
-        }
-        
-        .page-btn:hover { 
-            background: rgba(0, 212, 255, 0.2); 
-            border-color: var(--primary); 
-            transform: translateY(-2px);
-            box-shadow: var(--glow);
-        }
-        
-        .page-btn.active { 
-            background: linear-gradient(135deg, var(--primary), var(--secondary)); 
-            color: white; 
-            border-color: transparent;
-            box-shadow: var(--glow);
-        }
-        
-        /* Debug Panel với hiệu ứng */
-        .debug-panel { 
-            position: fixed; 
-            bottom: 20px; 
-            right: 20px; 
-            width: 380px; 
-            background: var(--card); 
-            border: 1px solid var(--border); 
-            border-radius: var(--radius-lg); 
-            z-index: 1000; 
-            transform: translateY(calc(100% - 50px)); 
-            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
-            box-shadow: var(--shadow-primary);
-            backdrop-filter: blur(20px);
-        }
-        
-        .debug-panel.open { 
-            transform: translateY(0); 
-        }
-        
-        .debug-header { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            padding: 12px 18px; 
-            background: rgba(0, 0, 0, 0.4); 
-            border-radius: var(--radius-lg) var(--radius-lg) 0 0; 
+
+        .load-more-btn {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border);
+            border-radius: 30px;
+            padding: 10px 20px;
+            color: var(--text);
+            font-size: 0.75rem;
             cursor: pointer;
-            border-bottom: 1px solid var(--border);
+            transition: var(--transition);
         }
-        
-        .debug-title { 
-            font-size: 0.8rem; 
-            font-weight: 700; 
-            display: flex; 
-            align-items: center; 
-            gap: 8px; 
-            color: var(--primary-light);
-            text-transform: uppercase;
-            letter-spacing: 1px;
+
+        .load-more-btn:hover {
+            border-color: var(--primary);
+            background: rgba(0, 212, 255, 0.08);
         }
-        
-        .debug-controls { 
-            display: flex; 
-            gap: 10px; 
+
+        .load-more-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
-        
-        .debug-controls button { 
-            background: none; 
-            border: none; 
-            color: var(--text-muted); 
-            cursor: pointer; 
-            font-size: 0.8rem; 
-            transition: var(--transition); 
-        }
-        
-        .debug-controls button:hover { 
-            color: var(--primary); 
-            transform: scale(1.1);
-        }
-        
-        .debug-content { 
-            padding: 12px; 
-            max-height: 300px; 
-            overflow-y: auto; 
-            font-family: 'Space Grotesk', monospace; 
-            font-size: 0.7rem; 
-        }
-        
-        .debug-log { 
-            padding: 5px 0; 
-            border-bottom: 1px solid var(--border); 
-            display: flex; 
-            gap: 10px; 
-            animation: fadeIn 0.3s ease; 
-        }
-        
-        @keyframes fadeIn { 
-            from { 
-                opacity: 0; 
-                transform: translateX(-10px); 
-            } 
-            to { 
-                opacity: 1; 
-                transform: translateX(0); 
-            } 
-        }
-        
-        .debug-time { 
-            color: var(--text-muted); 
-            min-width: 70px; 
-            font-size: 0.6rem; 
-        }
-        
-        .debug-success { color: var(--success); }
-        .debug-error { color: var(--error); }
-        .debug-info { color: var(--info); }
-        .debug-warning { color: var(--warning); }
-        
-        /* Toast với animation */
-        .toast { 
-            position: fixed; 
-            bottom: 20px; 
-            left: 20px; 
-            background: var(--card); 
-            backdrop-filter: blur(20px); 
-            border: 1px solid var(--border); 
-            border-radius: var(--radius-md); 
-            padding: 12px 20px; 
-            display: flex; 
-            align-items: center; 
-            gap: 12px; 
-            transform: translateX(-400px); 
-            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); 
-            z-index: 1001; 
-            border-left: 4px solid var(--primary);
-            box-shadow: var(--shadow-primary);
-        }
-        
-        .toast.show { 
-            transform: translateX(0); 
-        }
-        
-        .toast-success { border-left-color: var(--success); }
-        .toast-error { border-left-color: var(--error); }
-        .toast-info { border-left-color: var(--info); }
-        
+
         /* Empty State */
         .empty-state { 
             text-align: center; 
-            padding: 50px; 
+            padding: 40px; 
             color: var(--text-muted); 
         }
-        
+
         .empty-icon { 
-            font-size: 4rem; 
+            font-size: 3.5rem; 
             margin-bottom: 15px; 
             opacity: 0.5; 
-            animation: float 3s ease-in-out infinite;
             color: var(--primary);
         }
-        
-        @keyframes float { 
-            0%, 100% { transform: translateY(0); } 
-            50% { transform: translateY(-15px); } 
+
+        .empty-state .btn {
+            width: auto;
+            margin: 15px auto 0;
+            padding: 10px 24px;
         }
-        
-        /* Spinner */
-        .spinner { 
-            width: 18px; 
-            height: 18px; 
-            border: 2px solid rgba(255, 255, 255, 0.2); 
-            border-top-color: var(--primary); 
-            border-radius: 50%; 
-            animation: spin 0.8s linear infinite; 
-            display: inline-block;
-            box-shadow: var(--glow);
+
+        /* Skeleton Loading */
+        .skeleton {
+            background: linear-gradient(90deg, rgba(255,255,255,0.05) 25%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.05) 75%);
+            background-size: 200% 100%;
+            animation: skeleton-loading 1.5s infinite;
+            border-radius: var(--radius-sm);
         }
-        
-        @keyframes spin { 
-            to { transform: rotate(360deg); } 
+
+        @keyframes skeleton-loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
         }
-        
-        /* Footer */
-        .footer { 
-            text-align: center; 
-            padding: 25px; 
-            margin-top: 30px; 
-            border-top: 1px solid var(--border); 
-            color: var(--text-muted); 
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
+
+        .skeleton-card {
+            height: 80px;
+            margin-bottom: 12px;
         }
-        
-        /* VM Config */
-        .vm-config { 
-            display: flex; 
-            gap: 12px; 
-            margin-top: 15px; 
-            padding: 8px 12px; 
-            background: rgba(0, 0, 0, 0.3); 
-            border-radius: var(--radius-sm); 
-            font-size: 0.65rem; 
-            color: var(--text-muted); 
-            flex-wrap: wrap; 
-            justify-content: center;
-            border: 1px solid var(--border);
-        }
-        
-        .vm-config span { 
-            display: inline-flex; 
-            align-items: center; 
-            gap: 5px; 
-            background: rgba(0, 212, 255, 0.1); 
-            padding: 3px 10px; 
-            border-radius: 20px;
-            border: 1px solid var(--border);
-        }
-        
-        /* Responsive */
-        @media (max-width: 640px) {
-            .container { padding: 15px; }
-            .card { padding: 20px; }
-            .debug-panel { width: calc(100% - 30px); right: 15px; }
-            .info-grid { grid-template-columns: 1fr; }
-            .logo { font-size: 2rem; }
-        }
-        
-        /* Loading Animation */
-        .loading-overlay {
+
+        /* Modal */
+        .modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--bg);
-            z-index: 9999;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
             display: flex;
             align-items: center;
             justify-content: center;
-            animation: fadeOut 0.5s ease 1s forwards;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
         }
-        
-        @keyframes fadeOut {
-            to { opacity: 0; visibility: hidden; }
+
+        .modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
         }
-        
-        .loading-spinner {
-            width: 60px;
-            height: 60px;
-            border: 3px solid var(--border);
-            border-top-color: var(--primary);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            box-shadow: var(--glow);
+
+        .modal {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-xl);
+            padding: 24px;
+            max-width: 400px;
+            width: 90%;
+            transform: scale(0.9);
+            transition: var(--transition);
         }
-        
-        /* Neon Text Effect */
-        .neon-text {
-            text-shadow: 
-                0 0 5px var(--primary),
-                0 0 10px var(--primary),
-                0 0 20px var(--primary),
-                0 0 40px var(--primary);
+
+        .modal-overlay.show .modal {
+            transform: scale(1);
         }
-        
-        /* Matrix Rain Effect (optional background element) */
-        .matrix-bg {
+
+        .modal-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--error);
+        }
+
+        .modal-body {
+            margin-bottom: 20px;
+            color: var(--text-muted);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+
+        .modal-btn {
+            padding: 10px 20px;
+            border-radius: var(--radius-md);
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text);
+        }
+
+        .modal-btn.confirm {
+            background: var(--error);
+            border-color: var(--error);
+            color: white;
+        }
+
+        .modal-btn.confirm:hover {
+            background: #ff1a6b;
+        }
+
+        .modal-btn.cancel:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Toast Container */
+        .toast-container {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            opacity: 0.03;
-            pointer-events: none;
+            bottom: 20px;
+            left: 20px;
+            z-index: 3000;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .toast {
+            background: var(--card);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 12px 18px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transform: translateX(-400px);
+            transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            border-left: 4px solid var(--primary);
+            box-shadow: var(--shadow-primary);
+            min-width: 280px;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast-success { border-left-color: var(--success); }
+        .toast-error { border-left-color: var(--error); }
+        .toast-warning { border-left-color: var(--warning); }
+        .toast-info { border-left-color: var(--info); }
+
+        .toast i {
+            font-size: 1.2rem;
+        }
+
+        .toast-success i { color: var(--success); }
+        .toast-error i { color: var(--error); }
+        .toast-warning i { color: var(--warning); }
+        .toast-info i { color: var(--info); }
+
+        .toast-message {
+            flex: 1;
+            font-size: 0.85rem;
+        }
+
+        .toast-close {
+            cursor: pointer;
+            opacity: 0.6;
+            transition: var(--transition);
+        }
+
+        .toast-close:hover {
+            opacity: 1;
+        }
+
+        /* Keyboard Shortcuts Cheat Sheet */
+        .shortcuts-modal {
+            max-width: 500px;
+        }
+
+        .shortcuts-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .shortcut-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .shortcut-key {
+            background: rgba(0, 212, 255, 0.1);
+            padding: 4px 10px;
+            border-radius: var(--radius-sm);
             font-family: monospace;
-            font-size: 14px;
+            font-size: 0.75rem;
+            border: 1px solid var(--border);
+        }
+
+        /* Spinner */
+        .spinner { 
+            width: 16px; 
+            height: 16px; 
+            border: 2px solid rgba(255, 255, 255, 0.2); 
+            border-top-color: var(--primary); 
+            border-radius: 50%; 
+            animation: spin 0.6s linear infinite; 
+            display: inline-block;
+        }
+
+        @keyframes spin { 
+            to { transform: rotate(360deg); } 
+        }
+
+        /* Footer */
+        .footer { 
+            text-align: center; 
+            padding: 20px; 
+            margin-top: 24px; 
+            border-top: 1px solid var(--border); 
+            color: var(--text-muted); 
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .container { padding: 12px; }
+            .card { padding: 16px; }
+            .logo { font-size: 1.6rem; }
+            .badge-container { gap: 6px; }
+            .badge { padding: 4px 10px; font-size: 0.6rem; }
+            .vm-controls { flex-wrap: wrap; }
+            .vm-search { min-width: 100%; }
+            .vm-filter, .vm-sort { flex: 1; }
+            .connection-status { top: 10px; right: 10px; font-size: 0.6rem; }
+            .toast { min-width: auto; max-width: 300px; }
+        }
+
+        /* Pull to refresh indicator */
+        .ptr-indicator {
+            text-align: center;
+            padding: 10px;
+            color: var(--text-muted);
+            font-size: 0.7rem;
+            transition: var(--transition);
+        }
+
+        .ptr-indicator.pulling {
             color: var(--primary);
+        }
+
+        .ptr-indicator i {
+            animation: spin 0.8s infinite;
         }
     </style>
 </head>
 <body>
-    <!-- Particles Background -->
-    <div id="particles-js"></div>
-    <div class="grid-bg"></div>
-    <div class="scanline"></div>
-    
-    <!-- Loading Overlay -->
-    <div class="loading-overlay">
-        <div class="loading-spinner"></div>
+    <!-- Connection Status -->
+    <div class="connection-status" id="connectionStatus" onclick="checkBackendConnection()">
+        <span class="status-dot" id="statusDot"></span>
+        <span id="statusText">Checking...</span>
     </div>
-    
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Modal Container -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal" id="modal">
+            <div class="modal-title" id="modalTitle">Confirm</div>
+            <div class="modal-body" id="modalBody">Are you sure?</div>
+            <div class="modal-actions" id="modalActions">
+                <button class="modal-btn cancel" onclick="closeModal()">Cancel</button>
+                <button class="modal-btn confirm" id="modalConfirmBtn">Confirm</button>
+            </div>
+        </div>
+    </div>
+
     <div class="container">
         <!-- Header -->
         <div class="header">
             <div class="logo">
                 <i class="fas fa-infinity"></i> SINGULARITY CLUB
             </div>
-            <div class="subtitle">Quantum Virtual Machine Platform • Powered by GitHub Actions</div>
+            <div class="subtitle">Quantum Virtual Machine Platform</div>
             <div class="badge-container">
                 <div class="badge"><i class="fab fa-github"></i> GitHub Actions</div>
                 <div class="badge"><i class="fas fa-network-wired"></i> Tailscale VPN</div>
                 <div class="badge"><i class="fas fa-shield-alt"></i> Quantum Security</div>
                 <div class="badge"><i class="fas fa-chart-line"></i> Live Monitor</div>
-                <div class="badge"><i class="fas fa-hourglass-half"></i> 6h Countdown</div>
+                <div class="badge"><i class="fas fa-hourglass-half"></i> 6h Runtime</div>
                 <div class="badge"><i class="fas fa-terminal"></i> Real Commands</div>
             </div>
         </div>
@@ -1410,11 +1401,11 @@
                 <div class="stat-value" id="statTotal">0</div>
             </div>
             <div class="stat-card">
-                <div class="stat-label"><i class="fas fa-play-circle"></i> ACTIVE VMS</div>
+                <div class="stat-label"><i class="fas fa-play-circle"></i> ACTIVE</div>
                 <div class="stat-value" id="statActive">0</div>
             </div>
             <div class="stat-card">
-                <div class="stat-label"><i class="fas fa-spinner"></i> CREATING VMS</div>
+                <div class="stat-label"><i class="fas fa-spinner"></i> CREATING</div>
                 <div class="stat-value" id="statCreating">0</div>
             </div>
             <div class="stat-card">
@@ -1424,254 +1415,220 @@
         </div>
 
         <div class="two-columns">
-            <!-- Form tạo VM -->
+            <!-- Form -->
             <div class="card">
                 <div class="card-title">
                     <i class="fas fa-rocket"></i> 
-                    <span class="neon-text">Khởi tạo Virtual Machine</span>
-                </div>
-                <div class="input-group">
-                    <label class="input-label"><i class="fab fa-github"></i> GitHub Token</label>
-                    <input type="password" class="input-field" id="githubToken" placeholder="ghp_xxxxxxxxxxxx">
-                    <div style="font-size:0.65rem; color:var(--text-muted); margin-top:5px;">
-                        <i class="fas fa-info-circle"></i> Cần quyền repo và workflow
-                    </div>
-                </div>
-                <div class="input-group">
-                    <label class="input-label"><i class="fas fa-network-wired"></i> Tailscale Key</label>
-                    <input type="password" class="input-field" id="tailscaleKey" placeholder="tskey-xxxxxxxxxxxx">
-                    <div style="font-size:0.65rem; color:var(--text-muted); margin-top:5px;">
-                        <i class="fas fa-key"></i> Lấy từ <a href="https://login.tailscale.com/admin/authkeys" target="_blank" style="color:var(--primary);">login.tailscale.com</a>
-                    </div>
-                </div>
-                <div class="input-row">
-                    <div class="input-group">
-                        <label class="input-label"><i class="fas fa-user"></i> Tên đăng nhập</label>
-                        <input type="text" class="input-field" id="vmUsername" placeholder="username">
-                    </div>
-                    <button class="random-btn" id="randomUserBtn"><i class="fas fa-dice"></i> Random</button>
-                </div>
-                <div class="input-row">
-                    <div class="input-group">
-                        <label class="input-label"><i class="fas fa-lock"></i> Mật khẩu</label>
-                        <input type="password" class="input-field" id="vmPassword" placeholder="password">
-                    </div>
-                    <button class="random-btn" id="randomPassBtn"><i class="fas fa-dice"></i> Random</button>
+                    Initialize Quantum VM
                 </div>
                 
-                <!-- Progress Bar -->
+                <div class="input-group">
+                    <label class="input-label"><i class="fab fa-github"></i> GitHub Token</label>
+                    <div class="input-wrapper">
+                        <input type="password" class="input-field" id="githubToken" placeholder="ghp_xxxxxxxxxxxx" autocomplete="off">
+                        <span class="validation-icon" id="githubTokenIcon"></span>
+                    </div>
+                    <div class="input-hint">
+                        <i class="fas fa-info-circle"></i> 
+                        <a href="https://github.com/settings/tokens" target="_blank">Get Token</a> - Cần scope: <code>repo</code>, <code>workflow</code>
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label class="input-label"><i class="fas fa-key"></i> Tailscale Key</label>
+                    <div class="input-wrapper">
+                        <input type="password" class="input-field" id="tailscaleKey" placeholder="tskey-xxxxxxxxxxxx" autocomplete="off">
+                        <span class="validation-icon" id="tailscaleKeyIcon"></span>
+                    </div>
+                    <div class="input-hint">
+                        <i class="fas fa-info-circle"></i> 
+                        <a href="https://login.tailscale.com/admin/settings/keys" target="_blank">Get Auth Key</a>
+                    </div>
+                </div>
+                
+                <div class="input-row">
+                    <div class="input-group">
+                        <label class="input-label"><i class="fas fa-user"></i> Username</label>
+                        <input type="text" class="input-field" id="vmUsername" placeholder="username">
+                    </div>
+                    <button class="random-btn" id="randomUserBtn" data-tooltip="Tạo username ngẫu nhiên">
+                        <i class="fas fa-dice"></i> Random
+                    </button>
+                </div>
+                
+                <div class="input-row">
+                    <div class="input-group">
+                        <label class="input-label"><i class="fas fa-lock"></i> Password</label>
+                        <input type="password" class="input-field" id="vmPassword" placeholder="password">
+                    </div>
+                    <button class="random-btn" id="randomPassBtn" data-tooltip="Tạo password mạnh">
+                        <i class="fas fa-dice"></i> Random
+                    </button>
+                </div>
+                
+                <div class="input-row">
+                    <button class="test-btn" id="testGithubBtn">
+                        <i class="fas fa-check-circle"></i> Test Token
+                    </button>
+                    <button class="test-btn" id="testTailscaleBtn">
+                        <i class="fas fa-check-circle"></i> Test Key
+                    </button>
+                </div>
+                
+                <!-- Progress -->
                 <div class="progress-container" id="createProgressContainer">
                     <div class="progress-steps" id="createProgressSteps">
-                        <div class="progress-step"><i class="fas fa-key"></i> Token</div>
-                        <div class="progress-step"><i class="fas fa-folder-plus"></i> Repo</div>
-                        <div class="progress-step"><i class="fas fa-file-code"></i> Workflow</div>
-                        <div class="progress-step"><i class="fas fa-play"></i> Trigger</div>
-                        <div class="progress-step"><i class="fas fa-check-circle"></i> Done</div>
+                        <div class="progress-step" data-step="0"><i class="fas fa-key"></i> Validate</div>
+                        <div class="progress-step" data-step="1"><i class="fas fa-folder-plus"></i> Repo</div>
+                        <div class="progress-step" data-step="2"><i class="fas fa-file-code"></i> Workflow</div>
+                        <div class="progress-step" data-step="3"><i class="fas fa-play"></i> Trigger</div>
+                        <div class="progress-step" data-step="4"><i class="fas fa-check-circle"></i> Ready</div>
                     </div>
-                    <div class="progress-bar"><div class="progress-fill" id="createProgressFill"></div></div>
-                    <div class="progress-text" id="createProgressText">Sẵn sàng khởi tạo</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="createProgressFill"></div>
+                    </div>
+                    <div class="progress-text" id="createProgressText">Ready to launch</div>
                 </div>
                 
                 <button class="btn btn-primary" id="createBtn">
-                    <i class="fas fa-play"></i> Tạo VM Ngay
+                    <i class="fas fa-play"></i> Launch Quantum VM
                 </button>
                 
                 <div class="quick-actions">
-                    <div class="quick-btn" id="demoBtn"><i class="fas fa-flask"></i> Demo</div>
-                    <div class="quick-btn" id="clearBtn"><i class="fas fa-eraser"></i> Xóa</div>
-                    <div class="quick-btn" id="refreshBtn"><i class="fas fa-sync-alt"></i> Làm mới</div>
-                    <div class="quick-btn" id="saveConfigBtn"><i class="fas fa-save"></i> Lưu</div>
-                    <div class="quick-btn" id="loadConfigBtn"><i class="fas fa-folder-open"></i> Tải</div>
+                    <div class="quick-btn" id="saveConfigBtn" data-tooltip="Lưu cấu hình vào trình duyệt">
+                        <i class="fas fa-save"></i> Save
+                    </div>
+                    <div class="quick-btn" id="loadConfigBtn" data-tooltip="Tải cấu hình đã lưu">
+                        <i class="fas fa-folder-open"></i> Load
+                    </div>
+                    <div class="quick-btn" id="clearFormBtn" data-tooltip="Xóa form">
+                        <i class="fas fa-eraser"></i> Clear
+                    </div>
+                    <div class="quick-btn" id="refreshPageBtn" data-tooltip="Làm mới dữ liệu">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </div>
+                </div>
+                
+                <div style="margin-top: 12px; font-size: 0.65rem; color: var(--text-muted); text-align: center;">
+                    <i class="fas fa-keyboard"></i> Shortcuts: <kbd style="background: var(--card); padding: 2px 6px; border-radius: 4px;">Ctrl+N</kbd> Create · 
+                    <kbd style="background: var(--card); padding: 2px 6px; border-radius: 4px;">Ctrl+R</kbd> Refresh · 
+                    <kbd style="background: var(--card); padding: 2px 6px; border-radius: 4px;">?</kbd> Help
                 </div>
             </div>
 
-            <!-- Danh sách VM -->
+            <!-- VM List -->
             <div class="card">
                 <div class="card-title">
-                    <span><i class="fas fa-server"></i> Virtual Machines</span>
-                    <button class="refresh-vm-btn" id="manualRefreshBtn" style="background:none; border:none; color:var(--primary); cursor:pointer; margin-left:auto;">
+                    <span><i class="fas fa-server"></i> Quantum VMs</span>
+                    <button class="refresh-vm-btn" id="manualRefreshBtn" style="background:none; border:none; color:var(--primary); cursor:pointer; margin-left:auto;" data-tooltip="Làm mới danh sách">
                         <i class="fas fa-sync-alt"></i>
                     </button>
                 </div>
+                
+                <!-- Selection Toolbar -->
+                <div class="selection-toolbar" id="selectionToolbar">
+                    <span class="selection-count" id="selectionCount">0 selected</span>
+                    <div class="selection-actions">
+                        <button class="selection-btn" onclick="toggleSelectionMode()">
+                            <i class="fas fa-times"></i> Cancel
+                        </button>
+                        <button class="selection-btn delete" onclick="batchDeleteVMs()">
+                            <i class="fas fa-trash-alt"></i> Delete Selected
+                        </button>
+                    </div>
+                </div>
+                
                 <div class="vm-controls">
-                    <input type="text" class="vm-search" id="searchInput" placeholder="🔍 Tìm kiếm VM...">
+                    <input type="text" class="vm-search" id="searchInput" placeholder="🔍 Search VMs...">
                     <select class="vm-filter" id="filterSelect">
-                        <option value="all">📋 Tất cả</option>
-                        <option value="running">✅ Đang chạy</option>
-                        <option value="creating">⚙️ Đang tạo</option>
+                        <option value="all">All</option>
+                        <option value="running">Running</option>
+                        <option value="creating">Creating</option>
+                        <option value="expired">Expired</option>
                     </select>
                     <select class="vm-sort" id="sortSelect">
-                        <option value="newest">🕐 Mới nhất</option>
-                        <option value="expiring">⏰ Sắp hết hạn</option>
+                        <option value="newest">Newest</option>
+                        <option value="oldest">Oldest</option>
+                        <option value="expiring">Expiring Soon</option>
+                        <option value="name">Name A-Z</option>
                     </select>
                     <div class="vm-count">
                         <i class="fas fa-chart-simple"></i> 
                         <span id="vmCount">0</span>
                     </div>
+                    <button class="quick-btn" onclick="toggleSelectionMode()" style="padding: 8px 12px;" data-tooltip="Chọn nhiều VM">
+                        <i class="fas fa-check-double"></i>
+                    </button>
                 </div>
+                
+                <!-- Pull to refresh indicator -->
+                <div class="ptr-indicator" id="ptrIndicator">
+                    <i class="fas fa-arrow-down"></i> Pull to refresh
+                </div>
+                
                 <div class="vm-list" id="vmList">
-                    <div class="empty-state">
-                        <div class="empty-icon"><i class="fas fa-cloud-upload-alt"></i></div>
-                        <div>✨ Chưa có VM nào<br>Tạo VM đầu tiên bên trái ✨</div>
-                    </div>
+                    <!-- Skeleton Loading -->
+                    <div class="skeleton skeleton-card"></div>
+                    <div class="skeleton skeleton-card"></div>
+                    <div class="skeleton skeleton-card"></div>
                 </div>
-                <div class="pagination" id="pagination"></div>
-            </div>
-        </div>
-        
-        <!-- Debug Panel -->
-        <div class="debug-panel" id="debugPanel">
-            <div class="debug-header" id="debugHeader">
-                <div class="debug-title"><i class="fas fa-terminal"></i> Quantum Debug Console</div>
-                <div class="debug-controls">
-                    <button id="clearDebugBtn"><i class="fas fa-trash-alt"></i></button>
+                
+                <div class="load-more" id="loadMoreContainer" style="display: none;">
+                    <button class="load-more-btn" id="loadMoreBtn" onclick="loadMore()">
+                        <i class="fas fa-chevron-down"></i> Load More
+                    </button>
                 </div>
-            </div>
-            <div class="debug-content" id="debugContent">
-                <div class="debug-log"><span class="debug-time">--:--:--</span><span class="debug-info">🚀 Hệ thống khởi động</span></div>
-                <div class="debug-log"><span class="debug-time">--:--:--</span><span class="debug-info">🔗 Kết nối đến API: http://34.80.216.29:5000</span></div>
             </div>
         </div>
         
         <div class="footer">
-            <div>© 2026 Singularity Club | <i class="fas fa-code-branch"></i> v2.0 Quantum | 4 vCore | 16GB RAM | 25GB NVMe SSD | <i class="fas fa-bolt"></i> Powered by Quantum Computing</div>
+            <div>© 2026 Singularity Club | v2.0 Quantum | <i class="fas fa-microchip"></i> 4 vCore | 16GB RAM | 25GB NVMe | 
+                <span style="color: var(--primary); cursor: pointer;" onclick="showShortcuts()">
+                    <i class="fas fa-keyboard"></i> Shortcuts
+                </span>
+            </div>
         </div>
     </div>
-    
-    <!-- Toast -->
-    <div id="toast" class="toast">
-        <i class="fas fa-check-circle"></i> 
-        <span id="toastMsg"></span>
-    </div>
-
-    <!-- Particles.js Configuration -->
-    <script>
-        particlesJS('particles-js', {
-            "particles": {
-                "number": {
-                    "value": 80,
-                    "density": {
-                        "enable": true,
-                        "value_area": 800
-                    }
-                },
-                "color": {
-                    "value": ["#00d4ff", "#ff006e", "#8338ec"]
-                },
-                "shape": {
-                    "type": "circle",
-                    "stroke": {
-                        "width": 0,
-                        "color": "#000000"
-                    }
-                },
-                "opacity": {
-                    "value": 0.5,
-                    "random": true,
-                    "anim": {
-                        "enable": true,
-                        "speed": 1,
-                        "opacity_min": 0.1,
-                        "sync": false
-                    }
-                },
-                "size": {
-                    "value": 3,
-                    "random": true,
-                    "anim": {
-                        "enable": true,
-                        "speed": 2,
-                        "size_min": 0.1,
-                        "sync": false
-                    }
-                },
-                "line_linked": {
-                    "enable": true,
-                    "distance": 150,
-                    "color": "#00d4ff",
-                    "opacity": 0.2,
-                    "width": 1
-                },
-                "move": {
-                    "enable": true,
-                    "speed": 1,
-                    "direction": "none",
-                    "random": true,
-                    "straight": false,
-                    "out_mode": "out",
-                    "bounce": false,
-                    "attract": {
-                        "enable": true,
-                        "rotateX": 600,
-                        "rotateY": 1200
-                    }
-                }
-            },
-            "interactivity": {
-                "detect_on": "canvas",
-                "events": {
-                    "onhover": {
-                        "enable": true,
-                        "mode": "repulse"
-                    },
-                    "onclick": {
-                        "enable": true,
-                        "mode": "push"
-                    },
-                    "resize": true
-                },
-                "modes": {
-                    "grab": {
-                        "distance": 400,
-                        "line_linked": {
-                            "opacity": 1
-                        }
-                    },
-                    "bubble": {
-                        "distance": 400,
-                        "size": 40,
-                        "duration": 2,
-                        "opacity": 8,
-                        "speed": 3
-                    },
-                    "repulse": {
-                        "distance": 100,
-                        "duration": 0.4
-                    },
-                    "push": {
-                        "particles_nb": 4
-                    },
-                    "remove": {
-                        "particles_nb": 2
-                    }
-                }
-            },
-            "retina_detect": true
-        });
-    </script>
 
     <script>
         // ============================================ //
-        // CẤU HÌNH - KẾT NỐI ĐẾN BACKEND THẬT
+        // CONFIGURATION - KẾT NỐI BACKEND
         // ============================================ //
-        const API_URL = 'http://34.80.216.29:5000/api/vps';
-        const HEALTH_URL = 'http://34.80.216.29:5000/api/health';
-        const STATS_URL = 'http://34.80.216.29:5000/api/stats';
-        const STORAGE_KEY = 'singularity_vms_quantum';
-        const CONFIG_KEY = 'singularity_config_quantum';
+        const API_BASE_URL = window.location.hostname === 'localhost' 
+            ? 'http://localhost:5000' 
+            : `http://${window.location.hostname}:5000`;
         
+        const API_URL = `${API_BASE_URL}/api/vps`;
+        const HEALTH_URL = `${API_BASE_URL}/api/health`;
+        const STATS_URL = `${API_BASE_URL}/api/stats`;
+        const VALIDATE_GITHUB_URL = `${API_BASE_URL}/api/validate/github`;
+        const VALIDATE_TAILSCALE_URL = `${API_BASE_URL}/api/validate/tailscale`;
+        
+        const STORAGE_KEY = 'singularity_vms_v2';
+        const CONFIG_KEY = 'singularity_config_v2';
+        const SORT_PREF_KEY = 'singularity_sort_pref';
+        
+        // State
         let vms = [];
+        let filteredVMs = [];
         let currentFilter = 'all';
         let currentSort = 'newest';
+        let currentSearch = '';
+        let currentPage = 1;
+        const ITEMS_PER_PAGE = 10;
+        let hasMore = true;
+        let isLoading = false;
+        let backendConnected = false;
+        let countdownIntervals = {};
+        let currentOpenVM = null;
+        let selectionMode = false;
+        let selectedVMs = new Set();
         let totalCreations = 0;
         let successfulCreations = 0;
-        let currentOpenVM = null;
-        let countdownIntervals = {};
-        let currentPage = 1;
-        let passwordVisible = {};
-        let backendConnected = false;
-        let refreshInterval = null;
-        const ITEMS_PER_PAGE = 4;
+        
+        // Debounce timers
+        let searchDebounceTimer = null;
+        let validationDebounceTimer = null;
         
         // DOM Elements
         const elements = {
@@ -1693,124 +1650,333 @@
             createProgressFill: document.getElementById('createProgressFill'),
             createProgressText: document.getElementById('createProgressText'),
             createProgressSteps: document.getElementById('createProgressSteps'),
-            pagination: document.getElementById('pagination'),
-            toast: document.getElementById('toast'),
-            toastMsg: document.getElementById('toastMsg'),
-            debugContent: document.getElementById('debugContent')
+            loadMoreContainer: document.getElementById('loadMoreContainer'),
+            loadMoreBtn: document.getElementById('loadMoreBtn'),
+            selectionToolbar: document.getElementById('selectionToolbar'),
+            selectionCount: document.getElementById('selectionCount'),
+            statusDot: document.getElementById('statusDot'),
+            statusText: document.getElementById('statusText'),
+            githubTokenIcon: document.getElementById('githubTokenIcon'),
+            tailscaleKeyIcon: document.getElementById('tailscaleKeyIcon'),
+            ptrIndicator: document.getElementById('ptrIndicator')
         };
         
         // ============================================ //
-        // CONFETTI EFFECT
+        // TOAST SYSTEM
         // ============================================ //
-        function triggerConfetti() {
-            confetti({
-                particleCount: 150,
-                spread: 100,
-                origin: { y: 0.6 },
-                colors: ['#00d4ff', '#ff006e', '#8338ec', '#00f5d4']
-            });
+        function showToast(message, type = 'info', duration = 4000) {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
             
-            setTimeout(() => {
-                confetti({
-                    particleCount: 100,
-                    spread: 120,
-                    origin: { y: 0.5, x: 0.3 },
-                    colors: ['#00d4ff', '#ff006e']
-                });
-            }, 200);
+            const icons = {
+                success: 'fa-check-circle',
+                error: 'fa-exclamation-circle',
+                warning: 'fa-exclamation-triangle',
+                info: 'fa-info-circle'
+            };
             
+            toast.innerHTML = `
+                <i class="fas ${icons[type] || icons.info}"></i>
+                <span class="toast-message">${message}</span>
+                <span class="toast-close" onclick="this.parentElement.remove()">
+                    <i class="fas fa-times"></i>
+                </span>
+            `;
+            
+            container.appendChild(toast);
+            
+            // Trigger animation
+            setTimeout(() => toast.classList.add('show'), 10);
+            
+            // Auto remove
             setTimeout(() => {
-                confetti({
-                    particleCount: 100,
-                    spread: 120,
-                    origin: { y: 0.5, x: 0.7 },
-                    colors: ['#8338ec', '#00f5d4']
-                });
-            }, 400);
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 300);
+            }, duration);
         }
         
         // ============================================ //
-        // DEBUG LOG
+        // MODAL SYSTEM
         // ============================================ //
-        function addDebugLog(msg, type = 'info') {
-            const time = new Date().toLocaleTimeString();
-            const div = document.createElement('div');
-            div.className = 'debug-log';
-            div.innerHTML = `<span class="debug-time">${time}</span><span class="debug-${type}">${msg}</span>`;
-            elements.debugContent.insertBefore(div, elements.debugContent.firstChild);
-            if (elements.debugContent.children.length > 100) {
-                elements.debugContent.removeChild(elements.debugContent.lastChild);
+        let modalCallback = null;
+        
+        function showModal(title, body, confirmText = 'Confirm', onConfirm = null, type = 'danger') {
+            const overlay = document.getElementById('modalOverlay');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalBody = document.getElementById('modalBody');
+            const confirmBtn = document.getElementById('modalConfirmBtn');
+            
+            modalTitle.textContent = title;
+            modalBody.textContent = body;
+            confirmBtn.textContent = confirmText;
+            modalTitle.style.color = type === 'danger' ? 'var(--error)' : 'var(--primary)';
+            
+            modalCallback = onConfirm;
+            
+            overlay.classList.add('show');
+        }
+        
+        function closeModal() {
+            document.getElementById('modalOverlay').classList.remove('show');
+            modalCallback = null;
+        }
+        
+        document.getElementById('modalConfirmBtn').onclick = function() {
+            if (modalCallback) {
+                modalCallback();
             }
-        }
-        
-        function showToast(msg, type = 'success') {
-            elements.toastMsg.textContent = msg;
-            elements.toast.className = `toast toast-${type} show`;
-            
-            const icon = elements.toast.querySelector('i');
-            if (type === 'success') icon.className = 'fas fa-check-circle';
-            else if (type === 'error') icon.className = 'fas fa-exclamation-circle';
-            else if (type === 'info') icon.className = 'fas fa-info-circle';
-            
-            setTimeout(() => elements.toast.classList.remove('show'), 4000);
-            addDebugLog(msg, type);
-        }
+            closeModal();
+        };
         
         // ============================================ //
-        // KIỂM TRA KẾT NỐI BACKEND
+        // CONNECTION STATUS
         // ============================================ //
         async function checkBackendConnection() {
             try {
                 const res = await fetch(HEALTH_URL);
                 if (res.ok) {
-                    const data = await res.json();
                     backendConnected = true;
-                    addDebugLog('✅ Kết nối Quantum Backend thành công', 'success');
+                    elements.statusDot.classList.remove('offline');
+                    elements.statusText.textContent = 'Connected';
+                    showToast('Backend connected', 'success', 2000);
+                    loadVMs();
+                    loadStats();
                     return true;
                 } else {
-                    backendConnected = false;
-                    addDebugLog('❌ Backend trả về lỗi: ' + res.status, 'error');
-                    showToast('⚠️ Backend đang gặp vấn đề, vui lòng thử lại sau', 'error');
-                    return false;
+                    throw new Error('API error');
                 }
             } catch (e) {
                 backendConnected = false;
-                addDebugLog(`❌ Không thể kết nối Quantum Backend: ${e.message}`, 'error');
-                showToast('⚠️ Không thể kết nối đến server (34.80.216.29:5000)', 'error');
+                elements.statusDot.classList.add('offline');
+                elements.statusText.textContent = 'Offline';
+                showToast('Cannot connect to backend', 'error', 3000);
                 return false;
             }
         }
         
         // ============================================ //
+        // VALIDATION
+        // ============================================ //
+        function validateGitHubTokenFormat(token) {
+            return /^ghp_[A-Za-z0-9]{36,}$/.test(token);
+        }
+        
+        function validateTailscaleKeyFormat(key) {
+            return /^tskey-[A-Za-z0-9]+-[A-Za-z0-9]+$/.test(key);
+        }
+        
+        async function testGitHubToken() {
+            const token = elements.githubToken.value.trim();
+            if (!token) {
+                showToast('Please enter GitHub token', 'warning');
+                return;
+            }
+            
+            if (!validateGitHubTokenFormat(token)) {
+                elements.githubToken.classList.add('invalid');
+                elements.githubTokenIcon.className = 'validation-icon invalid';
+                elements.githubTokenIcon.innerHTML = '<i class="fas fa-times-circle"></i>';
+                showToast('Invalid token format', 'error');
+                return;
+            }
+            
+            const btn = document.getElementById('testGithubBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner"></span> Testing...';
+            
+            try {
+                const res = await fetch(VALIDATE_GITHUB_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ token })
+                });
+                
+                const data = await res.json();
+                
+                if (data.valid) {
+                    elements.githubToken.classList.add('valid');
+                    elements.githubToken.classList.remove('invalid');
+                    elements.githubTokenIcon.className = 'validation-icon valid';
+                    elements.githubTokenIcon.innerHTML = '<i class="fas fa-check-circle"></i>';
+                    showToast(`✅ Token valid - User: ${data.username}`, 'success');
+                } else {
+                    elements.githubToken.classList.add('invalid');
+                    elements.githubToken.classList.remove('valid');
+                    elements.githubTokenIcon.className = 'validation-icon invalid';
+                    elements.githubTokenIcon.innerHTML = '<i class="fas fa-times-circle"></i>';
+                    showToast(`❌ ${data.error}`, 'error');
+                }
+            } catch (e) {
+                showToast('Validation failed', 'error');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-check-circle"></i> Test Token';
+            }
+        }
+        
+        async function testTailscaleKey() {
+            const key = elements.tailscaleKey.value.trim();
+            if (!key) {
+                showToast('Please enter Tailscale key', 'warning');
+                return;
+            }
+            
+            if (!validateTailscaleKeyFormat(key)) {
+                elements.tailscaleKey.classList.add('invalid');
+                elements.tailscaleKeyIcon.className = 'validation-icon invalid';
+                elements.tailscaleKeyIcon.innerHTML = '<i class="fas fa-times-circle"></i>';
+                showToast('Invalid key format', 'error');
+                return;
+            }
+            
+            const btn = document.getElementById('testTailscaleBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner"></span> Testing...';
+            
+            try {
+                const res = await fetch(VALIDATE_TAILSCALE_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ key })
+                });
+                
+                const data = await res.json();
+                
+                if (data.valid) {
+                    elements.tailscaleKey.classList.add('valid');
+                    elements.tailscaleKey.classList.remove('invalid');
+                    elements.tailscaleKeyIcon.className = 'validation-icon valid';
+                    elements.tailscaleKeyIcon.innerHTML = '<i class="fas fa-check-circle"></i>';
+                    showToast(`✅ Key appears valid`, 'success');
+                } else {
+                    elements.tailscaleKey.classList.add('invalid');
+                    elements.tailscaleKey.classList.remove('valid');
+                    elements.tailscaleKeyIcon.className = 'validation-icon invalid';
+                    elements.tailscaleKeyIcon.innerHTML = '<i class="fas fa-times-circle"></i>';
+                    showToast(`❌ ${data.message}`, 'error');
+                }
+            } catch (e) {
+                showToast('Validation failed', 'error');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-check-circle"></i> Test Key';
+            }
+        }
+        
+        // Real-time validation
+        elements.githubToken.addEventListener('input', function() {
+            clearTimeout(validationDebounceTimer);
+            validationDebounceTimer = setTimeout(() => {
+                const token = this.value.trim();
+                if (!token) {
+                    elements.githubToken.classList.remove('valid', 'invalid');
+                    elements.githubTokenIcon.className = 'validation-icon';
+                    elements.githubTokenIcon.innerHTML = '';
+                } else if (validateGitHubTokenFormat(token)) {
+                    elements.githubToken.classList.add('valid');
+                    elements.githubToken.classList.remove('invalid');
+                    elements.githubTokenIcon.className = 'validation-icon valid';
+                    elements.githubTokenIcon.innerHTML = '<i class="fas fa-check-circle"></i>';
+                } else {
+                    elements.githubToken.classList.add('invalid');
+                    elements.githubToken.classList.remove('valid');
+                    elements.githubTokenIcon.className = 'validation-icon invalid';
+                    elements.githubTokenIcon.innerHTML = '<i class="fas fa-times-circle"></i>';
+                }
+            }, 300);
+        });
+        
+        elements.tailscaleKey.addEventListener('input', function() {
+            clearTimeout(validationDebounceTimer);
+            validationDebounceTimer = setTimeout(() => {
+                const key = this.value.trim();
+                if (!key) {
+                    elements.tailscaleKey.classList.remove('valid', 'invalid');
+                    elements.tailscaleKeyIcon.className = 'validation-icon';
+                    elements.tailscaleKeyIcon.innerHTML = '';
+                } else if (validateTailscaleKeyFormat(key)) {
+                    elements.tailscaleKey.classList.add('valid');
+                    elements.tailscaleKey.classList.remove('invalid');
+                    elements.tailscaleKeyIcon.className = 'validation-icon valid';
+                    elements.tailscaleKeyIcon.innerHTML = '<i class="fas fa-check-circle"></i>';
+                } else {
+                    elements.tailscaleKey.classList.add('invalid');
+                    elements.tailscaleKey.classList.remove('valid');
+                    elements.tailscaleKeyIcon.className = 'validation-icon invalid';
+                    elements.tailscaleKeyIcon.innerHTML = '<i class="fas fa-times-circle"></i>';
+                }
+            }, 300);
+        });
+        
+        // ============================================ //
         // UTILITIES
         // ============================================ //
         function randomUsername() {
-            const prefixes = ['quantum', 'cyber', 'neon', 'pulse', 'void', 'nexus', 'apex', 'crypt'];
+            const prefixes = ['quantum', 'cyber', 'neon', 'void', 'nexus', 'apex', 'pulse'];
             const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
-            let result = prefixes[Math.floor(Math.random() * prefixes.length)] + '_';
-            for (let i = 0; i < 6; i++) result += chars[Math.floor(Math.random() * chars.length)];
+            const prefix = prefixes[Math.floor(Math.random() * prefixes.length)];
+            let suffix = '';
+            for (let i = 0; i < 5; i++) suffix += chars[Math.floor(Math.random() * chars.length)];
+            return `${prefix}_${suffix}`;
+        }
+        
+        function randomPassword(length = 12) {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*';
+            let result = '';
+            for (let i = 0; i < length; i++) result += chars[Math.floor(Math.random() * chars.length)];
             return result;
         }
         
-        function randomPassword() {
-            const upper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-            const lower = 'abcdefghijklmnopqrstuvwxyz';
-            const numbers = '0123456789';
-            const special = '!@#$%^&*_+';
-            const all = upper + lower + numbers + special;
-            let result = '';
-            result += upper[Math.floor(Math.random() * upper.length)];
-            result += lower[Math.floor(Math.random() * lower.length)];
-            result += numbers[Math.floor(Math.random() * numbers.length)];
-            result += special[Math.floor(Math.random() * special.length)];
-            for (let i = 0; i < 12; i++) result += all[Math.floor(Math.random() * all.length)];
-            return result.split('').sort(() => Math.random() - 0.5).join('');
+        function formatRelativeTime(date) {
+            const now = new Date();
+            const diff = Math.floor((now - new Date(date)) / 1000);
+            if (diff < 60) return `${diff}s ago`;
+            if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
+            if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
+            return `${Math.floor(diff / 86400)}d ago`;
         }
         
-        function refreshFormCredentials() {
-            elements.vmUsername.value = randomUsername();
-            elements.vmPassword.value = randomPassword();
+        function formatCountdown(expiresAt) {
+            if (!expiresAt) return 'N/A';
+            const remaining = new Date(expiresAt) - Date.now();
+            if (remaining <= 0) return 'Expired';
+            const hours = Math.floor(remaining / (1000 * 60 * 60));
+            const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((remaining % (1000 * 60)) / 1000);
+            return `${hours}h ${minutes}m ${seconds}s`;
         }
+        
+        function getCountdownClass(expiresAt) {
+            if (!expiresAt) return '';
+            const remaining = new Date(expiresAt) - Date.now();
+            const minutes = remaining / (1000 * 60);
+            if (minutes <= 10) return 'danger';
+            if (minutes <= 60) return 'warning';
+            return '';
+        }
+        
+        function updateCountdowns() {
+            vms.forEach(vm => {
+                if (vm.status === 'running' && vm.expiresAt) {
+                    const element = document.getElementById(`countdown-${vm.id}`);
+                    if (element) {
+                        const remaining = new Date(vm.expiresAt) - Date.now();
+                        if (remaining <= 0) {
+                            element.textContent = 'Expired';
+                            element.className = 'countdown-timer danger';
+                            vm.status = 'expired';
+                        } else {
+                            element.textContent = formatCountdown(vm.expiresAt);
+                            element.className = `countdown-timer ${getCountdownClass(vm.expiresAt)}`;
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Start countdown updater
+        setInterval(updateCountdowns, 1000);
         
         function updateStats() {
             const running = vms.filter(v => v.status === 'running').length;
@@ -1820,249 +1986,377 @@
             elements.statActive.textContent = running;
             elements.statCreating.textContent = creating;
             
-            const rate = totalCreations > 0 ? Math.floor((successfulCreations / totalCreations) * 100) : 100;
+            const rate = totalCreations > 0 ? Math.round((successfulCreations / totalCreations) * 100) : 100;
             elements.statRate.textContent = rate + '%';
         }
         
-        function formatRelativeTime(date) {
-            const now = new Date();
-            const diff = Math.floor((now - date) / 1000);
-            if (diff < 60) return `${diff}s ago`;
-            if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
-            if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
-            return `${Math.floor(diff / 86400)}d ago`;
+        function saveConfig() {
+            const config = {
+                githubToken: elements.githubToken.value,
+                tailscaleKey: elements.tailscaleKey.value,
+                vmUsername: elements.vmUsername.value,
+                vmPassword: elements.vmPassword.value
+            };
+            localStorage.setItem(CONFIG_KEY, JSON.stringify(config));
+            showToast('Configuration saved', 'success');
         }
         
-        function formatCountdown(ms) {
-            if (ms <= 0) return 'EXPIRED';
-            const hours = Math.floor(ms / (1000 * 60 * 60));
-            const minutes = Math.floor((ms % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((ms % (1000 * 60)) / 1000);
-            return `${hours}h ${minutes}m ${seconds}s`;
-        }
-        
-        function updateCountdown(vmId) {
-            const vm = vms.find(v => v.id === vmId);
-            if (!vm || vm.status !== 'running') return;
-            const remaining = vm.expiresAt ? new Date(vm.expiresAt) - Date.now() : 0;
-            const countdownElement = document.getElementById(`countdown-${vmId}`);
-            if (countdownElement) {
-                if (remaining <= 0) {
-                    countdownElement.innerHTML = '<i class="fas fa-hourglass-end"></i> EXPIRED';
-                    if (countdownIntervals[vmId]) clearInterval(countdownIntervals[vmId]);
-                } else {
-                    countdownElement.innerHTML = `<i class="fas fa-hourglass-half"></i> ${formatCountdown(remaining)}`;
-                }
-            }
-        }
-        
-        function saveToLocal() { 
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(vms)); 
-        }
-        
-        function loadFromLocal() {
-            const saved = localStorage.getItem(STORAGE_KEY);
+        function loadConfig() {
+            const saved = localStorage.getItem(CONFIG_KEY);
             if (saved) {
                 try {
-                    vms = JSON.parse(saved);
-                    vms.forEach(vm => {
-                        if (vm.status === 'running' && vm.expiresAt) {
-                            if (countdownIntervals[vm.id]) clearInterval(countdownIntervals[vm.id]);
-                            countdownIntervals[vm.id] = setInterval(() => updateCountdown(vm.id), 1000);
-                        }
-                        if (!passwordVisible[vm.id]) passwordVisible[vm.id] = false;
-                    });
-                    renderVMList();
-                    updateStats();
-                } catch(e) { 
-                    addDebugLog('Lỗi tải dữ liệu quantum: ' + e.message, 'error'); 
+                    const config = JSON.parse(saved);
+                    if (config.githubToken) elements.githubToken.value = config.githubToken;
+                    if (config.tailscaleKey) elements.tailscaleKey.value = config.tailscaleKey;
+                    if (config.vmUsername) elements.vmUsername.value = config.vmUsername;
+                    if (config.vmPassword) elements.vmPassword.value = config.vmPassword;
+                    showToast('Configuration loaded', 'success');
+                } catch (e) {
+                    showToast('Failed to load config', 'error');
                 }
+            } else {
+                showToast('No saved configuration', 'info');
             }
         }
         
-        function updateCreateProgress(step, percent, text) {
-            elements.createProgressFill.style.width = percent + '%';
-            elements.createProgressText.textContent = text;
-            const steps = elements.createProgressSteps.children;
-            for (let i = 0; i < steps.length; i++) {
-                steps[i].classList.remove('active', 'completed');
-                if (i < step) steps[i].classList.add('completed');
-                else if (i === step) steps[i].classList.add('active');
-            }
+        function clearForm() {
+            elements.githubToken.value = '';
+            elements.tailscaleKey.value = '';
+            elements.vmUsername.value = '';
+            elements.vmPassword.value = '';
+            elements.githubToken.classList.remove('valid', 'invalid');
+            elements.tailscaleKey.classList.remove('valid', 'invalid');
+            elements.githubTokenIcon.className = 'validation-icon';
+            elements.tailscaleKeyIcon.className = 'validation-icon';
+            elements.githubTokenIcon.innerHTML = '';
+            elements.tailscaleKeyIcon.innerHTML = '';
+            showToast('Form cleared', 'info');
         }
         
         // ============================================ //
-        // COPY & PASSWORD
+        // COPY FUNCTIONS
         // ============================================ //
-        window.copyText = async function(text, btn) {
+        async function copyText(text, button) {
             try {
                 await navigator.clipboard.writeText(text);
-                const original = btn.innerHTML;
-                btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
-                btn.classList.add('copied');
-                showToast(`✅ Copied: ${text.substring(0, 30)}...`, 'success');
+                const originalHTML = button.innerHTML;
+                button.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                button.classList.add('copied');
+                showToast('Copied to clipboard', 'success', 1500);
                 setTimeout(() => {
-                    btn.innerHTML = original;
-                    btn.classList.remove('copied');
-                }, 2000);
-                addDebugLog(`📋 Copied: ${text.substring(0, 50)}`, 'success');
-            } catch (err) {
-                showToast('❌ Copy failed', 'error');
-                addDebugLog(`❌ Copy error: ${err.message}`, 'error');
+                    button.innerHTML = originalHTML;
+                    button.classList.remove('copied');
+                }, 1500);
+            } catch (e) {
+                showToast('Failed to copy', 'error');
             }
-        };
+        }
         
-        window.togglePassword = function(vmId, btn) {
-            passwordVisible[vmId] = !passwordVisible[vmId];
-            const span = document.getElementById(`password-${vmId}`);
-            if (span) {
-                if (passwordVisible[vmId]) {
-                    const vm = vms.find(v => v.id === vmId);
-                    span.textContent = vm?.password || '';
-                    btn.innerHTML = '<i class="fas fa-eye-slash"></i>';
-                } else {
-                    span.textContent = '••••••••';
-                    btn.innerHTML = '<i class="fas fa-eye"></i>';
-                }
-            }
-        };
-        
-        // ============================================ //
-        // TERMINAL COMMANDS
-        // ============================================ //
-        window.runTerminalCommand = function(vmId, command) {
+        function copyAllVMInfo(vmId) {
             const vm = vms.find(v => v.id === vmId);
-            if (!vm) {
-                showToast('VM not found', 'error');
+            if (!vm) return;
+            
+            const info = `
+========================================
+SINGULARITY CLUB VPS - ${vm.name}
+========================================
+Username:     ${vm.username}
+Password:     ${vm.password}
+Tailscale IP: ${vm.tailscaleIP || 'Pending...'}
+noVNC URL:    ${vm.novncUrl || 'Pending...'}
+Repository:   ${vm.repoUrl || 'N/A'}
+Created:      ${vm.createdAt}
+Expires:      ${vm.expiresAt}
+Status:       ${vm.status}
+========================================
+`;
+            copyText(info, event.target);
+        }
+        
+        // ============================================ //
+        // SELECTION MODE
+        // ============================================ //
+        function toggleSelectionMode() {
+            selectionMode = !selectionMode;
+            selectedVMs.clear();
+            
+            document.querySelectorAll('.vm-item').forEach(item => {
+                item.classList.toggle('selection-mode', selectionMode);
+            });
+            
+            elements.selectionToolbar.classList.toggle('show', selectionMode);
+            updateSelectionCount();
+            renderVMList();
+        }
+        
+        function toggleVMSelection(vmId, checked) {
+            if (checked) {
+                selectedVMs.add(vmId);
+            } else {
+                selectedVMs.delete(vmId);
+            }
+            updateSelectionCount();
+            
+            // Update item class
+            const item = document.querySelector(`.vm-item[data-id="${vmId}"]`);
+            if (item) {
+                item.classList.toggle('selected', checked);
+            }
+        }
+        
+        function updateSelectionCount() {
+            elements.selectionCount.textContent = `${selectedVMs.size} selected`;
+        }
+        
+        function batchDeleteVMs() {
+            if (selectedVMs.size === 0) {
+                showToast('No VMs selected', 'warning');
                 return;
             }
             
-            const cmd = command.trim().toLowerCase();
+            showModal(
+                'Delete Multiple VMs',
+                `Are you sure you want to delete ${selectedVMs.size} VMs? This action cannot be undone.`,
+                'Delete All',
+                async () => {
+                    try {
+                        const res = await fetch(`${API_URL}/batch-delete`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ ids: Array.from(selectedVMs) })
+                        });
+                        
+                        const data = await res.json();
+                        
+                        if (data.success) {
+                            selectedVMs.forEach(id => {
+                                if (countdownIntervals[id]) {
+                                    clearInterval(countdownIntervals[id]);
+                                    delete countdownIntervals[id];
+                                }
+                            });
+                            
+                            vms = vms.filter(v => !selectedVMs.has(v.id));
+                            selectedVMs.clear();
+                            toggleSelectionMode();
+                            applyFilters();
+                            updateStats();
+                            showToast(`Deleted ${data.deleted} VMs`, 'success');
+                        }
+                    } catch (e) {
+                        showToast('Failed to delete VMs', 'error');
+                    }
+                }
+            );
+        }
+        
+        // ============================================ //
+        // VM ACTIONS
+        // ============================================ //
+        function toggleVM(id) {
+            const item = document.querySelector(`.vm-item[data-id="${id}"]`);
+            if (!item) return;
             
-            if (cmd === 'ipconfig') {
-                if (vm.tailscaleIP) {
-                    showToast(`🌐 Tailscale IP: ${vm.tailscaleIP}`, 'info');
-                    addDebugLog(`IP config: ${vm.tailscaleIP}`, 'info');
-                } else {
-                    showToast('⏳ Network configuring...', 'warning');
+            if (currentOpenVM && currentOpenVM !== id) {
+                const prev = document.querySelector(`.vm-item[data-id="${currentOpenVM}"]`);
+                if (prev) prev.classList.remove('open');
+            }
+            
+            item.classList.toggle('open');
+            currentOpenVM = item.classList.contains('open') ? id : null;
+        }
+        
+        function deleteVM(vmId) {
+            const vm = vms.find(v => v.id === vmId);
+            if (!vm) return;
+            
+            showModal(
+                'Delete VM',
+                `Are you sure you want to delete "${vm.name}"?`,
+                'Delete',
+                async () => {
+                    try {
+                        const res = await fetch(`${API_URL}?id=${vmId}`, { method: 'DELETE' });
+                        const data = await res.json();
+                        
+                        if (data.success) {
+                            if (countdownIntervals[vmId]) {
+                                clearInterval(countdownIntervals[vmId]);
+                                delete countdownIntervals[vmId];
+                            }
+                            
+                            vms = vms.filter(v => v.id !== vmId);
+                            if (currentOpenVM === vmId) currentOpenVM = null;
+                            
+                            applyFilters();
+                            updateStats();
+                            showToast(`VM "${vm.name}" deleted`, 'success');
+                        } else {
+                            showToast(data.error || 'Failed to delete', 'error');
+                        }
+                    } catch (e) {
+                        showToast('Connection error', 'error');
+                    }
                 }
-            } 
-            else if (cmd === 'vnc') {
-                if (vm.novncUrl) {
-                    window.open(vm.novncUrl, '_blank');
-                    showToast('🖥️ Opening noVNC console...', 'success');
-                } else {
-                    showToast('⏳ noVNC not ready', 'warning');
-                }
+            );
+        }
+        
+        function runTerminalCommand(vmId, input) {
+            const vm = vms.find(v => v.id === vmId);
+            if (!vm) return;
+            
+            const cmd = input.value.trim().toLowerCase();
+            
+            switch (cmd) {
+                case 'ipconfig':
+                    if (vm.tailscaleIP) {
+                        showToast(`Tailscale IP: ${vm.tailscaleIP}`, 'info');
+                    } else {
+                        showToast('IP not available yet', 'warning');
+                    }
+                    break;
+                case 'vnc':
+                    if (vm.novncUrl) {
+                        window.open(vm.novncUrl, '_blank');
+                    } else {
+                        showToast('noVNC not ready', 'warning');
+                    }
+                    break;
+                case 'repo':
+                    if (vm.repoUrl) {
+                        window.open(vm.repoUrl, '_blank');
+                    } else {
+                        showToast('Repository not ready', 'warning');
+                    }
+                    break;
+                case 'info':
+                    showToast(`${vm.name} | ${vm.username} | ${vm.status}`, 'info');
+                    break;
+                case 'help':
+                    showToast('Commands: ipconfig, vnc, repo, info, help', 'info');
+                    break;
+                default:
+                    if (cmd) {
+                        showToast(`Unknown command: ${cmd}`, 'warning');
+                    }
             }
-            else if (cmd === 'repo') {
-                if (vm.repoUrl) {
-                    window.open(vm.repoUrl, '_blank');
-                    showToast(`📁 Opening repository: ${vm.name}`, 'success');
-                } else {
-                    showToast('⏳ Repository not ready', 'warning');
-                }
+            
+            input.value = '';
+        }
+        
+        // ============================================ //
+        // FILTER & SORT
+        // ============================================ //
+        function applyFilters() {
+            let filtered = [...vms];
+            
+            // Search
+            if (currentSearch) {
+                filtered = filtered.filter(v => 
+                    (v.name || '').toLowerCase().includes(currentSearch) ||
+                    (v.username || '').toLowerCase().includes(currentSearch) ||
+                    (v.tailscaleIP || '').toLowerCase().includes(currentSearch)
+                );
             }
-            else if (cmd === 'info') {
-                showToast(`📌 VM: ${vm.name}\n👤 User: ${vm.username}\n🌐 IP: ${vm.tailscaleIP || 'Pending'}`, 'info');
+            
+            // Filter by status
+            if (currentFilter !== 'all') {
+                filtered = filtered.filter(v => v.status === currentFilter);
             }
-            else if (cmd === 'help') {
-                showToast('Commands: ipconfig, vnc, repo, info, help', 'info');
+            
+            // Sort
+            switch (currentSort) {
+                case 'newest':
+                    filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                    break;
+                case 'oldest':
+                    filtered.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+                    break;
+                case 'expiring':
+                    filtered.sort((a, b) => {
+                        if (!a.expiresAt) return 1;
+                        if (!b.expiresAt) return -1;
+                        return new Date(a.expiresAt) - new Date(b.expiresAt);
+                    });
+                    break;
+                case 'name':
+                    filtered.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+                    break;
             }
-            else {
-                showToast(`❌ Unknown command: ${command}`, 'error');
-            }
-        };
+            
+            filteredVMs = filtered;
+            elements.vmCount.textContent = filtered.length;
+            
+            // Reset pagination
+            currentPage = 1;
+            hasMore = filtered.length > ITEMS_PER_PAGE;
+            
+            renderVMList();
+        }
         
         // ============================================ //
         // RENDER
         // ============================================ //
-        function renderPagination(totalItems) {
-            const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
-            if (totalPages <= 1) { elements.pagination.innerHTML = ''; return; }
-            let html = '';
-            for (let i = 1; i <= totalPages; i++) {
-                html += `<button class="page-btn ${i === currentPage ? 'active' : ''}" onclick="goToPage(${i})">${i}</button>`;
-            }
-            elements.pagination.innerHTML = html;
-        }
-        
-        window.goToPage = function(page) { 
-            currentPage = page; 
-            renderVMList(); 
-        };
-        
         function renderVMList() {
-            let filtered = [...vms];
-            const search = elements.searchInput.value.toLowerCase();
-            if (search) {
-                filtered = filtered.filter(v => 
-                    (v.name || '').toLowerCase().includes(search) || 
-                    (v.username || '').toLowerCase().includes(search)
-                );
-            }
-            if (currentFilter !== 'all') {
-                filtered = filtered.filter(v => v.status === currentFilter);
-            }
-            if (currentSort === 'newest') {
-                filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-            } else if (currentSort === 'expiring') {
-                filtered.sort((a, b) => (a.expiresAt || 0) - (b.expiresAt || 0));
-            }
+            const start = 0;
+            const end = currentPage * ITEMS_PER_PAGE;
+            const displayVMs = filteredVMs.slice(start, end);
             
-            elements.vmCount.textContent = filtered.length;
-            updateStats();
-            renderPagination(filtered.length);
+            hasMore = end < filteredVMs.length;
+            elements.loadMoreContainer.style.display = hasMore ? 'block' : 'none';
             
-            const start = (currentPage - 1) * ITEMS_PER_PAGE;
-            const paginated = filtered.slice(start, start + ITEMS_PER_PAGE);
-            
-            if (paginated.length === 0) {
+            if (displayVMs.length === 0 && !isLoading) {
                 elements.vmList.innerHTML = `
                     <div class="empty-state">
                         <div class="empty-icon"><i class="fas fa-cloud-upload-alt"></i></div>
-                        <div>✨ No VMs found<br>Create your first quantum VM ✨</div>
+                        <div>No quantum VMs found</div>
+                        <button class="btn btn-primary" onclick="document.getElementById('createBtn').click()" style="width: auto; margin-top: 20px;">
+                            <i class="fas fa-plus"></i> Create First VM
+                        </button>
                     </div>
                 `;
                 return;
             }
             
-            elements.vmList.innerHTML = paginated.map(vm => {
-                const created = new Date(vm.createdAt);
-                const remaining = vm.expiresAt ? (new Date(vm.expiresAt) - Date.now()) : 0;
-                const isCreating = vm.status === 'creating';
+            elements.vmList.innerHTML = displayVMs.map(vm => {
                 const isRunning = vm.status === 'running';
+                const isCreating = vm.status === 'creating';
                 const progress = vm.progress || (isRunning ? 100 : (isCreating ? 50 : 0));
-                if (!passwordVisible[vm.id]) passwordVisible[vm.id] = false;
                 
                 return `
-                    <div class="vm-item" data-id="${vm.id}">
-                        <div class="vm-header" onclick="toggleVM('${vm.id}')">
+                    <div class="vm-item ${selectionMode ? 'selection-mode' : ''} ${selectedVMs.has(vm.id) ? 'selected' : ''}" data-id="${vm.id}">
+                        ${selectionMode ? `
+                            <input type="checkbox" class="vm-checkbox" 
+                                   ${selectedVMs.has(vm.id) ? 'checked' : ''} 
+                                   onchange="toggleVMSelection('${vm.id}', this.checked)">
+                        ` : ''}
+                        <div class="vm-header" onclick="${selectionMode ? '' : `toggleVM('${vm.id}')`}">
                             <div class="vm-info">
                                 <div class="vm-icon">
                                     <i class="fas ${isRunning ? 'fa-play-circle' : (isCreating ? 'fa-spinner fa-pulse' : 'fa-stop-circle')}"></i>
                                 </div>
                                 <div>
-                                    <div class="vm-name">${vm.name || vm.id.substring(0, 15)}</div>
+                                    <div class="vm-name">${vm.name || vm.id}</div>
                                     <div class="vm-time">
-                                        <i class="far fa-calendar-alt"></i> ${formatRelativeTime(created)}
+                                        <i class="far fa-calendar-alt"></i> ${formatRelativeTime(vm.createdAt)}
                                     </div>
                                 </div>
                             </div>
                             <div style="display: flex; gap: 10px; align-items: center;">
                                 <span class="vm-status status-${vm.status}">${vm.status}</span>
-                                <i class="fas fa-chevron-down vm-expand-icon"></i>
+                                ${!selectionMode ? '<i class="fas fa-chevron-down vm-expand-icon"></i>' : ''}
                             </div>
                         </div>
+                        ${!selectionMode ? `
                         <div class="vm-detail">
                             <div class="info-grid">
                                 <div class="info-box">
-                                    <div class="info-title"><i class="fas fa-user"></i> CREDENTIALS</div>
+                                    <div class="info-title"><i class="fas fa-user"></i> Credentials</div>
                                     <div class="info-row">
                                         <div class="info-label"><i class="fas fa-user"></i> Username</div>
                                         <div class="info-value">
                                             ${vm.username}
-                                            <button class="copy-btn" onclick="copyText('${vm.username.replace(/'/g, "\\'")}', this)">
+                                            <button class="copy-btn tooltip" data-tooltip="Copy username" onclick="copyText('${vm.username}', this)">
                                                 <i class="fas fa-copy"></i>
                                             </button>
                                         </div>
@@ -2070,219 +2364,126 @@
                                     <div class="info-row">
                                         <div class="info-label"><i class="fas fa-lock"></i> Password</div>
                                         <div class="info-value">
-                                            <span id="password-${vm.id}">${passwordVisible[vm.id] ? vm.password : '••••••••'}</span>
-                                            <button class="eye-btn" onclick="togglePassword('${vm.id}', this)">
-                                                <i class="fas ${passwordVisible[vm.id] ? 'fa-eye-slash' : 'fa-eye'}"></i>
-                                            </button>
-                                            <button class="copy-btn" onclick="copyText('${vm.password.replace(/'/g, "\\'")}', this)">
+                                            ${vm.password}
+                                            <button class="copy-btn tooltip" data-tooltip="Copy password" onclick="copyText('${vm.password}', this)">
                                                 <i class="fas fa-copy"></i>
                                             </button>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="info-box">
-                                    <div class="info-title"><i class="fas fa-network-wired"></i> NETWORK</div>
+                                    <div class="info-title"><i class="fas fa-network-wired"></i> Network</div>
                                     <div class="info-row">
                                         <div class="info-label"><i class="fas fa-ip"></i> Tailscale IP</div>
                                         <div class="info-value">
+                                            ${vm.tailscaleIP || '<span style="opacity:0.5;">Pending...</span>'}
                                             ${vm.tailscaleIP ? `
-                                                <span>${vm.tailscaleIP}</span>
-                                                <button class="copy-btn" onclick="copyText('${vm.tailscaleIP}', this)">
+                                                <button class="copy-btn tooltip" data-tooltip="Copy IP" onclick="copyText('${vm.tailscaleIP}', this)">
                                                     <i class="fas fa-copy"></i>
                                                 </button>
-                                            ` : '<span style="opacity:0.5;">Configuring...</span>'}
+                                            ` : ''}
                                         </div>
                                     </div>
                                     <div class="info-row">
-                                        <div class="info-label"><i class="fas fa-desktop"></i> noVNC</div>
+                                        <div class="info-label"><i class="fas fa-clock"></i> Expires</div>
                                         <div class="info-value">
-                                            ${vm.novncUrl ? `
-                                                <a href="${vm.novncUrl}" target="_blank" style="color:var(--primary);">Open Console</a>
-                                                <button class="copy-btn" onclick="copyText('${vm.novncUrl}', this)">
-                                                    <i class="fas fa-copy"></i>
-                                                </button>
-                                            ` : '<span style="opacity:0.5;">Configuring...</span>'}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="info-grid">
-                                <div class="info-box">
-                                    <div class="info-title"><i class="fas fa-clock"></i> TIMELINE</div>
-                                    <div class="info-row">
-                                        <div class="info-label"><i class="far fa-calendar-check"></i> Created</div>
-                                        <div class="info-value">${created.toLocaleString()}</div>
-                                    </div>
-                                    <div class="info-row">
-                                        <div class="info-label"><i class="far fa-hourglass-half"></i> Expires</div>
-                                        <div class="info-value">
-                                            <span id="countdown-${vm.id}" class="countdown-timer">
-                                                ${isRunning ? formatCountdown(remaining) : (isCreating ? 'Creating...' : 'Pending')}
+                                            <span id="countdown-${vm.id}" class="countdown-timer ${getCountdownClass(vm.expiresAt)}">
+                                                ${formatCountdown(vm.expiresAt)}
                                             </span>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="info-box">
-                                    <div class="info-title"><i class="fas fa-microchip"></i> HARDWARE</div>
-                                    <div class="info-row">
-                                        <div class="info-label"><i class="fas fa-microchip"></i> CPU</div>
-                                        <div class="info-value">4 vCore (Quantum)</div>
-                                    </div>
-                                    <div class="info-row">
-                                        <div class="info-label"><i class="fas fa-memory"></i> RAM</div>
-                                        <div class="info-value">16GB DDR5</div>
-                                    </div>
-                                    <div class="info-row">
-                                        <div class="info-label"><i class="fas fa-hdd"></i> Storage</div>
-                                        <div class="info-value">25GB NVMe SSD</div>
-                                    </div>
-                                </div>
                             </div>
                             
-                            <!-- Terminal -->
                             <div class="vm-progress">
                                 <div class="vm-progress-bar">
                                     <div class="vm-progress-fill" style="width: ${progress}%"></div>
                                 </div>
-                                <div class="vm-progress-text">
-                                    <i class="fas fa-terminal"></i>
+                                <div class="terminal-input-container">
+                                    <span class="terminal-prompt">$</span>
                                     <input type="text" 
                                            class="terminal-input" 
-                                           id="terminal-${vm.id}" 
-                                           placeholder="> ipconfig | vnc | repo | info | help" 
-                                           autocomplete="off">
+                                           placeholder="ipconfig | vnc | repo | info | help" 
+                                           onkeypress="if(event.key==='Enter') runTerminalCommand('${vm.id}', this)">
                                 </div>
                             </div>
                             
-                            <!-- VM Config -->
-                            <div class="vm-config">
-                                <span><i class="fas fa-code-branch"></i> GitHub Actions</span>
-                                <span><i class="fas fa-shield"></i> Tailscale VPN</span>
-                                <span><i class="fas fa-clock"></i> 6h Runtime</span>
-                            </div>
-                            
                             <div class="action-buttons">
+                                <button class="action-btn copy-all" onclick="copyAllVMInfo('${vm.id}')">
+                                    <i class="fas fa-copy"></i> Copy All
+                                </button>
                                 ${vm.repoUrl ? `
-                                    <a href="${vm.repoUrl}" target="_blank" class="action-btn repo">
-                                        <i class="fab fa-github"></i> Repository
+                                    <a href="${vm.repoUrl}" target="_blank" class="action-btn">
+                                        <i class="fab fa-github"></i> Repo
                                     </a>
-                                ` : `
-                                    <button class="action-btn repo" disabled style="opacity:0.5;">
-                                        <i class="fab fa-github"></i> Creating...
-                                    </button>
-                                `}
-                                ${vm.workflowUrl ? `
-                                    <a href="${vm.workflowUrl}" target="_blank" class="action-btn github">
-                                        <i class="fas fa-code-branch"></i> Actions
+                                ` : ''}
+                                ${vm.novncUrl ? `
+                                    <a href="${vm.novncUrl}" target="_blank" class="action-btn">
+                                        <i class="fas fa-desktop"></i> VNC
                                     </a>
                                 ` : ''}
                                 <button class="action-btn delete" onclick="deleteVM('${vm.id}')">
-                                    <i class="fas fa-trash-alt"></i> Terminate
+                                    <i class="fas fa-trash-alt"></i> Delete
                                 </button>
                             </div>
                         </div>
+                        ` : ''}
                     </div>
                 `;
             }).join('');
-            
-            saveToLocal();
-            
-            // Add terminal listeners
-            vms.forEach(vm => {
-                const input = document.getElementById(`terminal-${vm.id}`);
-                if (input) {
-                    input.onkeypress = (e) => {
-                        if (e.key === 'Enter') {
-                            runTerminalCommand(vm.id, input.value);
-                            input.value = '';
-                        }
-                    };
-                }
-            });
         }
         
-        window.toggleVM = function(id) {
-            const item = document.querySelector(`.vm-item[data-id="${id}"]`);
-            if (!item) return;
-            if (currentOpenVM && currentOpenVM !== id) {
-                const prev = document.querySelector(`.vm-item[data-id="${currentOpenVM}"]`);
-                if (prev) prev.classList.remove('open');
-            }
-            item.classList.toggle('open');
-            currentOpenVM = item.classList.contains('open') ? id : null;
-        };
-        
-        window.deleteVM = async function(id) {
-            if (!confirm('⚠️ Terminate this quantum VM? This action cannot be undone!')) return;
-            const vm = vms.find(v => v.id === id);
-            
-            try {
-                const res = await fetch(`${API_URL}?id=${id}`, { method: 'DELETE' });
-                const data = await res.json();
-                if (data.success) {
-                    if (countdownIntervals[id]) clearInterval(countdownIntervals[id]);
-                    vms = vms.filter(v => v.id !== id);
-                    if (currentOpenVM === id) currentOpenVM = null;
-                    delete passwordVisible[id];
-                    renderVMList();
-                    showToast(`🗑️ VM ${vm?.name || ''} terminated`, 'success');
-                    addDebugLog(`Terminated VM: ${vm?.name || id}`, 'warning');
-                } else {
-                    showToast(data.error || 'Termination failed', 'error');
-                }
-            } catch(e) {
-                showToast('Connection error', 'error');
-                // Fallback to local delete
-                if (countdownIntervals[id]) clearInterval(countdownIntervals[id]);
-                vms = vms.filter(v => v.id !== id);
-                renderVMList();
-            }
-        };
-        
-        window.refreshData = async function() {
-            await loadVMs();
-            showToast('🔄 Quantum sync complete', 'info');
-        };
+        function loadMore() {
+            if (!hasMore || isLoading) return;
+            currentPage++;
+            renderVMList();
+        }
         
         // ============================================ //
-        // LOAD VMS FROM BACKEND
+        // API CALLS
         // ============================================ //
         async function loadVMs() {
-            if (!backendConnected) {
-                await checkBackendConnection();
-                if (!backendConnected) return;
-            }
+            isLoading = true;
             
             try {
                 const res = await fetch(API_URL);
-                if (!res.ok) {
-                    addDebugLog(`⚠️ API returned ${res.status}`, 'warning');
-                    return;
-                }
                 const data = await res.json();
-                if (data.success && data.vms) {
-                    const newVms = data.vms;
-                    for (const newVm of newVms) {
-                        const existingIdx = vms.findIndex(v => v.id === newVm.id);
-                        if (existingIdx !== -1) {
-                            vms[existingIdx] = { ...vms[existingIdx], ...newVm };
-                        } else {
-                            vms.push(newVm);
-                            passwordVisible[newVm.id] = false;
+                
+                if (data.success) {
+                    vms = data.vms || [];
+                    
+                    // Setup countdown intervals
+                    vms.forEach(vm => {
+                        if (vm.status === 'running' && !countdownIntervals[vm.id]) {
+                            countdownIntervals[vm.id] = setInterval(() => updateCountdowns(), 1000);
                         }
-                    }
-                    vms = vms.filter(v => newVms.some(nv => nv.id === v.id));
-                    renderVMList();
-                    addDebugLog(`📡 Synced ${vms.length} quantum VMs`, 'success');
+                    });
+                    
+                    applyFilters();
+                    updateStats();
                 }
             } catch (e) {
-                addDebugLog(`⚠️ Sync error: ${e.message}`, 'warning');
+                console.error('Failed to load VMs:', e);
+            } finally {
+                isLoading = false;
+                // Remove skeleton
+                elements.vmList.querySelectorAll('.skeleton').forEach(s => s.remove());
             }
         }
         
-        // ============================================ //
-        // CREATE VM
-        // ============================================ //
+        async function loadStats() {
+            try {
+                const res = await fetch(STATS_URL);
+                const data = await res.json();
+                
+                if (data.success && data.stats) {
+                    // Stats are updated via updateStats() which uses vms array
+                }
+            } catch (e) {
+                console.error('Failed to load stats:', e);
+            }
+        }
+        
         async function createVM() {
             const githubToken = elements.githubToken.value.trim();
             const tailscaleKey = elements.tailscaleKey.value.trim();
@@ -2290,54 +2491,58 @@
             let password = elements.vmPassword.value.trim();
             
             if (!githubToken) {
-                showToast('❌ GitHub Token required', 'error');
-                addDebugLog('Error: Missing GitHub Token', 'error');
+                showToast('GitHub Token is required', 'error');
                 return;
             }
+            
             if (!tailscaleKey) {
-                showToast('❌ Tailscale Key required', 'error');
-                addDebugLog('Error: Missing Tailscale Key', 'error');
+                showToast('Tailscale Key is required', 'error');
                 return;
             }
+            
             if (!username) username = randomUsername();
             if (!password) password = randomPassword();
             
-            const connected = await checkBackendConnection();
-            if (!connected) {
-                showToast('❌ Cannot connect to Quantum Backend (34.80.216.29:5000)', 'error');
-                return;
+            if (!backendConnected) {
+                const connected = await checkBackendConnection();
+                if (!connected) {
+                    showToast('Cannot connect to backend', 'error');
+                    return;
+                }
             }
-            
-            elements.createProgressContainer.style.display = 'block';
-            elements.createBtn.disabled = true;
-            elements.createBtn.innerHTML = '<span class="spinner"></span> Initializing Quantum VM...';
             
             totalCreations++;
             
-            updateCreateProgress(0, 10, '🔐 Authenticating token...');
-            setTimeout(() => updateCreateProgress(1, 30, '📁 Creating quantum repository...'), 1500);
-            setTimeout(() => updateCreateProgress(2, 55, '⚡ Generating workflow...'), 3000);
-            setTimeout(() => updateCreateProgress(3, 80, '🚀 Triggering quantum runner...'), 4500);
+            // Show progress
+            elements.createProgressContainer.style.display = 'block';
+            elements.createBtn.disabled = true;
+            elements.createBtn.innerHTML = '<span class="spinner"></span> Creating...';
+            
+            // Animate progress
+            updateCreateProgress(0, 10, 'Validating credentials...');
+            setTimeout(() => updateCreateProgress(1, 30, 'Creating repository...'), 1000);
+            setTimeout(() => updateCreateProgress(2, 55, 'Generating workflow...'), 2500);
+            setTimeout(() => updateCreateProgress(3, 80, 'Triggering quantum runner...'), 4000);
             
             try {
-                addDebugLog(`🚀 Creating quantum VM: ${username}`, 'info');
-                
                 const res = await fetch(API_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ githubToken, tailscaleKey, vmUsername: username, vmPassword: password })
+                    body: JSON.stringify({
+                        githubToken,
+                        tailscaleKey,
+                        vmUsername: username,
+                        vmPassword: password
+                    })
                 });
                 
                 const data = await res.json();
                 
                 if (data.success) {
                     successfulCreations++;
-                    updateCreateProgress(4, 100, '✅ Quantum VM initialized!');
-                    showToast(`✅ Quantum VM "${username}" created!`, 'success');
-                    addDebugLog(`✅ VM "${username}" created successfully`, 'success');
+                    updateCreateProgress(4, 100, 'Quantum VM initialized!');
                     
-                    triggerConfetti();
-                    
+                    // Add to list
                     const newVM = {
                         id: data.id,
                         name: data.name,
@@ -2354,153 +2559,216 @@
                     };
                     
                     vms.unshift(newVM);
-                    passwordVisible[newVM.id] = false;
-                    renderVMList();
+                    applyFilters();
+                    updateStats();
                     
-                    if (countdownIntervals[newVM.id]) clearInterval(countdownIntervals[newVM.id]);
-                    countdownIntervals[newVM.id] = setInterval(() => updateCountdown(newVM.id), 1000);
-                    
+                    // Clear form
                     elements.githubToken.value = '';
                     elements.tailscaleKey.value = '';
-                    refreshFormCredentials();
+                    elements.vmUsername.value = '';
+                    elements.vmPassword.value = '';
+                    elements.githubToken.classList.remove('valid', 'invalid');
+                    elements.tailscaleKey.classList.remove('valid', 'invalid');
+                    
+                    showToast(`✅ VM "${data.name}" created successfully!`, 'success');
                     
                     setTimeout(() => {
                         elements.createProgressContainer.style.display = 'none';
-                    }, 3000);
+                    }, 2000);
                     
+                    // Refresh after 10s
                     setTimeout(() => loadVMs(), 10000);
-                    
                 } else {
-                    updateCreateProgress(0, 0, '❌ Creation failed!');
-                    showToast(data.error || 'VM creation failed', 'error');
-                    addDebugLog(`❌ Creation failed: ${data.error}`, 'error');
+                    updateCreateProgress(0, 0, 'Creation failed');
+                    showToast(data.error || 'Failed to create VM', 'error');
                     setTimeout(() => {
                         elements.createProgressContainer.style.display = 'none';
-                    }, 3000);
+                    }, 2000);
                 }
-            } catch (err) {
-                updateCreateProgress(0, 0, '❌ Connection error!');
-                showToast('Connection to backend failed', 'error');
-                addDebugLog(`❌ Connection error: ${err.message}`, 'error');
+            } catch (e) {
+                updateCreateProgress(0, 0, 'Connection error');
+                showToast('Connection error', 'error');
                 setTimeout(() => {
                     elements.createProgressContainer.style.display = 'none';
-                }, 3000);
+                }, 2000);
             } finally {
                 elements.createBtn.disabled = false;
-                elements.createBtn.innerHTML = '<i class="fas fa-play"></i> Tạo VM Ngay';
+                elements.createBtn.innerHTML = '<i class="fas fa-play"></i> Launch Quantum VM';
             }
+        }
+        
+        function updateCreateProgress(step, percent, text) {
+            elements.createProgressFill.style.width = percent + '%';
+            elements.createProgressText.textContent = text;
+            
+            const steps = elements.createProgressSteps.children;
+            for (let i = 0; i < steps.length; i++) {
+                steps[i].classList.remove('active', 'completed');
+                if (i < step) steps[i].classList.add('completed');
+                else if (i === step) steps[i].classList.add('active');
+            }
+        }
+        
+        function refreshData() {
+            loadVMs();
+            loadStats();
+            showToast('Data refreshed', 'info');
+        }
+        
+        // ============================================ //
+        // KEYBOARD SHORTCUTS
+        // ============================================ //
+        function showShortcuts() {
+            const shortcuts = [
+                { key: 'Ctrl + N', action: 'Create new VM' },
+                { key: 'Ctrl + R', action: 'Refresh data' },
+                { key: 'Ctrl + K', action: 'Focus search' },
+                { key: 'Ctrl + S', action: 'Save config' },
+                { key: 'Ctrl + L', action: 'Load config' },
+                { key: 'Esc', action: 'Close modal / Cancel selection' },
+                { key: '?', action: 'Show shortcuts' }
+            ];
+            
+            let html = '<div class="shortcuts-grid">';
+            shortcuts.forEach(s => {
+                html += `
+                    <div class="shortcut-item">
+                        <span>${s.action}</span>
+                        <span class="shortcut-key">${s.key}</span>
+                    </div>
+                `;
+            });
+            html += '</div>';
+            
+            document.getElementById('modalTitle').textContent = 'Keyboard Shortcuts';
+            document.getElementById('modalBody').innerHTML = html;
+            document.getElementById('modalConfirmBtn').textContent = 'Close';
+            document.getElementById('modalOverlay').classList.add('show');
         }
         
         // ============================================ //
         // EVENT LISTENERS
         // ============================================ //
         document.getElementById('createBtn').onclick = createVM;
-        document.getElementById('randomUserBtn').onclick = () => { 
-            elements.vmUsername.value = randomUsername(); 
-            showToast('🎲 Generated quantum username', 'info'); 
+        document.getElementById('randomUserBtn').onclick = () => {
+            elements.vmUsername.value = randomUsername();
+            showToast('Username generated', 'info');
         };
-        document.getElementById('randomPassBtn').onclick = () => { 
-            elements.vmPassword.value = randomPassword(); 
-            showToast('🔐 Generated secure password', 'info'); 
+        document.getElementById('randomPassBtn').onclick = () => {
+            elements.vmPassword.value = randomPassword();
+            showToast('Password generated', 'info');
         };
-        document.getElementById('demoBtn').onclick = () => { 
-            elements.githubToken.value = 'ghp_demo_quantum_token_2026'; 
-            elements.tailscaleKey.value = 'tskey-demo-quantum-key-2026'; 
-            showToast('📝 Demo credentials loaded', 'info');
-        };
-        document.getElementById('clearBtn').onclick = () => { 
-            elements.githubToken.value = ''; 
-            elements.tailscaleKey.value = ''; 
-            elements.vmUsername.value = ''; 
-            elements.vmPassword.value = ''; 
-            showToast('🧹 Form cleared', 'info');
-        };
-        document.getElementById('refreshBtn').onclick = () => { 
-            loadVMs(); 
-            showToast('🔄 Syncing quantum data...', 'info'); 
-        };
-        document.getElementById('manualRefreshBtn').onclick = () => { 
-            loadVMs(); 
-            showToast('🔄 Quantum sync initiated', 'info'); 
-        };
-        document.getElementById('saveConfigBtn').onclick = () => { 
-            localStorage.setItem(CONFIG_KEY, JSON.stringify({ 
-                githubToken: elements.githubToken.value, 
-                tailscaleKey: elements.tailscaleKey.value 
-            })); 
-            showToast('💾 Configuration saved', 'success');
-        };
-        document.getElementById('loadConfigBtn').onclick = () => { 
-            const cfg = JSON.parse(localStorage.getItem(CONFIG_KEY) || '{}'); 
-            if (cfg.githubToken) elements.githubToken.value = cfg.githubToken; 
-            if (cfg.tailscaleKey) elements.tailscaleKey.value = cfg.tailscaleKey; 
-            showToast('📂 Configuration loaded', 'success');
+        document.getElementById('testGithubBtn').onclick = testGitHubToken;
+        document.getElementById('testTailscaleBtn').onclick = testTailscaleKey;
+        document.getElementById('saveConfigBtn').onclick = saveConfig;
+        document.getElementById('loadConfigBtn').onclick = loadConfig;
+        document.getElementById('clearFormBtn').onclick = clearForm;
+        document.getElementById('refreshPageBtn').onclick = refreshData;
+        document.getElementById('manualRefreshBtn').onclick = refreshData;
+        
+        elements.filterSelect.onchange = (e) => {
+            currentFilter = e.target.value;
+            applyFilters();
         };
         
-        elements.filterSelect.onchange = (e) => { 
-            currentFilter = e.target.value; 
-            currentPage = 1; 
-            renderVMList(); 
-        };
-        elements.sortSelect.onchange = (e) => { 
-            currentSort = e.target.value; 
-            currentPage = 1; 
-            renderVMList(); 
+        elements.sortSelect.onchange = (e) => {
+            currentSort = e.target.value;
+            applyFilters();
         };
         
-        let searchTimeout;
-        elements.searchInput.oninput = () => { 
-            clearTimeout(searchTimeout); 
-            searchTimeout = setTimeout(() => { 
-                currentPage = 1; 
-                renderVMList(); 
-            }, 300); 
+        elements.searchInput.oninput = (e) => {
+            clearTimeout(searchDebounceTimer);
+            searchDebounceTimer = setTimeout(() => {
+                currentSearch = e.target.value.toLowerCase();
+                applyFilters();
+            }, 300);
         };
-        
-        // Debug Panel
-        const debugPanel = document.getElementById('debugPanel');
-        let debugOpen = false;
-        document.getElementById('debugHeader').onclick = () => {
-            debugOpen = !debugOpen;
-            debugPanel.classList.toggle('open', debugOpen);
-        };
-        document.getElementById('clearDebugBtn').onclick = (e) => {
-            e.stopPropagation();
-            elements.debugContent.innerHTML = '';
-            addDebugLog('Quantum console cleared', 'info');
-        };
-        
-        // ============================================ //
-        // INITIALIZATION
-        // ============================================ //
-        refreshFormCredentials();
-        loadFromLocal();
-        
-        checkBackendConnection().then(() => {
-            loadVMs();
-        });
-        
-        // Auto refresh every 15 seconds
-        setInterval(() => {
-            if (backendConnected) loadVMs();
-            else checkBackendConnection();
-        }, 15000);
-        
-        addDebugLog('🚀 Singularity Club v2.0 Quantum Edition', 'success');
-        addDebugLog('🔗 Connected to Quantum Backend: 34.80.216.29:5000', 'info');
-        addDebugLog('💻 Terminal commands: ipconfig, vnc, repo, info, help', 'info');
-        addDebugLog('⚡ Quantum entanglement established', 'success');
         
         // Keyboard shortcuts
         document.addEventListener('keydown', (e) => {
-            if (e.ctrlKey && e.key === 'Enter') {
+            if (e.ctrlKey && e.key === 'n') {
+                e.preventDefault();
                 createVM();
             } else if (e.ctrlKey && e.key === 'r') {
                 e.preventDefault();
-                loadVMs();
-                showToast('🔄 Manual refresh', 'info');
+                refreshData();
+            } else if (e.ctrlKey && e.key === 'k') {
+                e.preventDefault();
+                elements.searchInput.focus();
+            } else if (e.ctrlKey && e.key === 's') {
+                e.preventDefault();
+                saveConfig();
+            } else if (e.ctrlKey && e.key === 'l') {
+                e.preventDefault();
+                loadConfig();
+            } else if (e.key === 'Escape') {
+                if (selectionMode) {
+                    toggleSelectionMode();
+                }
+                closeModal();
+            } else if (e.key === '?') {
+                showShortcuts();
             }
         });
+        
+        // Pull to refresh
+        let touchStartY = 0;
+        let pulling = false;
+        
+        elements.vmList.addEventListener('touchstart', (e) => {
+            if (elements.vmList.scrollTop === 0) {
+                touchStartY = e.touches[0].clientY;
+            }
+        });
+        
+        elements.vmList.addEventListener('touchmove', (e) => {
+            if (elements.vmList.scrollTop === 0) {
+                const touchY = e.touches[0].clientY;
+                const diff = touchY - touchStartY;
+                
+                if (diff > 50) {
+                    pulling = true;
+                    elements.ptrIndicator.classList.add('pulling');
+                    elements.ptrIndicator.innerHTML = '<i class="fas fa-sync-alt fa-spin"></i> Release to refresh';
+                }
+            }
+        });
+        
+        elements.vmList.addEventListener('touchend', (e) => {
+            if (pulling) {
+                pulling = false;
+                elements.ptrIndicator.classList.remove('pulling');
+                elements.ptrIndicator.innerHTML = '<i class="fas fa-arrow-down"></i> Pull to refresh';
+                refreshData();
+            }
+        });
+        
+        // Initialize
+        (async function init() {
+            // Generate random credentials
+            elements.vmUsername.value = randomUsername();
+            elements.vmPassword.value = randomPassword();
+            
+            // Try to load saved config
+            loadConfig();
+            
+            // Check connection
+            await checkBackendConnection();
+            
+            // Setup auto-refresh every 30s
+            setInterval(() => {
+                if (backendConnected) {
+                    loadVMs();
+                } else {
+                    checkBackendConnection();
+                }
+            }, 30000);
+            
+            // Setup connection check every 60s
+            setInterval(checkBackendConnection, 60000);
+            
+            showToast('Singularity Club v2.0 Ready', 'success');
+        })();
     </script>
 </body>
 </html>
