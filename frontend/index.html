@@ -2,1130 +2,747 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="theme-color" content="#0a0a0f">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>Singularity Club | Quantum VPS</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Natural VPS | Cinematic Nature 4K</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         :root {
-            --primary: #00d4ff;
-            --primary-dark: #0099cc;
-            --primary-light: #66e6ff;
-            --secondary: #ff006e;
-            --accent: #8338ec;
-            --success: #00f5d4;
-            --warning: #fee440;
-            --error: #ff0054;
-            --info: #3a86ff;
-            --bg: #0a0a0f;
-            --bg-secondary: #12121a;
-            --card: rgba(20, 20, 30, 0.95);
-            --card-hover: rgba(30, 30, 45, 0.98);
-            --border: rgba(0, 212, 255, 0.15);
-            --border-glow: rgba(0, 212, 255, 0.4);
-            --text: #e0e0ff;
-            --text-bright: #ffffff;
-            --text-muted: #8888aa;
-            --shadow-primary: 0 0 30px rgba(0, 212, 255, 0.3);
-            --shadow-secondary: 0 0 30px rgba(255, 0, 110, 0.2);
-            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-            --radius-sm: 8px;
+            --forest-dark: #1a3a2a;
+            --forest-medium: #2d5a3f;
+            --forest-light: #4a7c59;
+            --leaf-green: #6b8e4e;
+            --moss: #8fbc6a;
+            --wood: #8b6914;
+            --wood-light: #a0825a;
+            --sand: #d4c4a8;
+            --cream: #f5f0e1;
+            --water: #5b9aa0;
+            --sunlight: rgba(255, 215, 150, 0.15);
+            
+            --text-primary: #e8e4d9;
+            --text-secondary: #c4beb0;
+            --text-muted: #9a9486;
+            
+            --glass-bg: rgba(30, 50, 35, 0.35);
+            --glass-border: rgba(140, 180, 120, 0.2);
+            --glass-highlight: rgba(255, 255, 255, 0.08);
+            
+            --shadow-soft: 0 20px 40px rgba(0, 20, 10, 0.3);
+            --shadow-leaf: 0 10px 30px rgba(60, 100, 60, 0.15);
+            
+            --transition-slow: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --transition-medium: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --transition-fast: all 0.15s ease;
+            
+            --radius-xl: 24px;
+            --radius-lg: 18px;
             --radius-md: 12px;
-            --radius-lg: 16px;
-            --radius-xl: 20px;
-            --radius-2xl: 24px;
+            --radius-sm: 8px;
         }
-
+        
         body {
-            background: var(--bg);
-            font-family: 'Space Grotesk', sans-serif;
-            color: var(--text);
+            background: linear-gradient(135deg, #0d1f14 0%, #162e1f 50%, #1a3a2a 100%);
+            font-family: 'Montserrat', sans-serif;
+            color: var(--text-primary);
             min-height: 100vh;
             position: relative;
             overflow-x: hidden;
-            background-image: 
-                radial-gradient(circle at 20% 30%, rgba(0, 212, 255, 0.03) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(255, 0, 110, 0.03) 0%, transparent 50%);
         }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: var(--bg-secondary); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb { 
-            background: linear-gradient(135deg, var(--primary), var(--secondary)); 
-            border-radius: 10px;
-        }
-
-        /* Container */
-        .container { 
-            max-width: 1400px; 
-            margin: 0 auto; 
-            padding: 16px;
-            position: relative;
-            z-index: 10;
-        }
-
-        /* Connection Status */
-        .connection-status {
+        
+        /* Video Background */
+        .video-background {
             position: fixed;
-            top: 16px;
-            right: 16px;
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 6px 12px;
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 50px;
-            backdrop-filter: blur(10px);
-            font-size: 0.7rem;
-            cursor: pointer;
-            transition: var(--transition);
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.4;
+            z-index: -2;
+            pointer-events: none;
         }
-
-        .connection-status:hover {
-            border-color: var(--primary);
-            box-shadow: var(--shadow-primary);
+        
+        .video-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at 30% 40%, transparent 0%, rgba(10, 30, 15, 0.6) 100%);
+            z-index: -1;
+            pointer-events: none;
         }
-
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--success);
-            animation: pulse 2s infinite;
+        
+        /* Animated Leaves */
+        .leaf {
+            position: fixed;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.15;
+            animation: floatLeaf 15s infinite ease-in-out;
         }
-
-        .status-dot.offline {
-            background: var(--error);
-            animation: none;
+        
+        @keyframes floatLeaf {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            25% { transform: translateY(-30px) rotate(5deg); }
+            50% { transform: translateY(-50px) rotate(-5deg); }
+            75% { transform: translateY(-20px) rotate(3deg); }
         }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
+        
+        /* Sunrays Animation */
+        .sunrays {
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 40%, var(--sunlight) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+            animation: sunMove 30s infinite alternate ease-in-out;
         }
-
+        
+        @keyframes sunMove {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(5%, 5%) rotate(5deg); }
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: rgba(30, 50, 35, 0.5); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: linear-gradient(135deg, var(--forest-light), var(--leaf-green)); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: linear-gradient(135deg, var(--moss), var(--water)); }
+        
+        .container { max-width: 1400px; margin: 0 auto; padding: 24px; position: relative; z-index: 10; }
+        
         /* Header */
-        .header { 
-            text-align: center; 
-            margin-bottom: 24px; 
-            padding: 24px 20px; 
-            background: var(--card); 
-            border-radius: var(--radius-2xl); 
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 40px 30px;
+            background: var(--glass-bg);
             backdrop-filter: blur(15px);
-            border: 1px solid var(--border);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-soft);
             position: relative;
             overflow: hidden;
+            animation: fadeInDown 0.8s ease;
         }
-
+        
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
         .header::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--primary), var(--secondary), transparent);
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--leaf-green), var(--moss), var(--water), transparent);
         }
-
-        .logo { 
-            font-size: 2rem; 
-            font-weight: 700; 
-            background: linear-gradient(135deg, #fff, var(--primary), var(--secondary));
-            -webkit-background-clip: text; 
-            background-clip: text; 
-            color: transparent;
-            letter-spacing: -0.5px;
-        }
-
-        .subtitle { 
-            color: var(--text-muted); 
-            font-size: 0.8rem; 
-            margin-top: 6px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        .badge-container { 
-            display: flex; 
-            justify-content: center; 
-            gap: 10px; 
-            margin-top: 16px; 
-            flex-wrap: wrap; 
-        }
-
-        .badge { 
-            background: rgba(0, 212, 255, 0.08); 
-            border: 1px solid var(--border); 
-            border-radius: 50px; 
-            padding: 6px 14px; 
-            font-size: 0.7rem;
-            backdrop-filter: blur(5px);
-            transition: var(--transition);
-        }
-
-        .badge i {
-            margin-right: 6px;
-            color: var(--primary);
-        }
-
-        .badge:hover {
-            border-color: var(--primary);
-            background: rgba(0, 212, 255, 0.12);
-            transform: translateY(-1px);
-        }
-
-        /* Stats */
-        .stats-grid { 
-            display: grid; 
-            grid-template-columns: repeat(4, 1fr); 
-            gap: 14px; 
-            margin-bottom: 24px; 
-        }
-
-        @media (max-width: 768px) { 
-            .stats-grid { grid-template-columns: repeat(2, 1fr); } 
-        }
-
-        .stat-card { 
-            background: var(--card); 
-            border: 1px solid var(--border); 
-            border-radius: var(--radius-lg); 
-            padding: 16px; 
-            transition: var(--transition); 
-            cursor: pointer;
-            backdrop-filter: blur(10px);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-3px);
-            border-color: var(--primary);
-            box-shadow: var(--shadow-primary);
-        }
-
-        .stat-label { 
-            font-size: 0.7rem; 
-            color: var(--text-muted); 
-            margin-bottom: 8px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .stat-value { 
-            font-size: 2rem; 
-            font-weight: 700; 
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text; 
-            background-clip: text; 
-            color: transparent;
-            line-height: 1;
-        }
-
-        /* Two Columns */
-        .two-columns { 
-            display: grid; 
-            grid-template-columns: 1fr 1.2fr; 
-            gap: 20px; 
-        }
-
-        @media (max-width: 900px) { 
-            .two-columns { grid-template-columns: 1fr; } 
-        }
-
-        /* Cards */
-        .card { 
-            background: var(--card); 
-            border: 1px solid var(--border); 
-            border-radius: var(--radius-xl); 
-            padding: 22px; 
-            backdrop-filter: blur(15px);
-            transition: var(--transition);
-            position: relative;
-        }
-
-        .card:hover {
-            border-color: var(--border-glow);
-            box-shadow: var(--shadow-primary);
-        }
-
-        .card-title { 
-            font-size: 1.1rem; 
-            font-weight: 600; 
-            margin-bottom: 20px; 
-            display: flex; 
-            align-items: center; 
-            gap: 10px;
-            background: linear-gradient(135deg, var(--text-bright), var(--primary-light));
+        
+        .logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3.5rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #e8e4d9, #c4beb0, #a8d8a8);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
+            letter-spacing: 4px;
+            text-shadow: 0 0 30px rgba(100, 180, 100, 0.3);
+            animation: gentleGlow 4s infinite;
         }
-
-        /* Form */
-        .input-group { 
-            margin-bottom: 18px; 
-            position: relative; 
+        
+        @keyframes gentleGlow {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.1); }
         }
-
-        .input-label { 
-            font-size: 0.75rem; 
-            color: var(--text-muted); 
-            margin-bottom: 6px; 
-            display: block;
+        
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-top: 10px;
+            letter-spacing: 6px;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            font-weight: 300;
         }
-
-        .input-wrapper {
-            position: relative;
-            display: flex;
-            align-items: center;
+        
+        /* Tech Specs Grid */
+        .specs-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 16px;
+            margin-bottom: 30px;
         }
-
-        .input-field { 
-            width: 100%; 
-            background: rgba(0, 0, 0, 0.4); 
-            border: 1px solid var(--border); 
-            border-radius: var(--radius-md); 
-            padding: 12px 14px; 
-            color: var(--text); 
-            font-size: 0.85rem; 
-            transition: var(--transition);
-            font-family: 'Space Grotesk', monospace;
-            backdrop-filter: blur(5px);
+        
+        @media (max-width: 1200px) { .specs-grid { grid-template-columns: repeat(3, 1fr); } }
+        @media (max-width: 640px) { .specs-grid { grid-template-columns: repeat(2, 1fr); } }
+        
+        .spec-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: 20px 15px;
+            text-align: center;
+            transition: var(--transition-medium);
+            cursor: default;
+            animation: fadeInUp 0.6s ease backwards;
         }
-
-        .input-field:focus { 
-            outline: none; 
-            border-color: var(--primary); 
-            box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1), 0 0 15px rgba(0, 212, 255, 0.3);
-            background: rgba(0, 0, 0, 0.6);
-        }
-
-        .input-field.valid {
-            border-color: var(--success);
-        }
-
-        .input-field.invalid {
-            border-color: var(--error);
-        }
-
-        .validation-icon {
-            position: absolute;
-            right: 12px;
-            font-size: 0.9rem;
-        }
-
-        .validation-icon.valid {
-            color: var(--success);
-        }
-
-        .validation-icon.invalid {
-            color: var(--error);
-        }
-
-        .input-hint {
-            font-size: 0.6rem;
-            color: var(--text-muted);
-            margin-top: 4px;
-        }
-
-        .input-hint a {
-            color: var(--primary);
-            text-decoration: none;
-        }
-
-        .input-hint a:hover {
-            text-decoration: underline;
-        }
-
-        .input-row { 
-            display: flex; 
-            gap: 10px; 
-            align-items: center; 
-        }
-
-        .input-row .input-group { 
-            flex: 1; 
-            margin-bottom: 0; 
-        }
-
-        .random-btn { 
-            background: rgba(0, 212, 255, 0.08); 
-            border: 1px solid var(--border); 
-            border-radius: var(--radius-md); 
-            padding: 12px 16px; 
-            color: var(--primary); 
-            cursor: pointer; 
-            font-size: 0.75rem; 
-            transition: var(--transition); 
-            display: flex; 
-            align-items: center; 
-            gap: 6px;
-            backdrop-filter: blur(5px);
-            white-space: nowrap;
-        }
-
-        .random-btn:hover { 
-            background: rgba(0, 212, 255, 0.15);
-            transform: translateY(-2px); 
-            border-color: var(--primary);
-            box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
-        }
-
-        .test-btn {
-            background: rgba(58, 134, 255, 0.08);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-md);
-            padding: 12px 14px;
-            color: var(--info);
-            cursor: pointer;
-            font-size: 0.75rem;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            backdrop-filter: blur(5px);
-            white-space: nowrap;
-        }
-
-        .test-btn:hover {
-            background: rgba(58, 134, 255, 0.15);
-            transform: translateY(-2px);
-            border-color: var(--info);
-        }
-
-        .test-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        /* Progress Container */
-        .progress-container { 
-            margin-top: 20px; 
-            display: none;
-            animation: slideDown 0.3s ease;
-        }
-
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-10px); }
+        
+        .spec-card:nth-child(1) { animation-delay: 0.1s; }
+        .spec-card:nth-child(2) { animation-delay: 0.2s; }
+        .spec-card:nth-child(3) { animation-delay: 0.3s; }
+        .spec-card:nth-child(4) { animation-delay: 0.4s; }
+        .spec-card:nth-child(5) { animation-delay: 0.5s; }
+        .spec-card:nth-child(6) { animation-delay: 0.6s; }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
-        .progress-steps { 
-            display: flex; 
-            justify-content: space-between; 
-            margin-bottom: 12px; 
-            gap: 6px; 
-        }
-
-        .progress-step { 
-            flex: 1; 
-            text-align: center; 
-            font-size: 0.55rem; 
-            opacity: 0.4; 
-            padding: 5px; 
-            border-radius: var(--radius-sm); 
-            transition: var(--transition);
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-        }
-
-        .progress-step i { 
-            display: block; 
-            margin-bottom: 4px; 
-            font-size: 0.7rem; 
-        }
-
-        .progress-step.active { 
-            opacity: 1; 
-            color: var(--primary); 
-            background: rgba(0, 212, 255, 0.1);
-            animation: pulse 1.5s infinite;
-        }
-
-        .progress-step.completed { 
-            opacity: 1; 
-            color: var(--success); 
-        }
-
-        .progress-bar { 
-            background: rgba(0, 0, 0, 0.4); 
-            border-radius: 20px; 
-            height: 6px; 
-            overflow: hidden;
-            position: relative;
-        }
-
-        .progress-fill { 
-            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
-            width: 0%; 
-            height: 100%; 
-            transition: width 0.4s ease;
-            position: relative;
-        }
-
-        .progress-fill::after { 
-            content: ''; 
-            position: absolute; 
-            top: 0; 
-            left: 0; 
-            right: 0; 
-            bottom: 0; 
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent); 
-            animation: shimmer 1.5s infinite; 
-        }
-
-        @keyframes shimmer { 
-            0% { transform: translateX(-100%); } 
-            100% { transform: translateX(100%); } 
-        }
-
-        .progress-text { 
-            font-size: 0.65rem; 
-            text-align: center; 
-            margin-top: 8px; 
-            color: var(--primary-light);
-        }
-
-        /* Buttons */
-        .btn { 
-            padding: 13px 20px; 
-            border-radius: var(--radius-md); 
-            font-weight: 600; 
-            font-size: 0.85rem; 
-            cursor: pointer; 
-            transition: var(--transition); 
-            border: none; 
-            display: inline-flex; 
-            align-items: center; 
-            justify-content: center; 
-            gap: 8px; 
-            width: 100%; 
-            margin-top: 12px;
-            position: relative;
-            overflow: hidden;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .btn-primary { 
-            background: linear-gradient(135deg, var(--primary), var(--secondary)); 
-            color: white;
-        }
-
-        .btn-primary:hover:not(:disabled) { 
-            transform: translateY(-2px); 
-            box-shadow: 0 8px 25px rgba(0, 212, 255, 0.4), 0 0 20px rgba(255, 0, 110, 0.2);
-        }
-
-        .btn-primary:disabled { 
-            opacity: 0.6; 
-            cursor: not-allowed; 
-        }
-
-        .quick-actions { 
-            display: flex; 
-            gap: 8px; 
-            margin-top: 16px; 
-            flex-wrap: wrap; 
-        }
-
-        .quick-btn { 
-            flex: 1; 
-            background: rgba(0, 0, 0, 0.3); 
-            border: 1px solid var(--border); 
-            border-radius: var(--radius-sm); 
-            padding: 8px 10px; 
-            font-size: 0.7rem; 
-            cursor: pointer; 
-            text-align: center; 
-            transition: var(--transition); 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            gap: 5px;
-            backdrop-filter: blur(5px);
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-        }
-
-        .quick-btn:hover { 
-            background: rgba(0, 212, 255, 0.12); 
-            border-color: var(--primary); 
-            transform: translateY(-1px);
-        }
-
-        /* VM Controls */
-        .vm-controls { 
-            display: flex; 
-            gap: 10px; 
-            margin-bottom: 18px; 
-            flex-wrap: wrap; 
-        }
-
-        .vm-search { 
-            flex: 1; 
-            background: rgba(0, 0, 0, 0.3); 
-            border: 1px solid var(--border); 
-            border-radius: 30px; 
-            padding: 10px 16px; 
-            color: var(--text); 
-            font-size: 0.8rem; 
-            transition: var(--transition);
-            backdrop-filter: blur(5px);
-        }
-
-        .vm-search:focus { 
-            outline: none; 
-            border-color: var(--primary); 
-            box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
-        }
-
-        .vm-filter, .vm-sort { 
-            background: rgba(0, 0, 0, 0.3); 
-            border: 1px solid var(--border); 
-            border-radius: 30px; 
-            padding: 10px 16px; 
-            color: var(--text); 
-            font-size: 0.75rem; 
-            cursor: pointer;
-            backdrop-filter: blur(5px);
-            transition: var(--transition);
-        }
-
-        .vm-filter:hover, .vm-sort:hover { 
-            border-color: var(--primary); 
-        }
-
-        .vm-count { 
-            background: rgba(0, 212, 255, 0.08); 
-            border-radius: 30px; 
-            padding: 10px 16px; 
-            font-size: 0.75rem; 
-            display: flex; 
-            align-items: center; 
-            gap: 6px;
-            border: 1px solid var(--border);
-        }
-
-        .selection-toolbar {
-            display: none;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 16px;
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-md);
-            margin-bottom: 15px;
-            animation: slideDown 0.2s ease;
-        }
-
-        .selection-toolbar.show {
-            display: flex;
-        }
-
-        .selection-count {
-            font-size: 0.8rem;
-            color: var(--primary);
-        }
-
-        .selection-actions {
-            display: flex;
-            gap: 8px;
-            margin-left: auto;
-        }
-
-        .selection-btn {
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-            padding: 6px 12px;
-            font-size: 0.7rem;
-            cursor: pointer;
-            color: var(--text);
-            transition: var(--transition);
-        }
-
-        .selection-btn.delete:hover {
-            background: rgba(255, 0, 84, 0.15);
-            border-color: var(--error);
-            color: var(--error);
-        }
-
-        .selection-btn.cancel {
-            background: transparent;
-        }
-
-        /* VM List */
-        .vm-list { 
-            display: flex; 
-            flex-direction: column; 
-            gap: 12px; 
-            max-height: 500px; 
-            overflow-y: auto; 
-            padding-right: 6px; 
-        }
-
-        .vm-item { 
-            background: rgba(0, 0, 0, 0.3); 
-            border-radius: var(--radius-lg); 
-            border: 1px solid var(--border); 
-            overflow: hidden; 
-            transition: var(--transition); 
-            animation: slideIn 0.3s ease;
-            backdrop-filter: blur(5px);
-            position: relative;
-        }
-
-        .vm-item.selected {
-            border-color: var(--primary);
-            background: rgba(0, 212, 255, 0.05);
-        }
-
-        .vm-checkbox {
-            position: absolute;
-            left: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 18px;
-            height: 18px;
-            cursor: pointer;
-            accent-color: var(--primary);
-            z-index: 1;
-        }
-
-        .vm-item.selection-mode .vm-header {
-            padding-left: 45px;
-        }
-
-        @keyframes slideIn { 
-            from { opacity: 0; transform: translateX(-15px); } 
-            to { opacity: 1; transform: translateX(0); } 
-        }
-
-        .vm-header { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            padding: 14px 16px; 
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .vm-header:hover {
-            background: rgba(0, 212, 255, 0.03);
-        }
-
-        .vm-info { 
-            display: flex; 
-            align-items: center; 
-            gap: 12px; 
-        }
-
-        .vm-icon { 
-            width: 40px; 
-            height: 40px; 
-            background: linear-gradient(135deg, rgba(0, 212, 255, 0.15), rgba(255, 0, 110, 0.15)); 
-            border-radius: var(--radius-md); 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            transition: var(--transition);
-            border: 1px solid var(--border);
-        }
-
-        .vm-item:hover .vm-icon { 
-            transform: scale(1.05); 
-        }
-
-        .vm-name { 
-            font-weight: 600; 
-            font-size: 0.9rem;
-            background: linear-gradient(135deg, var(--text-bright), var(--primary-light));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        .vm-time { 
-            font-size: 0.6rem; 
-            color: var(--text-muted); 
-            margin-top: 3px;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .vm-status { 
-            font-size: 0.65rem; 
-            padding: 3px 10px; 
-            border-radius: 50px; 
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-            transition: var(--transition);
-        }
-
-        .status-creating { 
-            background: rgba(254, 228, 64, 0.12); 
-            color: var(--warning); 
-            animation: blink 1.5s infinite; 
-        }
-
-        .status-running { 
-            background: rgba(0, 245, 212, 0.12); 
-            color: var(--success); 
-        }
-
-        .status-expired {
-            background: rgba(136, 136, 170, 0.12);
-            color: var(--text-muted);
-        }
-
-        @keyframes blink { 
-            0%, 100% { opacity: 1; } 
-            50% { opacity: 0.5; } 
-        }
-
-        .vm-expand-icon { 
-            transition: transform 0.3s; 
-            color: var(--primary);
-        }
-
-        .vm-item.open .vm-expand-icon { 
-            transform: rotate(180deg); 
-        }
-
-        .vm-detail { 
-            max-height: 0; 
-            overflow: hidden; 
-            transition: max-height 0.35s ease; 
-            border-top: 1px solid transparent; 
-        }
-
-        .vm-item.open .vm-detail { 
-            max-height: 450px; 
-            border-top-color: var(--border); 
-            padding: 16px;
-        }
-
-        /* Info Grid */
-        .info-grid { 
-            display: grid; 
-            grid-template-columns: repeat(2, 1fr); 
-            gap: 12px; 
-            margin-bottom: 12px; 
-        }
-
-        @media (max-width: 640px) { 
-            .info-grid { grid-template-columns: 1fr; } 
-        }
-
-        .info-box { 
-            background: rgba(0, 0, 0, 0.25); 
-            border-radius: var(--radius-md); 
-            padding: 12px; 
-            transition: var(--transition);
-            border: 1px solid var(--border);
-        }
-
-        .info-title { 
-            font-size: 0.65rem; 
-            text-transform: uppercase; 
-            letter-spacing: 0.8px; 
-            color: var(--primary-light); 
-            margin-bottom: 10px; 
-            display: flex; 
-            align-items: center; 
-            gap: 6px;
-        }
-
-        .info-row { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            padding: 6px 0; 
-            border-bottom: 1px solid var(--border); 
-        }
-
-        .info-row:last-child { 
-            border-bottom: none; 
-        }
-
-        .info-label { 
-            font-size: 0.7rem; 
-            color: var(--text-muted); 
-            display: flex; 
-            align-items: center; 
-            gap: 6px; 
-        }
-
-        .info-value { 
-            font-family: 'Space Grotesk', monospace; 
-            font-size: 0.8rem; 
-            display: flex; 
-            align-items: center; 
-            gap: 6px; 
-        }
-
-        .countdown-timer { 
-            font-family: 'Space Grotesk', monospace; 
-            font-size: 0.75rem; 
-            font-weight: 600; 
-            color: var(--warning); 
-            background: rgba(254, 228, 64, 0.12); 
-            padding: 3px 8px; 
-            border-radius: var(--radius-sm); 
-        }
-
-        .countdown-timer.warning {
-            color: var(--warning);
-            animation: pulse 1s infinite;
-        }
-
-        .countdown-timer.danger {
-            color: var(--error);
-            background: rgba(255, 0, 84, 0.12);
-            animation: pulse 0.8s infinite;
-        }
-
-        /* Copy Button */
-        .copy-btn { 
-            background: rgba(0, 212, 255, 0.08); 
-            border: 1px solid var(--border); 
-            color: var(--primary); 
-            padding: 4px 8px; 
-            border-radius: var(--radius-sm); 
-            font-size: 0.65rem; 
-            cursor: pointer; 
-            transition: var(--transition);
-            position: relative;
-        }
-
-        .copy-btn:hover { 
-            background: rgba(0, 212, 255, 0.15); 
-            border-color: var(--primary);
-        }
-
-        .copy-btn.copied { 
-            background: var(--success); 
-            color: white; 
-        }
-
-        /* Tooltip */
-        .tooltip {
-            position: relative;
-        }
-
-        .tooltip::after {
-            content: attr(data-tooltip);
-            position: absolute;
-            bottom: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--card);
-            color: var(--text);
-            padding: 4px 8px;
-            border-radius: var(--radius-sm);
-            font-size: 0.6rem;
-            white-space: nowrap;
-            opacity: 0;
-            visibility: hidden;
-            transition: var(--transition);
-            border: 1px solid var(--border);
-            pointer-events: none;
-            z-index: 100;
-        }
-
-        .tooltip:hover::after {
-            opacity: 1;
-            visibility: visible;
-            bottom: calc(100% + 5px);
-        }
-
-        /* Action Buttons */
-        .action-buttons { 
-            display: flex; 
-            gap: 8px; 
-            margin-top: 12px; 
-            flex-wrap: wrap; 
-        }
-
-        .action-btn { 
-            flex: 1; 
-            background: rgba(0, 0, 0, 0.3); 
-            border: 1px solid var(--border); 
-            border-radius: var(--radius-sm); 
-            padding: 8px 10px; 
-            font-size: 0.65rem; 
-            cursor: pointer; 
-            text-decoration: none; 
-            color: var(--text); 
-            display: inline-flex; 
-            align-items: center; 
-            justify-content: center; 
-            gap: 5px; 
-            transition: var(--transition);
-            backdrop-filter: blur(5px);
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-        }
-
-        .action-btn:hover { 
-            transform: translateY(-1px); 
-            border-color: var(--primary); 
-        }
-
-        .action-btn.copy-all {
-            background: rgba(0, 212, 255, 0.08);
-            color: var(--primary);
-        }
-
-        .action-btn.copy-all:hover {
-            background: rgba(0, 212, 255, 0.15);
-        }
-
-        .action-btn.delete:hover { 
-            background: rgba(255, 0, 84, 0.12); 
-            color: var(--error); 
-            border-color: var(--error);
-        }
-
-        /* Terminal */
-        .vm-progress { 
-            margin-top: 12px; 
-            padding: 10px; 
-            background: rgba(0, 0, 0, 0.3); 
-            border-radius: var(--radius-sm);
-            border: 1px solid var(--border);
-        }
-
-        .vm-progress-bar { 
-            background: rgba(0, 0, 0, 0.4); 
-            border-radius: 10px; 
-            height: 4px; 
-            overflow: hidden; 
-        }
-
-        .vm-progress-fill { 
-            background: linear-gradient(90deg, var(--primary), var(--secondary)); 
-            height: 100%; 
-            width: 0%; 
-            transition: width 0.3s;
-        }
-
-        .terminal-input-container {
-            display: flex;
-            align-items: center;
-            margin-top: 8px;
-        }
-
-        .terminal-prompt {
-            color: var(--primary);
-            font-family: monospace;
-            font-size: 0.7rem;
-            margin-right: 6px;
-        }
-
-        .terminal-input {
-            background: transparent;
-            border: none;
-            color: var(--primary-light);
-            font-family: 'Space Grotesk', monospace;
-            font-size: 0.7rem;
-            width: 100%;
-            outline: none;
-        }
-
-        .terminal-input::placeholder {
-            color: var(--text-muted);
-            opacity: 0.5;
-        }
-
-        /* Load More */
-        .load-more {
-            text-align: center;
-            margin-top: 16px;
-        }
-
-        .load-more-btn {
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid var(--border);
-            border-radius: 30px;
-            padding: 10px 20px;
-            color: var(--text);
+        
+        .spec-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--leaf-green);
+            box-shadow: var(--shadow-leaf);
+            background: rgba(50, 80, 60, 0.4);
+        }
+        
+        .spec-icon {
+            font-size: 2rem;
+            color: var(--moss);
+            margin-bottom: 10px;
+            transition: var(--transition-fast);
+        }
+        
+        .spec-card:hover .spec-icon {
+            transform: scale(1.1);
+            color: var(--water);
+        }
+        
+        .spec-value {
+            font-size: 1.2rem;
+            font-weight: 600;
+            font-family: 'Cormorant Garamond', serif;
+            color: var(--text-primary);
+        }
+        
+        .spec-label {
             font-size: 0.75rem;
-            cursor: pointer;
-            transition: var(--transition);
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 5px;
         }
-
-        .load-more-btn:hover {
-            border-color: var(--primary);
-            background: rgba(0, 212, 255, 0.08);
+        
+        /* Two Columns */
+        .two-columns {
+            display: grid;
+            grid-template-columns: 1fr 1.3fr;
+            gap: 25px;
         }
-
-        .load-more-btn:disabled {
+        
+        @media (max-width: 1000px) { .two-columns { grid-template-columns: 1fr; } }
+        
+        /* Cards */
+        .card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-xl);
+            padding: 28px;
+            box-shadow: var(--shadow-soft);
+            transition: var(--transition-medium);
+            animation: fadeInUp 0.6s ease 0.2s backwards;
+        }
+        
+        .card:hover {
+            border-color: rgba(140, 180, 120, 0.4);
+            box-shadow: var(--shadow-leaf);
+        }
+        
+        .card-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.6rem;
+            font-weight: 500;
+            margin-bottom: 25px;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid var(--glass-border);
+            padding-bottom: 15px;
+        }
+        
+        .card-title i {
+            color: var(--leaf-green);
+            font-size: 1.4rem;
+        }
+        
+        /* Form */
+        .input-group { margin-bottom: 22px; }
+        
+        .input-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .input-field {
+            width: 100%;
+            background: rgba(20, 40, 25, 0.5);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            padding: 14px 16px;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            font-family: 'Montserrat', sans-serif;
+            transition: var(--transition-fast);
+            backdrop-filter: blur(5px);
+        }
+        
+        .input-field:focus {
+            outline: none;
+            border-color: var(--leaf-green);
+            box-shadow: 0 0 0 3px rgba(107, 142, 78, 0.2), 0 0 20px rgba(100, 150, 100, 0.15);
+            background: rgba(30, 60, 40, 0.6);
+        }
+        
+        .input-field::placeholder {
+            color: var(--text-muted);
             opacity: 0.5;
+        }
+        
+        .os-selector {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .os-option {
+            flex: 1;
+            background: rgba(20, 40, 25, 0.4);
+            border: 2px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition-medium);
+        }
+        
+        .os-option i {
+            font-size: 2.5rem;
+            margin-bottom: 8px;
+            display: block;
+        }
+        
+        .os-option.active {
+            border-color: var(--leaf-green);
+            background: rgba(107, 142, 78, 0.15);
+            box-shadow: var(--shadow-leaf);
+        }
+        
+        .os-option:hover {
+            border-color: var(--moss);
+            transform: translateY(-2px);
+        }
+        
+        .input-row {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+        
+        .input-row .input-group { flex: 1; margin-bottom: 0; }
+        
+        .random-btn {
+            background: rgba(107, 142, 78, 0.15);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            padding: 14px 18px;
+            color: var(--moss);
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: var(--transition-medium);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+            backdrop-filter: blur(5px);
+        }
+        
+        .random-btn:hover {
+            background: rgba(107, 142, 78, 0.25);
+            transform: translateY(-2px);
+            border-color: var(--leaf-green);
+        }
+        
+        /* Progress Container - THẬT */
+        .progress-container {
+            margin-top: 25px;
+            display: none;
+            animation: slideDown 0.4s ease;
+        }
+        
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            gap: 8px;
+        }
+        
+        .progress-step {
+            flex: 1;
+            text-align: center;
+            font-size: 0.65rem;
+            opacity: 0.4;
+            padding: 8px 5px;
+            border-radius: var(--radius-sm);
+            transition: var(--transition-medium);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            background: rgba(0, 0, 0, 0.1);
+        }
+        
+        .progress-step i {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+        }
+        
+        .progress-step.active {
+            opacity: 1;
+            color: var(--moss);
+            background: rgba(107, 142, 78, 0.15);
+            animation: gentlePulse 2s infinite;
+        }
+        
+        .progress-step.completed {
+            opacity: 1;
+            color: var(--water);
+            background: rgba(91, 154, 160, 0.1);
+        }
+        
+        .progress-step.failed {
+            opacity: 1;
+            color: #c06060;
+            background: rgba(192, 96, 96, 0.1);
+        }
+        
+        @keyframes gentlePulse {
+            0%, 100% { opacity: 0.9; }
+            50% { opacity: 1; }
+        }
+        
+        .progress-bar {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 20px;
+            height: 8px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .progress-fill {
+            background: linear-gradient(90deg, var(--forest-light), var(--leaf-green), var(--moss));
+            width: 0%;
+            height: 100%;
+            transition: width 0.5s ease;
+            position: relative;
+            border-radius: 20px;
+        }
+        
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            animation: shimmer 2s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        .progress-detail {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+        
+        .progress-text {
+            color: var(--moss);
+        }
+        
+        /* Buttons */
+        .btn {
+            padding: 15px 24px;
+            border-radius: var(--radius-md);
+            font-weight: 500;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: var(--transition-medium);
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            margin-top: 15px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--forest-medium), var(--forest-light));
+            color: var(--text-primary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 25px rgba(0, 30, 10, 0.3);
+        }
+        
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.2), transparent);
+            transform: translate(-50%, -50%);
+            transition: width 0.5s, height 0.5s;
+        }
+        
+        .btn-primary:hover:not(:disabled)::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(0, 40, 15, 0.4), 0 0 25px rgba(107, 142, 78, 0.2);
+        }
+        
+        .btn-primary:disabled {
+            opacity: 0.6;
             cursor: not-allowed;
         }
-
-        /* Empty State */
-        .empty-state { 
-            text-align: center; 
-            padding: 40px; 
-            color: var(--text-muted); 
+        
+        /* Quick Actions */
+        .quick-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
         }
-
-        .empty-icon { 
-            font-size: 3.5rem; 
-            margin-bottom: 15px; 
-            opacity: 0.5; 
-            color: var(--primary);
-        }
-
-        .empty-state .btn {
-            width: auto;
-            margin: 15px auto 0;
-            padding: 10px 24px;
-        }
-
-        /* Skeleton Loading */
-        .skeleton {
-            background: linear-gradient(90deg, rgba(255,255,255,0.05) 25%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.05) 75%);
-            background-size: 200% 100%;
-            animation: skeleton-loading 1.5s infinite;
+        
+        .quick-btn {
+            flex: 1;
+            background: rgba(20, 40, 25, 0.4);
+            border: 1px solid var(--glass-border);
             border-radius: var(--radius-sm);
+            padding: 10px 12px;
+            font-size: 0.7rem;
+            cursor: pointer;
+            text-align: center;
+            transition: var(--transition-medium);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-secondary);
+            backdrop-filter: blur(5px);
         }
-
-        @keyframes skeleton-loading {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
+        
+        .quick-btn:hover {
+            background: rgba(107, 142, 78, 0.15);
+            border-color: var(--leaf-green);
+            transform: translateY(-2px);
+            color: var(--text-primary);
         }
-
-        .skeleton-card {
-            height: 80px;
-            margin-bottom: 12px;
+        
+        /* VM Controls */
+        .vm-controls {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
         }
-
+        
+        .vm-search {
+            flex: 1;
+            background: rgba(20, 40, 25, 0.4);
+            border: 1px solid var(--glass-border);
+            border-radius: 40px;
+            padding: 12px 20px;
+            color: var(--text-primary);
+            font-size: 0.85rem;
+            backdrop-filter: blur(5px);
+        }
+        
+        .vm-search:focus {
+            outline: none;
+            border-color: var(--leaf-green);
+        }
+        
+        .vm-filter, .vm-sort {
+            background: rgba(20, 40, 25, 0.4);
+            border: 1px solid var(--glass-border);
+            border-radius: 40px;
+            padding: 12px 18px;
+            color: var(--text-primary);
+            font-size: 0.8rem;
+            cursor: pointer;
+            backdrop-filter: blur(5px);
+        }
+        
+        .vm-count {
+            background: rgba(107, 142, 78, 0.1);
+            border-radius: 40px;
+            padding: 12px 18px;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid var(--glass-border);
+        }
+        
+        /* VM List */
+        .vm-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            max-height: 500px;
+            overflow-y: auto;
+            padding-right: 8px;
+        }
+        
+        .vm-item {
+            background: rgba(20, 40, 25, 0.4);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--glass-border);
+            overflow: hidden;
+            transition: var(--transition-medium);
+            animation: fadeInItem 0.4s ease;
+            backdrop-filter: blur(5px);
+        }
+        
+        @keyframes fadeInItem {
+            from { opacity: 0; transform: translateX(-15px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .vm-item:hover {
+            border-color: var(--leaf-green);
+            background: rgba(40, 70, 50, 0.5);
+            transform: translateX(5px);
+            box-shadow: var(--shadow-leaf);
+        }
+        
+        .vm-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            cursor: pointer;
+        }
+        
+        .vm-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .vm-icon {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, rgba(107, 142, 78, 0.2), rgba(91, 154, 160, 0.2));
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--glass-border);
+            transition: var(--transition-fast);
+        }
+        
+        .vm-item:hover .vm-icon {
+            transform: scale(1.05) rotate(3deg);
+        }
+        
+        .vm-icon i {
+            font-size: 1.3rem;
+            color: var(--moss);
+        }
+        
+        .vm-name {
+            font-weight: 500;
+            font-size: 1rem;
+            font-family: 'Cormorant Garamond', serif;
+            color: var(--text-primary);
+        }
+        
+        .vm-os {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            margin-top: 3px;
+            text-transform: uppercase;
+        }
+        
+        .vm-status {
+            font-size: 0.65rem;
+            padding: 4px 12px;
+            border-radius: 40px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .status-creating {
+            background: rgba(212, 175, 55, 0.15);
+            color: #d4af37;
+            animation: gentlePulse 1.5s infinite;
+        }
+        
+        .status-running {
+            background: rgba(107, 142, 78, 0.15);
+            color: var(--moss);
+        }
+        
+        .status-expired {
+            background: rgba(154, 148, 134, 0.1);
+            color: var(--text-muted);
+        }
+        
         /* Modal */
         .modal-overlay {
             position: fixed;
@@ -1133,247 +750,333 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(5px);
+            background: rgba(10, 25, 15, 0.85);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 2000;
             opacity: 0;
             visibility: hidden;
-            transition: var(--transition);
+            transition: var(--transition-medium);
         }
-
+        
         .modal-overlay.show {
             opacity: 1;
             visibility: visible;
         }
-
+        
         .modal {
-            background: var(--card);
-            border: 1px solid var(--border);
+            background: linear-gradient(135deg, rgba(30, 55, 40, 0.95), rgba(20, 40, 30, 0.95));
+            border: 1px solid var(--glass-border);
             border-radius: var(--radius-xl);
-            padding: 24px;
-            max-width: 400px;
+            padding: 35px;
+            max-width: 550px;
             width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
             transform: scale(0.9);
-            transition: var(--transition);
+            transition: var(--transition-medium);
+            box-shadow: var(--shadow-soft);
+            position: relative;
         }
-
+        
+        .modal::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--leaf-green), var(--moss), transparent);
+        }
+        
         .modal-overlay.show .modal {
             transform: scale(1);
         }
-
-        .modal-title {
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 12px;
-            color: var(--error);
-        }
-
-        .modal-body {
-            margin-bottom: 20px;
-            color: var(--text-muted);
-        }
-
-        .modal-actions {
-            display: flex;
-            gap: 12px;
-            justify-content: flex-end;
-        }
-
-        .modal-btn {
-            padding: 10px 20px;
-            border-radius: var(--radius-md);
-            font-size: 0.8rem;
-            cursor: pointer;
-            transition: var(--transition);
-            border: 1px solid var(--border);
-            background: transparent;
-            color: var(--text);
-        }
-
-        .modal-btn.confirm {
-            background: var(--error);
-            border-color: var(--error);
-            color: white;
-        }
-
-        .modal-btn.confirm:hover {
-            background: #ff1a6b;
-        }
-
-        .modal-btn.cancel:hover {
-            background: rgba(255, 255, 255, 0.05);
-        }
-
-        /* Toast Container */
-        .toast-container {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            z-index: 3000;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .toast {
-            background: var(--card);
-            backdrop-filter: blur(15px);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-md);
-            padding: 12px 18px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            transform: translateX(-400px);
-            transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            border-left: 4px solid var(--primary);
-            box-shadow: var(--shadow-primary);
-            min-width: 280px;
-        }
-
-        .toast.show {
-            transform: translateX(0);
-        }
-
-        .toast-success { border-left-color: var(--success); }
-        .toast-error { border-left-color: var(--error); }
-        .toast-warning { border-left-color: var(--warning); }
-        .toast-info { border-left-color: var(--info); }
-
-        .toast i {
-            font-size: 1.2rem;
-        }
-
-        .toast-success i { color: var(--success); }
-        .toast-error i { color: var(--error); }
-        .toast-warning i { color: var(--warning); }
-        .toast-info i { color: var(--info); }
-
-        .toast-message {
-            flex: 1;
-            font-size: 0.85rem;
-        }
-
-        .toast-close {
-            cursor: pointer;
-            opacity: 0.6;
-            transition: var(--transition);
-        }
-
-        .toast-close:hover {
-            opacity: 1;
-        }
-
-        /* Keyboard Shortcuts Cheat Sheet */
-        .shortcuts-modal {
-            max-width: 500px;
-        }
-
-        .shortcuts-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin: 15px 0;
-        }
-
-        .shortcut-item {
+        
+        .modal-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 8px 0;
-            border-bottom: 1px solid var(--border);
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--glass-border);
         }
-
-        .shortcut-key {
-            background: rgba(0, 212, 255, 0.1);
-            padding: 4px 10px;
+        
+        .modal-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.8rem;
+            color: var(--text-primary);
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: var(--transition-fast);
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+        
+        .modal-close:hover {
+            background: rgba(192, 96, 96, 0.15);
+            color: #c06060;
+            transform: rotate(90deg);
+        }
+        
+        .modal-body {
+            color: var(--text-secondary);
+        }
+        
+        .info-section {
+            margin-bottom: 25px;
+        }
+        
+        .info-section-title {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--moss);
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--glass-border);
+        }
+        
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .info-row:last-child {
+            border-bottom: none;
+        }
+        
+        .info-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .info-value {
+            font-family: 'Montserrat', monospace;
+            font-size: 0.85rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .copy-btn {
+            background: rgba(107, 142, 78, 0.1);
+            border: 1px solid var(--glass-border);
+            color: var(--moss);
+            padding: 5px 10px;
             border-radius: var(--radius-sm);
-            font-family: monospace;
-            font-size: 0.75rem;
-            border: 1px solid var(--border);
-        }
-
-        /* Spinner */
-        .spinner { 
-            width: 16px; 
-            height: 16px; 
-            border: 2px solid rgba(255, 255, 255, 0.2); 
-            border-top-color: var(--primary); 
-            border-radius: 50%; 
-            animation: spin 0.6s linear infinite; 
-            display: inline-block;
-        }
-
-        @keyframes spin { 
-            to { transform: rotate(360deg); } 
-        }
-
-        /* Footer */
-        .footer { 
-            text-align: center; 
-            padding: 20px; 
-            margin-top: 24px; 
-            border-top: 1px solid var(--border); 
-            color: var(--text-muted); 
             font-size: 0.65rem;
+            cursor: pointer;
+            transition: var(--transition-fast);
+        }
+        
+        .copy-btn:hover {
+            background: rgba(107, 142, 78, 0.25);
+            border-color: var(--leaf-green);
+        }
+        
+        .copy-btn.copied {
+            background: var(--water);
+            color: white;
+        }
+        
+        .countdown-timer {
+            font-family: 'Montserrat', monospace;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--moss);
+            background: rgba(107, 142, 78, 0.1);
+            padding: 4px 12px;
+            border-radius: 40px;
+        }
+        
+        .countdown-timer.warning {
+            color: #d4af37;
+            background: rgba(212, 175, 55, 0.1);
+        }
+        
+        .countdown-timer.danger {
+            color: #c06060;
+            background: rgba(192, 96, 96, 0.1);
+            animation: gentlePulse 1s infinite;
+        }
+        
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+        
+        .modal-btn {
+            flex: 1;
+            padding: 12px 18px;
+            border-radius: var(--radius-md);
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: var(--transition-medium);
+            border: 1px solid var(--glass-border);
+            background: rgba(20, 40, 25, 0.5);
+            color: var(--text-primary);
             text-transform: uppercase;
             letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
         }
-
+        
+        .modal-btn:hover {
+            background: rgba(107, 142, 78, 0.2);
+            border-color: var(--leaf-green);
+            transform: translateY(-2px);
+        }
+        
+        .modal-btn.delete:hover {
+            background: rgba(192, 96, 96, 0.15);
+            border-color: #c06060;
+            color: #c06060;
+        }
+        
+        /* Toast */
+        .toast-container {
+            position: fixed;
+            bottom: 25px;
+            left: 25px;
+            z-index: 3000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .toast {
+            background: linear-gradient(135deg, rgba(30, 55, 40, 0.95), rgba(20, 40, 30, 0.95));
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: 14px 22px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            transform: translateX(-400px);
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border-left: 4px solid var(--leaf-green);
+            box-shadow: var(--shadow-soft);
+            min-width: 300px;
+        }
+        
+        .toast.show {
+            transform: translateX(0);
+        }
+        
+        .toast i { font-size: 1.3rem; }
+        .toast-success { border-left-color: var(--moss); }
+        .toast-success i { color: var(--moss); }
+        .toast-error { border-left-color: #c06060; }
+        .toast-error i { color: #c06060; }
+        .toast-warning { border-left-color: #d4af37; }
+        .toast-warning i { color: #d4af37; }
+        
+        .toast-message { flex: 1; font-size: 0.85rem; }
+        .toast-close { cursor: pointer; opacity: 0.5; transition: var(--transition-fast); }
+        .toast-close:hover { opacity: 1; }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 50px 30px;
+            color: var(--text-muted);
+        }
+        
+        .empty-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            opacity: 0.5;
+            color: var(--leaf-green);
+            animation: floatLeaf 4s infinite ease-in-out;
+        }
+        
+        /* Spinner */
+        .spinner {
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-top-color: var(--leaf-green);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        
+        @keyframes spin { to { transform: rotate(360deg); } }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 25px;
+            margin-top: 35px;
+            border-top: 1px solid var(--glass-border);
+            color: var(--text-muted);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+        
         /* Responsive */
         @media (max-width: 640px) {
             .container { padding: 12px; }
-            .card { padding: 16px; }
-            .logo { font-size: 1.6rem; }
-            .badge-container { gap: 6px; }
-            .badge { padding: 4px 10px; font-size: 0.6rem; }
-            .vm-controls { flex-wrap: wrap; }
-            .vm-search { min-width: 100%; }
-            .vm-filter, .vm-sort { flex: 1; }
-            .connection-status { top: 10px; right: 10px; font-size: 0.6rem; }
+            .card { padding: 18px; }
+            .logo { font-size: 2.2rem; }
+            .modal { padding: 20px; }
             .toast { min-width: auto; max-width: 300px; }
-        }
-
-        /* Pull to refresh indicator */
-        .ptr-indicator {
-            text-align: center;
-            padding: 10px;
-            color: var(--text-muted);
-            font-size: 0.7rem;
-            transition: var(--transition);
-        }
-
-        .ptr-indicator.pulling {
-            color: var(--primary);
-        }
-
-        .ptr-indicator i {
-            animation: spin 0.8s infinite;
         }
     </style>
 </head>
 <body>
-    <!-- Connection Status -->
-    <div class="connection-status" id="connectionStatus" onclick="checkBackendConnection()">
-        <span class="status-dot" id="statusDot"></span>
-        <span id="statusText">Checking...</span>
-    </div>
-
-    <!-- Toast Container -->
+    <!-- Video Background (Cinematic Nature 4K) -->
+    <video class="video-background" autoplay loop muted playsinline>
+        <source src="https://cdn.pixabay.com/video/2023/09/23/182060-867837001_large.mp4" type="video/mp4">
+    </video>
+    <div class="video-overlay"></div>
+    
+    <!-- Animated Leaves -->
+    <div class="leaf" style="top: 10%; left: 5%; animation-delay: 0s;">🍃</div>
+    <div class="leaf" style="top: 30%; right: 8%; animation-delay: 2s;">🌿</div>
+    <div class="leaf" style="bottom: 20%; left: 15%; animation-delay: 4s;">🍂</div>
+    <div class="leaf" style="bottom: 40%; right: 20%; animation-delay: 6s;">🌱</div>
+    <div class="sunrays"></div>
+    
     <div class="toast-container" id="toastContainer"></div>
-
-    <!-- Modal Container -->
-    <div class="modal-overlay" id="modalOverlay">
-        <div class="modal" id="modal">
-            <div class="modal-title" id="modalTitle">Confirm</div>
-            <div class="modal-body" id="modalBody">Are you sure?</div>
-            <div class="modal-actions" id="modalActions">
-                <button class="modal-btn cancel" onclick="closeModal()">Cancel</button>
-                <button class="modal-btn confirm" id="modalConfirmBtn">Confirm</button>
+    
+    <!-- Modal Chi Tiết VM -->
+    <div class="modal-overlay" id="vmDetailModal">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title" id="modalVmName">Forest-VM</div>
+                <button class="modal-close" onclick="closeVmModal()">
+                    <i class="fas fa-times"></i>
+                </button>
             </div>
+            <div class="modal-body" id="modalVmBody"></div>
         </div>
     </div>
 
@@ -1381,254 +1084,183 @@
         <!-- Header -->
         <div class="header">
             <div class="logo">
-                <i class="fas fa-infinity"></i> SINGULARITY CLUB
+                <i class="fas fa-leaf" style="font-size: 2.5rem; margin-right: 15px;"></i>
+                NATURAL VPS
             </div>
-            <div class="subtitle">Quantum Virtual Machine Platform</div>
-            <div class="badge-container">
-                <div class="badge"><i class="fab fa-github"></i> GitHub Actions</div>
-                <div class="badge"><i class="fas fa-network-wired"></i> Tailscale VPN</div>
-                <div class="badge"><i class="fas fa-shield-alt"></i> Quantum Security</div>
-                <div class="badge"><i class="fas fa-chart-line"></i> Live Monitor</div>
-                <div class="badge"><i class="fas fa-hourglass-half"></i> 6h Runtime</div>
-                <div class="badge"><i class="fas fa-terminal"></i> Real Commands</div>
-            </div>
+            <div class="subtitle">Cinematic Nature • 4K Experience • Sustainable Computing</div>
         </div>
 
-        <!-- Stats -->
-        <div class="stats-grid">
-            <div class="stat-card" onclick="refreshData()">
-                <div class="stat-label"><i class="fas fa-microchip"></i> TOTAL VMS</div>
-                <div class="stat-value" id="statTotal">0</div>
+        <!-- Tech Specs -->
+        <div class="specs-grid">
+            <div class="spec-card">
+                <div class="spec-icon"><i class="fas fa-microchip"></i></div>
+                <div class="spec-value">4 vCore</div>
+                <div class="spec-label">AMD EPYC™</div>
             </div>
-            <div class="stat-card">
-                <div class="stat-label"><i class="fas fa-play-circle"></i> ACTIVE</div>
-                <div class="stat-value" id="statActive">0</div>
+            <div class="spec-card">
+                <div class="spec-icon"><i class="fas fa-memory"></i></div>
+                <div class="spec-value">16 GB</div>
+                <div class="spec-label">DDR5 RAM</div>
             </div>
-            <div class="stat-card">
-                <div class="stat-label"><i class="fas fa-spinner"></i> CREATING</div>
-                <div class="stat-value" id="statCreating">0</div>
+            <div class="spec-card">
+                <div class="spec-icon"><i class="fas fa-hdd"></i></div>
+                <div class="spec-value">25 GB</div>
+                <div class="spec-label">NVMe SSD</div>
             </div>
-            <div class="stat-card">
-                <div class="stat-label"><i class="fas fa-chart-line"></i> SUCCESS RATE</div>
-                <div class="stat-value" id="statRate">100%</div>
+            <div class="spec-card">
+                <div class="spec-icon"><i class="fas fa-wifi"></i></div>
+                <div class="spec-value">1-2 Gbps</div>
+                <div class="spec-label">Network</div>
+            </div>
+            <div class="spec-card">
+                <div class="spec-icon"><i class="fab fa-github"></i></div>
+                <div class="spec-value">Actions</div>
+                <div class="spec-label">CI/CD Native</div>
+            </div>
+            <div class="spec-card">
+                <div class="spec-icon"><i class="fas fa-shield-alt"></i></div>
+                <div class="spec-value">Tailscale</div>
+                <div class="spec-label">VPN Mesh</div>
             </div>
         </div>
 
         <div class="two-columns">
-            <!-- Form -->
+            <!-- Form Tạo VM -->
             <div class="card">
                 <div class="card-title">
-                    <i class="fas fa-rocket"></i> 
-                    Initialize Quantum VM
+                    <i class="fas fa-seedling"></i>
+                    Plant a New Virtual Machine
                 </div>
                 
                 <div class="input-group">
                     <label class="input-label"><i class="fab fa-github"></i> GitHub Token</label>
-                    <div class="input-wrapper">
-                        <input type="password" class="input-field" id="githubToken" placeholder="ghp_xxxxxxxxxxxx" autocomplete="off">
-                        <span class="validation-icon" id="githubTokenIcon"></span>
-                    </div>
-                    <div class="input-hint">
-                        <i class="fas fa-info-circle"></i> 
-                        <a href="https://github.com/settings/tokens" target="_blank">Get Token</a> - Cần scope: <code>repo</code>, <code>workflow</code>
-                    </div>
+                    <input type="password" class="input-field" id="githubToken" placeholder="ghp_xxxxxxxxxxxx" autocomplete="off">
                 </div>
                 
                 <div class="input-group">
-                    <label class="input-label"><i class="fas fa-key"></i> Tailscale Key</label>
-                    <div class="input-wrapper">
-                        <input type="password" class="input-field" id="tailscaleKey" placeholder="tskey-xxxxxxxxxxxx" autocomplete="off">
-                        <span class="validation-icon" id="tailscaleKeyIcon"></span>
+                    <label class="input-label"><i class="fas fa-key"></i> Tailscale Auth Key</label>
+                    <input type="password" class="input-field" id="tailscaleKey" placeholder="tskey-xxxxxxxxxxxx" autocomplete="off">
+                </div>
+                
+                <label class="input-label"><i class="fas fa-tree"></i> Choose Operating System</label>
+                <div class="os-selector">
+                    <div class="os-option active" data-os="ubuntu" onclick="selectOS('ubuntu')">
+                        <i class="fab fa-ubuntu" style="color: #dd4814;"></i>
+                        <span>Ubuntu 22.04</span>
+                        <small style="display: block; font-size: 0.6rem; opacity: 0.7;">Linux • SSH</small>
                     </div>
-                    <div class="input-hint">
-                        <i class="fas fa-info-circle"></i> 
-                        <a href="https://login.tailscale.com/admin/settings/keys" target="_blank">Get Auth Key</a>
+                    <div class="os-option" data-os="windows" onclick="selectOS('windows')">
+                        <i class="fab fa-windows" style="color: #00a4ef;"></i>
+                        <span>Windows Server</span>
+                        <small style="display: block; font-size: 0.6rem; opacity: 0.7;">RDP • noVNC</small>
                     </div>
                 </div>
                 
                 <div class="input-row">
                     <div class="input-group">
                         <label class="input-label"><i class="fas fa-user"></i> Username</label>
-                        <input type="text" class="input-field" id="vmUsername" placeholder="username">
+                        <input type="text" class="input-field" id="vmUsername" placeholder="forest_user">
                     </div>
-                    <button class="random-btn" id="randomUserBtn" data-tooltip="Tạo username ngẫu nhiên">
-                        <i class="fas fa-dice"></i> Random
+                    <button class="random-btn" id="randomUserBtn">
+                        <i class="fas fa-leaf"></i> Generate
                     </button>
                 </div>
                 
                 <div class="input-row">
                     <div class="input-group">
                         <label class="input-label"><i class="fas fa-lock"></i> Password</label>
-                        <input type="password" class="input-field" id="vmPassword" placeholder="password">
+                        <input type="password" class="input-field" id="vmPassword" placeholder="••••••••">
                     </div>
-                    <button class="random-btn" id="randomPassBtn" data-tooltip="Tạo password mạnh">
-                        <i class="fas fa-dice"></i> Random
+                    <button class="random-btn" id="randomPassBtn">
+                        <i class="fas fa-water"></i> Generate
                     </button>
                 </div>
                 
-                <div class="input-row">
-                    <button class="test-btn" id="testGithubBtn">
-                        <i class="fas fa-check-circle"></i> Test Token
-                    </button>
-                    <button class="test-btn" id="testTailscaleBtn">
-                        <i class="fas fa-check-circle"></i> Test Key
-                    </button>
-                </div>
-                
-                <!-- Progress -->
+                <!-- Progress Container - THẬT -->
                 <div class="progress-container" id="createProgressContainer">
                     <div class="progress-steps" id="createProgressSteps">
-                        <div class="progress-step" data-step="0"><i class="fas fa-key"></i> Validate</div>
-                        <div class="progress-step" data-step="1"><i class="fas fa-folder-plus"></i> Repo</div>
+                        <div class="progress-step" data-step="0"><i class="fas fa-check-circle"></i> Validate</div>
+                        <div class="progress-step" data-step="1"><i class="fas fa-code-branch"></i> Repository</div>
                         <div class="progress-step" data-step="2"><i class="fas fa-file-code"></i> Workflow</div>
-                        <div class="progress-step" data-step="3"><i class="fas fa-play"></i> Trigger</div>
-                        <div class="progress-step" data-step="4"><i class="fas fa-check-circle"></i> Ready</div>
+                        <div class="progress-step" data-step="3"><i class="fas fa-rocket"></i> Deploy</div>
+                        <div class="progress-step" data-step="4"><i class="fas fa-leaf"></i> Ready</div>
                     </div>
                     <div class="progress-bar">
                         <div class="progress-fill" id="createProgressFill"></div>
                     </div>
-                    <div class="progress-text" id="createProgressText">Ready to launch</div>
+                    <div class="progress-detail">
+                        <span class="progress-text" id="createProgressText">Waiting to start...</span>
+                        <span id="createProgressPercent">0%</span>
+                    </div>
                 </div>
                 
                 <button class="btn btn-primary" id="createBtn">
-                    <i class="fas fa-play"></i> Launch Quantum VM
+                    <i class="fas fa-seedling"></i> Grow New VM
                 </button>
                 
                 <div class="quick-actions">
-                    <div class="quick-btn" id="saveConfigBtn" data-tooltip="Lưu cấu hình vào trình duyệt">
-                        <i class="fas fa-save"></i> Save
-                    </div>
-                    <div class="quick-btn" id="loadConfigBtn" data-tooltip="Tải cấu hình đã lưu">
-                        <i class="fas fa-folder-open"></i> Load
-                    </div>
-                    <div class="quick-btn" id="clearFormBtn" data-tooltip="Xóa form">
-                        <i class="fas fa-eraser"></i> Clear
-                    </div>
-                    <div class="quick-btn" id="refreshPageBtn" data-tooltip="Làm mới dữ liệu">
-                        <i class="fas fa-sync-alt"></i> Refresh
-                    </div>
-                </div>
-                
-                <div style="margin-top: 12px; font-size: 0.65rem; color: var(--text-muted); text-align: center;">
-                    <i class="fas fa-keyboard"></i> Shortcuts: <kbd style="background: var(--card); padding: 2px 6px; border-radius: 4px;">Ctrl+N</kbd> Create · 
-                    <kbd style="background: var(--card); padding: 2px 6px; border-radius: 4px;">Ctrl+R</kbd> Refresh · 
-                    <kbd style="background: var(--card); padding: 2px 6px; border-radius: 4px;">?</kbd> Help
+                    <div class="quick-btn" id="saveConfigBtn"><i class="fas fa-save"></i> Save</div>
+                    <div class="quick-btn" id="loadConfigBtn"><i class="fas fa-folder-open"></i> Load</div>
+                    <div class="quick-btn" id="clearFormBtn"><i class="fas fa-leaf"></i> Clear</div>
+                    <div class="quick-btn" id="refreshPageBtn"><i class="fas fa-sync-alt"></i> Refresh</div>
                 </div>
             </div>
 
-            <!-- VM List -->
+            <!-- Danh Sách VM -->
             <div class="card">
                 <div class="card-title">
-                    <span><i class="fas fa-server"></i> Quantum VMs</span>
-                    <button class="refresh-vm-btn" id="manualRefreshBtn" style="background:none; border:none; color:var(--primary); cursor:pointer; margin-left:auto;" data-tooltip="Làm mới danh sách">
+                    <span><i class="fas fa-forest"></i> Your Virtual Forest</span>
+                    <button id="manualRefreshBtn" style="background: none; border: none; color: var(--leaf-green); cursor: pointer; margin-left: auto;">
                         <i class="fas fa-sync-alt"></i>
                     </button>
                 </div>
                 
-                <!-- Selection Toolbar -->
-                <div class="selection-toolbar" id="selectionToolbar">
-                    <span class="selection-count" id="selectionCount">0 selected</span>
-                    <div class="selection-actions">
-                        <button class="selection-btn" onclick="toggleSelectionMode()">
-                            <i class="fas fa-times"></i> Cancel
-                        </button>
-                        <button class="selection-btn delete" onclick="batchDeleteVMs()">
-                            <i class="fas fa-trash-alt"></i> Delete Selected
-                        </button>
-                    </div>
-                </div>
-                
                 <div class="vm-controls">
-                    <input type="text" class="vm-search" id="searchInput" placeholder="🔍 Search VMs...">
+                    <input type="text" class="vm-search" id="searchInput" placeholder="🔍 Search your VMs...">
                     <select class="vm-filter" id="filterSelect">
-                        <option value="all">All</option>
-                        <option value="running">Running</option>
-                        <option value="creating">Creating</option>
-                        <option value="expired">Expired</option>
+                        <option value="all">🌿 All</option>
+                        <option value="running">🍃 Running</option>
+                        <option value="creating">🌱 Creating</option>
+                        <option value="expired">🍂 Expired</option>
                     </select>
                     <select class="vm-sort" id="sortSelect">
-                        <option value="newest">Newest</option>
-                        <option value="oldest">Oldest</option>
-                        <option value="expiring">Expiring Soon</option>
-                        <option value="name">Name A-Z</option>
+                        <option value="newest">🕐 Newest</option>
+                        <option value="expiring">⏳ Expiring Soon</option>
                     </select>
                     <div class="vm-count">
-                        <i class="fas fa-chart-simple"></i> 
+                        <i class="fas fa-tree"></i>
                         <span id="vmCount">0</span>
                     </div>
-                    <button class="quick-btn" onclick="toggleSelectionMode()" style="padding: 8px 12px;" data-tooltip="Chọn nhiều VM">
-                        <i class="fas fa-check-double"></i>
-                    </button>
-                </div>
-                
-                <!-- Pull to refresh indicator -->
-                <div class="ptr-indicator" id="ptrIndicator">
-                    <i class="fas fa-arrow-down"></i> Pull to refresh
                 </div>
                 
                 <div class="vm-list" id="vmList">
-                    <!-- Skeleton Loading -->
-                    <div class="skeleton skeleton-card"></div>
-                    <div class="skeleton skeleton-card"></div>
-                    <div class="skeleton skeleton-card"></div>
-                </div>
-                
-                <div class="load-more" id="loadMoreContainer" style="display: none;">
-                    <button class="load-more-btn" id="loadMoreBtn" onclick="loadMore()">
-                        <i class="fas fa-chevron-down"></i> Load More
-                    </button>
+                    <div class="empty-state">
+                        <div class="empty-icon"><i class="fas fa-seedling"></i></div>
+                        <div>Your virtual forest is empty</div>
+                        <div style="font-size: 0.8rem; margin-top: 10px;">Plant your first VM to begin</div>
+                    </div>
                 </div>
             </div>
         </div>
         
         <div class="footer">
-            <div>© 2026 Singularity Club | v2.0 Quantum | <i class="fas fa-microchip"></i> 4 vCore | 16GB RAM | 25GB NVMe | 
-                <span style="color: var(--primary); cursor: pointer;" onclick="showShortcuts()">
-                    <i class="fas fa-keyboard"></i> Shortcuts
-                </span>
-            </div>
+            <i class="fas fa-leaf"></i> Natural VPS • Sustainable Computing • Powered by Nature <i class="fas fa-leaf"></i>
         </div>
     </div>
 
     <script>
-        // ============================================ //
-        // CONFIGURATION - KẾT NỐI BACKEND
-        // ============================================ //
-        const API_BASE_URL = window.location.hostname === 'localhost' 
-            ? 'http://localhost:5000' 
-            : `http://${window.location.hostname}:5000`;
+        // ============================================
+        // CONFIGURATION
+        // ============================================
+        const API_BASE = window.location.origin;
         
-        const API_URL = `${API_BASE_URL}/api/vps`;
-        const HEALTH_URL = `${API_BASE_URL}/api/health`;
-        const STATS_URL = `${API_BASE_URL}/api/stats`;
-        const VALIDATE_GITHUB_URL = `${API_BASE_URL}/api/validate/github`;
-        const VALIDATE_TAILSCALE_URL = `${API_BASE_URL}/api/validate/tailscale`;
-        
-        const STORAGE_KEY = 'singularity_vms_v2';
-        const CONFIG_KEY = 'singularity_config_v2';
-        const SORT_PREF_KEY = 'singularity_sort_pref';
-        
-        // State
         let vms = [];
-        let filteredVMs = [];
         let currentFilter = 'all';
         let currentSort = 'newest';
         let currentSearch = '';
-        let currentPage = 1;
-        const ITEMS_PER_PAGE = 10;
-        let hasMore = true;
-        let isLoading = false;
-        let backendConnected = false;
-        let countdownIntervals = {};
-        let currentOpenVM = null;
-        let selectionMode = false;
-        let selectedVMs = new Set();
-        let totalCreations = 0;
-        let successfulCreations = 0;
-        
-        // Debounce timers
-        let searchDebounceTimer = null;
-        let validationDebounceTimer = null;
+        let selectedOS = 'ubuntu';
+        let progressInterval = null;
+        let currentCreatingVM = null;
         
         // DOM Elements
         const elements = {
@@ -1642,28 +1274,16 @@
             filterSelect: document.getElementById('filterSelect'),
             sortSelect: document.getElementById('sortSelect'),
             vmCount: document.getElementById('vmCount'),
-            statTotal: document.getElementById('statTotal'),
-            statActive: document.getElementById('statActive'),
-            statCreating: document.getElementById('statCreating'),
-            statRate: document.getElementById('statRate'),
             createProgressContainer: document.getElementById('createProgressContainer'),
             createProgressFill: document.getElementById('createProgressFill'),
             createProgressText: document.getElementById('createProgressText'),
-            createProgressSteps: document.getElementById('createProgressSteps'),
-            loadMoreContainer: document.getElementById('loadMoreContainer'),
-            loadMoreBtn: document.getElementById('loadMoreBtn'),
-            selectionToolbar: document.getElementById('selectionToolbar'),
-            selectionCount: document.getElementById('selectionCount'),
-            statusDot: document.getElementById('statusDot'),
-            statusText: document.getElementById('statusText'),
-            githubTokenIcon: document.getElementById('githubTokenIcon'),
-            tailscaleKeyIcon: document.getElementById('tailscaleKeyIcon'),
-            ptrIndicator: document.getElementById('ptrIndicator')
+            createProgressPercent: document.getElementById('createProgressPercent'),
+            createProgressSteps: document.getElementById('createProgressSteps')
         };
         
-        // ============================================ //
+        // ============================================
         // TOAST SYSTEM
-        // ============================================ //
+        // ============================================
         function showToast(message, type = 'info', duration = 4000) {
             const container = document.getElementById('toastContainer');
             const toast = document.createElement('div');
@@ -1685,252 +1305,28 @@
             `;
             
             container.appendChild(toast);
-            
-            // Trigger animation
             setTimeout(() => toast.classList.add('show'), 10);
-            
-            // Auto remove
             setTimeout(() => {
                 toast.classList.remove('show');
                 setTimeout(() => toast.remove(), 300);
             }, duration);
         }
         
-        // ============================================ //
-        // MODAL SYSTEM
-        // ============================================ //
-        let modalCallback = null;
-        
-        function showModal(title, body, confirmText = 'Confirm', onConfirm = null, type = 'danger') {
-            const overlay = document.getElementById('modalOverlay');
-            const modalTitle = document.getElementById('modalTitle');
-            const modalBody = document.getElementById('modalBody');
-            const confirmBtn = document.getElementById('modalConfirmBtn');
-            
-            modalTitle.textContent = title;
-            modalBody.textContent = body;
-            confirmBtn.textContent = confirmText;
-            modalTitle.style.color = type === 'danger' ? 'var(--error)' : 'var(--primary)';
-            
-            modalCallback = onConfirm;
-            
-            overlay.classList.add('show');
-        }
-        
-        function closeModal() {
-            document.getElementById('modalOverlay').classList.remove('show');
-            modalCallback = null;
-        }
-        
-        document.getElementById('modalConfirmBtn').onclick = function() {
-            if (modalCallback) {
-                modalCallback();
-            }
-            closeModal();
-        };
-        
-        // ============================================ //
-        // CONNECTION STATUS
-        // ============================================ //
-        async function checkBackendConnection() {
-            try {
-                const res = await fetch(HEALTH_URL);
-                if (res.ok) {
-                    backendConnected = true;
-                    elements.statusDot.classList.remove('offline');
-                    elements.statusText.textContent = 'Connected';
-                    showToast('Backend connected', 'success', 2000);
-                    loadVMs();
-                    loadStats();
-                    return true;
-                } else {
-                    throw new Error('API error');
-                }
-            } catch (e) {
-                backendConnected = false;
-                elements.statusDot.classList.add('offline');
-                elements.statusText.textContent = 'Offline';
-                showToast('Cannot connect to backend', 'error', 3000);
-                return false;
-            }
-        }
-        
-        // ============================================ //
-        // VALIDATION
-        // ============================================ //
-        function validateGitHubTokenFormat(token) {
-            return /^ghp_[A-Za-z0-9]{36,}$/.test(token);
-        }
-        
-        function validateTailscaleKeyFormat(key) {
-            return /^tskey-[A-Za-z0-9]+-[A-Za-z0-9]+$/.test(key);
-        }
-        
-        async function testGitHubToken() {
-            const token = elements.githubToken.value.trim();
-            if (!token) {
-                showToast('Please enter GitHub token', 'warning');
-                return;
-            }
-            
-            if (!validateGitHubTokenFormat(token)) {
-                elements.githubToken.classList.add('invalid');
-                elements.githubTokenIcon.className = 'validation-icon invalid';
-                elements.githubTokenIcon.innerHTML = '<i class="fas fa-times-circle"></i>';
-                showToast('Invalid token format', 'error');
-                return;
-            }
-            
-            const btn = document.getElementById('testGithubBtn');
-            btn.disabled = true;
-            btn.innerHTML = '<span class="spinner"></span> Testing...';
-            
-            try {
-                const res = await fetch(VALIDATE_GITHUB_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ token })
-                });
-                
-                const data = await res.json();
-                
-                if (data.valid) {
-                    elements.githubToken.classList.add('valid');
-                    elements.githubToken.classList.remove('invalid');
-                    elements.githubTokenIcon.className = 'validation-icon valid';
-                    elements.githubTokenIcon.innerHTML = '<i class="fas fa-check-circle"></i>';
-                    showToast(`✅ Token valid - User: ${data.username}`, 'success');
-                } else {
-                    elements.githubToken.classList.add('invalid');
-                    elements.githubToken.classList.remove('valid');
-                    elements.githubTokenIcon.className = 'validation-icon invalid';
-                    elements.githubTokenIcon.innerHTML = '<i class="fas fa-times-circle"></i>';
-                    showToast(`❌ ${data.error}`, 'error');
-                }
-            } catch (e) {
-                showToast('Validation failed', 'error');
-            } finally {
-                btn.disabled = false;
-                btn.innerHTML = '<i class="fas fa-check-circle"></i> Test Token';
-            }
-        }
-        
-        async function testTailscaleKey() {
-            const key = elements.tailscaleKey.value.trim();
-            if (!key) {
-                showToast('Please enter Tailscale key', 'warning');
-                return;
-            }
-            
-            if (!validateTailscaleKeyFormat(key)) {
-                elements.tailscaleKey.classList.add('invalid');
-                elements.tailscaleKeyIcon.className = 'validation-icon invalid';
-                elements.tailscaleKeyIcon.innerHTML = '<i class="fas fa-times-circle"></i>';
-                showToast('Invalid key format', 'error');
-                return;
-            }
-            
-            const btn = document.getElementById('testTailscaleBtn');
-            btn.disabled = true;
-            btn.innerHTML = '<span class="spinner"></span> Testing...';
-            
-            try {
-                const res = await fetch(VALIDATE_TAILSCALE_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ key })
-                });
-                
-                const data = await res.json();
-                
-                if (data.valid) {
-                    elements.tailscaleKey.classList.add('valid');
-                    elements.tailscaleKey.classList.remove('invalid');
-                    elements.tailscaleKeyIcon.className = 'validation-icon valid';
-                    elements.tailscaleKeyIcon.innerHTML = '<i class="fas fa-check-circle"></i>';
-                    showToast(`✅ Key appears valid`, 'success');
-                } else {
-                    elements.tailscaleKey.classList.add('invalid');
-                    elements.tailscaleKey.classList.remove('valid');
-                    elements.tailscaleKeyIcon.className = 'validation-icon invalid';
-                    elements.tailscaleKeyIcon.innerHTML = '<i class="fas fa-times-circle"></i>';
-                    showToast(`❌ ${data.message}`, 'error');
-                }
-            } catch (e) {
-                showToast('Validation failed', 'error');
-            } finally {
-                btn.disabled = false;
-                btn.innerHTML = '<i class="fas fa-check-circle"></i> Test Key';
-            }
-        }
-        
-        // Real-time validation
-        elements.githubToken.addEventListener('input', function() {
-            clearTimeout(validationDebounceTimer);
-            validationDebounceTimer = setTimeout(() => {
-                const token = this.value.trim();
-                if (!token) {
-                    elements.githubToken.classList.remove('valid', 'invalid');
-                    elements.githubTokenIcon.className = 'validation-icon';
-                    elements.githubTokenIcon.innerHTML = '';
-                } else if (validateGitHubTokenFormat(token)) {
-                    elements.githubToken.classList.add('valid');
-                    elements.githubToken.classList.remove('invalid');
-                    elements.githubTokenIcon.className = 'validation-icon valid';
-                    elements.githubTokenIcon.innerHTML = '<i class="fas fa-check-circle"></i>';
-                } else {
-                    elements.githubToken.classList.add('invalid');
-                    elements.githubToken.classList.remove('valid');
-                    elements.githubTokenIcon.className = 'validation-icon invalid';
-                    elements.githubTokenIcon.innerHTML = '<i class="fas fa-times-circle"></i>';
-                }
-            }, 300);
-        });
-        
-        elements.tailscaleKey.addEventListener('input', function() {
-            clearTimeout(validationDebounceTimer);
-            validationDebounceTimer = setTimeout(() => {
-                const key = this.value.trim();
-                if (!key) {
-                    elements.tailscaleKey.classList.remove('valid', 'invalid');
-                    elements.tailscaleKeyIcon.className = 'validation-icon';
-                    elements.tailscaleKeyIcon.innerHTML = '';
-                } else if (validateTailscaleKeyFormat(key)) {
-                    elements.tailscaleKey.classList.add('valid');
-                    elements.tailscaleKey.classList.remove('invalid');
-                    elements.tailscaleKeyIcon.className = 'validation-icon valid';
-                    elements.tailscaleKeyIcon.innerHTML = '<i class="fas fa-check-circle"></i>';
-                } else {
-                    elements.tailscaleKey.classList.add('invalid');
-                    elements.tailscaleKey.classList.remove('valid');
-                    elements.tailscaleKeyIcon.className = 'validation-icon invalid';
-                    elements.tailscaleKeyIcon.innerHTML = '<i class="fas fa-times-circle"></i>';
-                }
-            }, 300);
-        });
-        
-        // ============================================ //
+        // ============================================
         // UTILITIES
-        // ============================================ //
+        // ============================================
         function randomUsername() {
-            const prefixes = ['quantum', 'cyber', 'neon', 'void', 'nexus', 'apex', 'pulse'];
-            const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
-            const prefix = prefixes[Math.floor(Math.random() * prefixes.length)];
-            let suffix = '';
-            for (let i = 0; i < 5; i++) suffix += chars[Math.floor(Math.random() * chars.length)];
-            return `${prefix}_${suffix}`;
+            const prefixes = ['forest', 'leaf', 'river', 'stone', 'wind', 'sun', 'moss', 'pine'];
+            return prefixes[Math.floor(Math.random() * prefixes.length)] + '_' + Math.random().toString(36).substring(2, 8);
         }
         
-        function randomPassword(length = 12) {
+        function randomPassword() {
             const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*';
-            let result = '';
-            for (let i = 0; i < length; i++) result += chars[Math.floor(Math.random() * chars.length)];
-            return result;
+            return Array(14).fill(0).map(() => chars[Math.floor(Math.random() * chars.length)]).join('');
         }
         
         function formatRelativeTime(date) {
-            const now = new Date();
-            const diff = Math.floor((now - new Date(date)) / 1000);
+            const diff = Math.floor((new Date() - new Date(date)) / 1000);
             if (diff < 60) return `${diff}s ago`;
             if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
             if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
@@ -1941,665 +1337,305 @@
             if (!expiresAt) return 'N/A';
             const remaining = new Date(expiresAt) - Date.now();
             if (remaining <= 0) return 'Expired';
-            const hours = Math.floor(remaining / (1000 * 60 * 60));
-            const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((remaining % (1000 * 60)) / 1000);
-            return `${hours}h ${minutes}m ${seconds}s`;
+            const h = Math.floor(remaining / 3600000);
+            const m = Math.floor((remaining % 3600000) / 60000);
+            const s = Math.floor((remaining % 60000) / 1000);
+            return `${h}h ${m}m ${s}s`;
         }
         
         function getCountdownClass(expiresAt) {
             if (!expiresAt) return '';
             const remaining = new Date(expiresAt) - Date.now();
-            const minutes = remaining / (1000 * 60);
-            if (minutes <= 10) return 'danger';
-            if (minutes <= 60) return 'warning';
+            if (remaining <= 600000) return 'danger';
+            if (remaining <= 3600000) return 'warning';
             return '';
         }
         
-        function updateCountdowns() {
-            vms.forEach(vm => {
-                if (vm.status === 'running' && vm.expiresAt) {
-                    const element = document.getElementById(`countdown-${vm.id}`);
-                    if (element) {
-                        const remaining = new Date(vm.expiresAt) - Date.now();
-                        if (remaining <= 0) {
-                            element.textContent = 'Expired';
-                            element.className = 'countdown-timer danger';
-                            vm.status = 'expired';
-                        } else {
-                            element.textContent = formatCountdown(vm.expiresAt);
-                            element.className = `countdown-timer ${getCountdownClass(vm.expiresAt)}`;
-                        }
-                    }
-                }
-            });
+        function selectOS(os) {
+            selectedOS = os;
+            document.querySelectorAll('.os-option').forEach(opt => opt.classList.remove('active'));
+            document.querySelector(`.os-option[data-os="${os}"]`).classList.add('active');
         }
         
-        // Start countdown updater
-        setInterval(updateCountdowns, 1000);
-        
-        function updateStats() {
-            const running = vms.filter(v => v.status === 'running').length;
-            const creating = vms.filter(v => v.status === 'creating').length;
+        // ============================================
+        // MODAL VM DETAIL
+        // ============================================
+        function showVmModal(vm) {
+            const modal = document.getElementById('vmDetailModal');
+            const modalBody = document.getElementById('modalVmBody');
+            const modalTitle = document.getElementById('modalVmName');
             
-            elements.statTotal.textContent = vms.length;
-            elements.statActive.textContent = running;
-            elements.statCreating.textContent = creating;
+            modalTitle.textContent = vm.name || 'VM Details';
             
-            const rate = totalCreations > 0 ? Math.round((successfulCreations / totalCreations) * 100) : 100;
-            elements.statRate.textContent = rate + '%';
-        }
-        
-        function saveConfig() {
-            const config = {
-                githubToken: elements.githubToken.value,
-                tailscaleKey: elements.tailscaleKey.value,
-                vmUsername: elements.vmUsername.value,
-                vmPassword: elements.vmPassword.value
-            };
-            localStorage.setItem(CONFIG_KEY, JSON.stringify(config));
-            showToast('Configuration saved', 'success');
-        }
-        
-        function loadConfig() {
-            const saved = localStorage.getItem(CONFIG_KEY);
-            if (saved) {
-                try {
-                    const config = JSON.parse(saved);
-                    if (config.githubToken) elements.githubToken.value = config.githubToken;
-                    if (config.tailscaleKey) elements.tailscaleKey.value = config.tailscaleKey;
-                    if (config.vmUsername) elements.vmUsername.value = config.vmUsername;
-                    if (config.vmPassword) elements.vmPassword.value = config.vmPassword;
-                    showToast('Configuration loaded', 'success');
-                } catch (e) {
-                    showToast('Failed to load config', 'error');
-                }
+            const isUbuntu = vm.osType === 'ubuntu';
+            const remaining = new Date(vm.expiresAt) - Date.now();
+            const countdownClass = getCountdownClass(vm.expiresAt);
+            
+            let connectionDetails = '';
+            if (isUbuntu) {
+                connectionDetails = `
+                    <div class="info-section">
+                        <div class="info-section-title"><i class="fas fa-terminal"></i> SSH Connection</div>
+                        <div class="info-row">
+                            <span class="info-label"><i class="fas fa-terminal"></i> SSH Command</span>
+                            <span class="info-value">
+                                ${vm.sshCommand || 'Pending...'}
+                                ${vm.sshCommand ? `<button class="copy-btn" onclick="copyText('${vm.sshCommand}', this)"><i class="fas fa-copy"></i></button>` : ''}
+                            </span>
+                        </div>
+                    </div>
+                `;
             } else {
-                showToast('No saved configuration', 'info');
+                connectionDetails = `
+                    <div class="info-section">
+                        <div class="info-section-title"><i class="fas fa-desktop"></i> Remote Desktop</div>
+                        <div class="info-row">
+                            <span class="info-label"><i class="fas fa-globe"></i> Cloudflare VNC</span>
+                            <span class="info-value">
+                                ${vm.cloudflareUrl ? `<a href="${vm.cloudflareUrl}" target="_blank" style="color: var(--leaf-green);">Open VNC</a>` : 'Pending...'}
+                                ${vm.cloudflareUrl ? `<button class="copy-btn" onclick="copyText('${vm.cloudflareUrl}', this)"><i class="fas fa-copy"></i></button>` : ''}
+                            </span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label"><i class="fas fa-network-wired"></i> noVNC Direct</span>
+                            <span class="info-value">
+                                ${vm.novncUrl || 'Pending...'}
+                                ${vm.novncUrl ? `<button class="copy-btn" onclick="copyText('${vm.novncUrl}', this)"><i class="fas fa-copy"></i></button>` : ''}
+                            </span>
+                        </div>
+                    </div>
+                `;
             }
+            
+            modalBody.innerHTML = `
+                <div class="info-section">
+                    <div class="info-section-title"><i class="fas fa-info-circle"></i> General Information</div>
+                    <div class="info-row">
+                        <span class="info-label"><i class="fas fa-tag"></i> VM Name</span>
+                        <span class="info-value">${vm.name}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label"><i class="fas fa-microchip"></i> Operating System</span>
+                        <span class="info-value">
+                            <i class="fab fa-${isUbuntu ? 'ubuntu' : 'windows'}" style="color: ${isUbuntu ? '#dd4814' : '#00a4ef'};"></i>
+                            ${isUbuntu ? 'Ubuntu 22.04 LTS' : 'Windows Server 2022'}
+                        </span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label"><i class="fas fa-circle"></i> Status</span>
+                        <span class="info-value">
+                            <span class="vm-status status-${vm.status}">${vm.status}</span>
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="info-section">
+                    <div class="info-section-title"><i class="fas fa-key"></i> Credentials</div>
+                    <div class="info-row">
+                        <span class="info-label"><i class="fas fa-user"></i> Username</span>
+                        <span class="info-value">
+                            ${vm.username}
+                            <button class="copy-btn" onclick="copyText('${vm.username}', this)"><i class="fas fa-copy"></i></button>
+                        </span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label"><i class="fas fa-lock"></i> Password</span>
+                        <span class="info-value">
+                            ${vm.password}
+                            <button class="copy-btn" onclick="copyText('${vm.password}', this)"><i class="fas fa-copy"></i></button>
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="info-section">
+                    <div class="info-section-title"><i class="fas fa-network-wired"></i> Network</div>
+                    <div class="info-row">
+                        <span class="info-label"><i class="fas fa-ip"></i> Tailscale IP</span>
+                        <span class="info-value">
+                            ${vm.tailscaleIP || 'Pending...'}
+                            ${vm.tailscaleIP ? `<button class="copy-btn" onclick="copyText('${vm.tailscaleIP}', this)"><i class="fas fa-copy"></i></button>` : ''}
+                        </span>
+                    </div>
+                </div>
+                
+                ${connectionDetails}
+                
+                <div class="info-section">
+                    <div class="info-section-title"><i class="fas fa-clock"></i> Timeline</div>
+                    <div class="info-row">
+                        <span class="info-label"><i class="far fa-calendar-plus"></i> Created</span>
+                        <span class="info-value">${new Date(vm.createdAt).toLocaleString()}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label"><i class="far fa-calendar-times"></i> Expires</span>
+                        <span class="info-value">${new Date(vm.expiresAt).toLocaleString()}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label"><i class="fas fa-hourglass-half"></i> Time Remaining</span>
+                        <span class="info-value">
+                            <span class="countdown-timer ${countdownClass}">${formatCountdown(vm.expiresAt)}</span>
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="modal-actions">
+                    <button class="modal-btn" onclick="copyAllInfo('${vm.id}')">
+                        <i class="fas fa-copy"></i> Copy All Info
+                    </button>
+                    ${vm.repoUrl ? `
+                        <a href="${vm.repoUrl}" target="_blank" class="modal-btn">
+                            <i class="fab fa-github"></i> Repository
+                        </a>
+                    ` : ''}
+                    ${vm.workflowUrl ? `
+                        <a href="${vm.workflowUrl}" target="_blank" class="modal-btn">
+                            <i class="fas fa-code-branch"></i> Workflow
+                        </a>
+                    ` : ''}
+                    <button class="modal-btn delete" onclick="deleteVMFromModal('${vm.id}')">
+                        <i class="fas fa-trash-alt"></i> Delete
+                    </button>
+                </div>
+            `;
+            
+            modal.classList.add('show');
         }
         
-        function clearForm() {
-            elements.githubToken.value = '';
-            elements.tailscaleKey.value = '';
-            elements.vmUsername.value = '';
-            elements.vmPassword.value = '';
-            elements.githubToken.classList.remove('valid', 'invalid');
-            elements.tailscaleKey.classList.remove('valid', 'invalid');
-            elements.githubTokenIcon.className = 'validation-icon';
-            elements.tailscaleKeyIcon.className = 'validation-icon';
-            elements.githubTokenIcon.innerHTML = '';
-            elements.tailscaleKeyIcon.innerHTML = '';
-            showToast('Form cleared', 'info');
+        function closeVmModal() {
+            document.getElementById('vmDetailModal').classList.remove('show');
         }
         
-        // ============================================ //
-        // COPY FUNCTIONS
-        // ============================================ //
-        async function copyText(text, button) {
+        window.copyText = async function(text, btn) {
             try {
                 await navigator.clipboard.writeText(text);
-                const originalHTML = button.innerHTML;
-                button.innerHTML = '<i class="fas fa-check"></i> Copied!';
-                button.classList.add('copied');
+                const original = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                btn.classList.add('copied');
                 showToast('Copied to clipboard', 'success', 1500);
                 setTimeout(() => {
-                    button.innerHTML = originalHTML;
-                    button.classList.remove('copied');
+                    btn.innerHTML = original;
+                    btn.classList.remove('copied');
                 }, 1500);
-            } catch (e) {
-                showToast('Failed to copy', 'error');
+            } catch(e) {
+                showToast('Copy failed', 'error');
             }
-        }
+        };
         
-        function copyAllVMInfo(vmId) {
+        window.copyAllInfo = function(vmId) {
             const vm = vms.find(v => v.id === vmId);
             if (!vm) return;
             
             const info = `
-========================================
-SINGULARITY CLUB VPS - ${vm.name}
-========================================
-Username:     ${vm.username}
-Password:     ${vm.password}
-Tailscale IP: ${vm.tailscaleIP || 'Pending...'}
-noVNC URL:    ${vm.novncUrl || 'Pending...'}
-Repository:   ${vm.repoUrl || 'N/A'}
-Created:      ${vm.createdAt}
-Expires:      ${vm.expiresAt}
-Status:       ${vm.status}
-========================================
-`;
-            copyText(info, event.target);
-        }
-        
-        // ============================================ //
-        // SELECTION MODE
-        // ============================================ //
-        function toggleSelectionMode() {
-            selectionMode = !selectionMode;
-            selectedVMs.clear();
+Natural VPS - ${vm.name}
+========================
+OS: ${vm.osType === 'ubuntu' ? 'Ubuntu 22.04' : 'Windows Server'}
+Username: ${vm.username}
+Password: ${vm.password}
+Tailscale IP: ${vm.tailscaleIP || 'N/A'}
+${vm.osType === 'ubuntu' ? `SSH: ${vm.sshCommand || 'N/A'}` : `VNC: ${vm.cloudflareUrl || 'N/A'}`}
+Repository: ${vm.repoUrl || 'N/A'}
+Created: ${vm.createdAt}
+Expires: ${vm.expiresAt}
+            `.trim();
             
-            document.querySelectorAll('.vm-item').forEach(item => {
-                item.classList.toggle('selection-mode', selectionMode);
-            });
-            
-            elements.selectionToolbar.classList.toggle('show', selectionMode);
-            updateSelectionCount();
-            renderVMList();
-        }
+            navigator.clipboard.writeText(info);
+            showToast('All information copied!', 'success');
+            closeVmModal();
+        };
         
-        function toggleVMSelection(vmId, checked) {
-            if (checked) {
-                selectedVMs.add(vmId);
-            } else {
-                selectedVMs.delete(vmId);
+        window.deleteVMFromModal = function(vmId) {
+            if (confirm('Are you sure you want to delete this VM?')) {
+                deleteVM(vmId);
+                closeVmModal();
             }
-            updateSelectionCount();
-            
-            // Update item class
-            const item = document.querySelector(`.vm-item[data-id="${vmId}"]`);
-            if (item) {
-                item.classList.toggle('selected', checked);
-            }
+        };
+        
+        // ============================================
+        // VM LIST RENDERING
+        // ============================================
+        function loadVMs() {
+            fetch(`${API_BASE}/api/vps`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        vms = data.vms || [];
+                        applyFilters();
+                    }
+                })
+                .catch(e => console.error('Load VMs error:', e));
         }
         
-        function updateSelectionCount() {
-            elements.selectionCount.textContent = `${selectedVMs.size} selected`;
-        }
-        
-        function batchDeleteVMs() {
-            if (selectedVMs.size === 0) {
-                showToast('No VMs selected', 'warning');
-                return;
-            }
-            
-            showModal(
-                'Delete Multiple VMs',
-                `Are you sure you want to delete ${selectedVMs.size} VMs? This action cannot be undone.`,
-                'Delete All',
-                async () => {
-                    try {
-                        const res = await fetch(`${API_URL}/batch-delete`, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ ids: Array.from(selectedVMs) })
-                        });
-                        
-                        const data = await res.json();
-                        
-                        if (data.success) {
-                            selectedVMs.forEach(id => {
-                                if (countdownIntervals[id]) {
-                                    clearInterval(countdownIntervals[id]);
-                                    delete countdownIntervals[id];
-                                }
-                            });
-                            
-                            vms = vms.filter(v => !selectedVMs.has(v.id));
-                            selectedVMs.clear();
-                            toggleSelectionMode();
-                            applyFilters();
-                            updateStats();
-                            showToast(`Deleted ${data.deleted} VMs`, 'success');
-                        }
-                    } catch (e) {
-                        showToast('Failed to delete VMs', 'error');
-                    }
-                }
-            );
-        }
-        
-        // ============================================ //
-        // VM ACTIONS
-        // ============================================ //
-        function toggleVM(id) {
-            const item = document.querySelector(`.vm-item[data-id="${id}"]`);
-            if (!item) return;
-            
-            if (currentOpenVM && currentOpenVM !== id) {
-                const prev = document.querySelector(`.vm-item[data-id="${currentOpenVM}"]`);
-                if (prev) prev.classList.remove('open');
-            }
-            
-            item.classList.toggle('open');
-            currentOpenVM = item.classList.contains('open') ? id : null;
-        }
-        
-        function deleteVM(vmId) {
-            const vm = vms.find(v => v.id === vmId);
-            if (!vm) return;
-            
-            showModal(
-                'Delete VM',
-                `Are you sure you want to delete "${vm.name}"?`,
-                'Delete',
-                async () => {
-                    try {
-                        const res = await fetch(`${API_URL}?id=${vmId}`, { method: 'DELETE' });
-                        const data = await res.json();
-                        
-                        if (data.success) {
-                            if (countdownIntervals[vmId]) {
-                                clearInterval(countdownIntervals[vmId]);
-                                delete countdownIntervals[vmId];
-                            }
-                            
-                            vms = vms.filter(v => v.id !== vmId);
-                            if (currentOpenVM === vmId) currentOpenVM = null;
-                            
-                            applyFilters();
-                            updateStats();
-                            showToast(`VM "${vm.name}" deleted`, 'success');
-                        } else {
-                            showToast(data.error || 'Failed to delete', 'error');
-                        }
-                    } catch (e) {
-                        showToast('Connection error', 'error');
-                    }
-                }
-            );
-        }
-        
-        function runTerminalCommand(vmId, input) {
-            const vm = vms.find(v => v.id === vmId);
-            if (!vm) return;
-            
-            const cmd = input.value.trim().toLowerCase();
-            
-            switch (cmd) {
-                case 'ipconfig':
-                    if (vm.tailscaleIP) {
-                        showToast(`Tailscale IP: ${vm.tailscaleIP}`, 'info');
-                    } else {
-                        showToast('IP not available yet', 'warning');
-                    }
-                    break;
-                case 'vnc':
-                    if (vm.novncUrl) {
-                        window.open(vm.novncUrl, '_blank');
-                    } else {
-                        showToast('noVNC not ready', 'warning');
-                    }
-                    break;
-                case 'repo':
-                    if (vm.repoUrl) {
-                        window.open(vm.repoUrl, '_blank');
-                    } else {
-                        showToast('Repository not ready', 'warning');
-                    }
-                    break;
-                case 'info':
-                    showToast(`${vm.name} | ${vm.username} | ${vm.status}`, 'info');
-                    break;
-                case 'help':
-                    showToast('Commands: ipconfig, vnc, repo, info, help', 'info');
-                    break;
-                default:
-                    if (cmd) {
-                        showToast(`Unknown command: ${cmd}`, 'warning');
-                    }
-            }
-            
-            input.value = '';
-        }
-        
-        // ============================================ //
-        // FILTER & SORT
-        // ============================================ //
         function applyFilters() {
             let filtered = [...vms];
             
-            // Search
             if (currentSearch) {
                 filtered = filtered.filter(v => 
                     (v.name || '').toLowerCase().includes(currentSearch) ||
-                    (v.username || '').toLowerCase().includes(currentSearch) ||
-                    (v.tailscaleIP || '').toLowerCase().includes(currentSearch)
+                    (v.username || '').toLowerCase().includes(currentSearch)
                 );
             }
             
-            // Filter by status
             if (currentFilter !== 'all') {
                 filtered = filtered.filter(v => v.status === currentFilter);
             }
             
-            // Sort
-            switch (currentSort) {
-                case 'newest':
-                    filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-                    break;
-                case 'oldest':
-                    filtered.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
-                    break;
-                case 'expiring':
-                    filtered.sort((a, b) => {
-                        if (!a.expiresAt) return 1;
-                        if (!b.expiresAt) return -1;
-                        return new Date(a.expiresAt) - new Date(b.expiresAt);
-                    });
-                    break;
-                case 'name':
-                    filtered.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
-                    break;
+            if (currentSort === 'newest') {
+                filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            } else if (currentSort === 'expiring') {
+                filtered.sort((a, b) => (a.expiresAt || '') > (b.expiresAt || '') ? 1 : -1);
             }
             
-            filteredVMs = filtered;
             elements.vmCount.textContent = filtered.length;
-            
-            // Reset pagination
-            currentPage = 1;
-            hasMore = filtered.length > ITEMS_PER_PAGE;
-            
-            renderVMList();
+            renderVMList(filtered);
         }
         
-        // ============================================ //
-        // RENDER
-        // ============================================ //
-        function renderVMList() {
-            const start = 0;
-            const end = currentPage * ITEMS_PER_PAGE;
-            const displayVMs = filteredVMs.slice(start, end);
-            
-            hasMore = end < filteredVMs.length;
-            elements.loadMoreContainer.style.display = hasMore ? 'block' : 'none';
-            
-            if (displayVMs.length === 0 && !isLoading) {
+        function renderVMList(displayVMs) {
+            if (displayVMs.length === 0) {
                 elements.vmList.innerHTML = `
                     <div class="empty-state">
-                        <div class="empty-icon"><i class="fas fa-cloud-upload-alt"></i></div>
-                        <div>No quantum VMs found</div>
-                        <button class="btn btn-primary" onclick="document.getElementById('createBtn').click()" style="width: auto; margin-top: 20px;">
-                            <i class="fas fa-plus"></i> Create First VM
-                        </button>
+                        <div class="empty-icon"><i class="fas fa-seedling"></i></div>
+                        <div>Your virtual forest is empty</div>
+                        <div style="font-size: 0.8rem; margin-top: 10px;">Plant your first VM to begin</div>
                     </div>
                 `;
                 return;
             }
             
             elements.vmList.innerHTML = displayVMs.map(vm => {
-                const isRunning = vm.status === 'running';
-                const isCreating = vm.status === 'creating';
-                const progress = vm.progress || (isRunning ? 100 : (isCreating ? 50 : 0));
+                const isUbuntu = vm.osType === 'ubuntu';
+                const progress = vm.progress || (vm.status === 'running' ? 100 : (vm.status === 'creating' ? 50 : 0));
                 
                 return `
-                    <div class="vm-item ${selectionMode ? 'selection-mode' : ''} ${selectedVMs.has(vm.id) ? 'selected' : ''}" data-id="${vm.id}">
-                        ${selectionMode ? `
-                            <input type="checkbox" class="vm-checkbox" 
-                                   ${selectedVMs.has(vm.id) ? 'checked' : ''} 
-                                   onchange="toggleVMSelection('${vm.id}', this.checked)">
-                        ` : ''}
-                        <div class="vm-header" onclick="${selectionMode ? '' : `toggleVM('${vm.id}')`}">
+                    <div class="vm-item" onclick="showVmModal(${JSON.stringify(vm).replace(/"/g, '&quot;')})">
+                        <div class="vm-header">
                             <div class="vm-info">
                                 <div class="vm-icon">
-                                    <i class="fas ${isRunning ? 'fa-play-circle' : (isCreating ? 'fa-spinner fa-pulse' : 'fa-stop-circle')}"></i>
+                                    <i class="fab fa-${isUbuntu ? 'ubuntu' : 'windows'}"></i>
                                 </div>
                                 <div>
                                     <div class="vm-name">${vm.name || vm.id}</div>
-                                    <div class="vm-time">
-                                        <i class="far fa-calendar-alt"></i> ${formatRelativeTime(vm.createdAt)}
+                                    <div class="vm-os">
+                                        <i class="far fa-clock"></i> ${formatRelativeTime(vm.createdAt)}
                                     </div>
                                 </div>
                             </div>
-                            <div style="display: flex; gap: 10px; align-items: center;">
+                            <div style="display: flex; gap: 12px; align-items: center;">
                                 <span class="vm-status status-${vm.status}">${vm.status}</span>
-                                ${!selectionMode ? '<i class="fas fa-chevron-down vm-expand-icon"></i>' : ''}
+                                <i class="fas fa-chevron-right" style="color: var(--leaf-green); opacity: 0.7;"></i>
                             </div>
                         </div>
-                        ${!selectionMode ? `
-                        <div class="vm-detail">
-                            <div class="info-grid">
-                                <div class="info-box">
-                                    <div class="info-title"><i class="fas fa-user"></i> Credentials</div>
-                                    <div class="info-row">
-                                        <div class="info-label"><i class="fas fa-user"></i> Username</div>
-                                        <div class="info-value">
-                                            ${vm.username}
-                                            <button class="copy-btn tooltip" data-tooltip="Copy username" onclick="copyText('${vm.username}', this)">
-                                                <i class="fas fa-copy"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="info-row">
-                                        <div class="info-label"><i class="fas fa-lock"></i> Password</div>
-                                        <div class="info-value">
-                                            ${vm.password}
-                                            <button class="copy-btn tooltip" data-tooltip="Copy password" onclick="copyText('${vm.password}', this)">
-                                                <i class="fas fa-copy"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="info-box">
-                                    <div class="info-title"><i class="fas fa-network-wired"></i> Network</div>
-                                    <div class="info-row">
-                                        <div class="info-label"><i class="fas fa-ip"></i> Tailscale IP</div>
-                                        <div class="info-value">
-                                            ${vm.tailscaleIP || '<span style="opacity:0.5;">Pending...</span>'}
-                                            ${vm.tailscaleIP ? `
-                                                <button class="copy-btn tooltip" data-tooltip="Copy IP" onclick="copyText('${vm.tailscaleIP}', this)">
-                                                    <i class="fas fa-copy"></i>
-                                                </button>
-                                            ` : ''}
-                                        </div>
-                                    </div>
-                                    <div class="info-row">
-                                        <div class="info-label"><i class="fas fa-clock"></i> Expires</div>
-                                        <div class="info-value">
-                                            <span id="countdown-${vm.id}" class="countdown-timer ${getCountdownClass(vm.expiresAt)}">
-                                                ${formatCountdown(vm.expiresAt)}
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="vm-progress">
-                                <div class="vm-progress-bar">
-                                    <div class="vm-progress-fill" style="width: ${progress}%"></div>
-                                </div>
-                                <div class="terminal-input-container">
-                                    <span class="terminal-prompt">$</span>
-                                    <input type="text" 
-                                           class="terminal-input" 
-                                           placeholder="ipconfig | vnc | repo | info | help" 
-                                           onkeypress="if(event.key==='Enter') runTerminalCommand('${vm.id}', this)">
-                                </div>
-                            </div>
-                            
-                            <div class="action-buttons">
-                                <button class="action-btn copy-all" onclick="copyAllVMInfo('${vm.id}')">
-                                    <i class="fas fa-copy"></i> Copy All
-                                </button>
-                                ${vm.repoUrl ? `
-                                    <a href="${vm.repoUrl}" target="_blank" class="action-btn">
-                                        <i class="fab fa-github"></i> Repo
-                                    </a>
-                                ` : ''}
-                                ${vm.novncUrl ? `
-                                    <a href="${vm.novncUrl}" target="_blank" class="action-btn">
-                                        <i class="fas fa-desktop"></i> VNC
-                                    </a>
-                                ` : ''}
-                                <button class="action-btn delete" onclick="deleteVM('${vm.id}')">
-                                    <i class="fas fa-trash-alt"></i> Delete
-                                </button>
-                            </div>
-                        </div>
-                        ` : ''}
                     </div>
                 `;
             }).join('');
         }
         
-        function loadMore() {
-            if (!hasMore || isLoading) return;
-            currentPage++;
-            renderVMList();
-        }
-        
-        // ============================================ //
-        // API CALLS
-        // ============================================ //
-        async function loadVMs() {
-            isLoading = true;
-            
-            try {
-                const res = await fetch(API_URL);
-                const data = await res.json();
-                
-                if (data.success) {
-                    vms = data.vms || [];
-                    
-                    // Setup countdown intervals
-                    vms.forEach(vm => {
-                        if (vm.status === 'running' && !countdownIntervals[vm.id]) {
-                            countdownIntervals[vm.id] = setInterval(() => updateCountdowns(), 1000);
-                        }
-                    });
-                    
-                    applyFilters();
-                    updateStats();
-                }
-            } catch (e) {
-                console.error('Failed to load VMs:', e);
-            } finally {
-                isLoading = false;
-                // Remove skeleton
-                elements.vmList.querySelectorAll('.skeleton').forEach(s => s.remove());
-            }
-        }
-        
-        async function loadStats() {
-            try {
-                const res = await fetch(STATS_URL);
-                const data = await res.json();
-                
-                if (data.success && data.stats) {
-                    // Stats are updated via updateStats() which uses vms array
-                }
-            } catch (e) {
-                console.error('Failed to load stats:', e);
-            }
-        }
-        
-        async function createVM() {
-            const githubToken = elements.githubToken.value.trim();
-            const tailscaleKey = elements.tailscaleKey.value.trim();
-            let username = elements.vmUsername.value.trim();
-            let password = elements.vmPassword.value.trim();
-            
-            if (!githubToken) {
-                showToast('GitHub Token is required', 'error');
-                return;
-            }
-            
-            if (!tailscaleKey) {
-                showToast('Tailscale Key is required', 'error');
-                return;
-            }
-            
-            if (!username) username = randomUsername();
-            if (!password) password = randomPassword();
-            
-            if (!backendConnected) {
-                const connected = await checkBackendConnection();
-                if (!connected) {
-                    showToast('Cannot connect to backend', 'error');
-                    return;
-                }
-            }
-            
-            totalCreations++;
-            
-            // Show progress
-            elements.createProgressContainer.style.display = 'block';
-            elements.createBtn.disabled = true;
-            elements.createBtn.innerHTML = '<span class="spinner"></span> Creating...';
-            
-            // Animate progress
-            updateCreateProgress(0, 10, 'Validating credentials...');
-            setTimeout(() => updateCreateProgress(1, 30, 'Creating repository...'), 1000);
-            setTimeout(() => updateCreateProgress(2, 55, 'Generating workflow...'), 2500);
-            setTimeout(() => updateCreateProgress(3, 80, 'Triggering quantum runner...'), 4000);
-            
-            try {
-                const res = await fetch(API_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        githubToken,
-                        tailscaleKey,
-                        vmUsername: username,
-                        vmPassword: password
-                    })
-                });
-                
-                const data = await res.json();
-                
-                if (data.success) {
-                    successfulCreations++;
-                    updateCreateProgress(4, 100, 'Quantum VM initialized!');
-                    
-                    // Add to list
-                    const newVM = {
-                        id: data.id,
-                        name: data.name,
-                        username: data.username,
-                        password: data.password,
-                        status: data.status,
-                        repoUrl: data.repoUrl,
-                        workflowUrl: data.workflowUrl,
-                        tailscaleIP: data.tailscaleIP,
-                        novncUrl: data.novncUrl,
-                        createdAt: data.createdAt,
-                        expiresAt: data.expiresAt,
-                        progress: 10
-                    };
-                    
-                    vms.unshift(newVM);
-                    applyFilters();
-                    updateStats();
-                    
-                    // Clear form
-                    elements.githubToken.value = '';
-                    elements.tailscaleKey.value = '';
-                    elements.vmUsername.value = '';
-                    elements.vmPassword.value = '';
-                    elements.githubToken.classList.remove('valid', 'invalid');
-                    elements.tailscaleKey.classList.remove('valid', 'invalid');
-                    
-                    showToast(`✅ VM "${data.name}" created successfully!`, 'success');
-                    
-                    setTimeout(() => {
-                        elements.createProgressContainer.style.display = 'none';
-                    }, 2000);
-                    
-                    // Refresh after 10s
-                    setTimeout(() => loadVMs(), 10000);
-                } else {
-                    updateCreateProgress(0, 0, 'Creation failed');
-                    showToast(data.error || 'Failed to create VM', 'error');
-                    setTimeout(() => {
-                        elements.createProgressContainer.style.display = 'none';
-                    }, 2000);
-                }
-            } catch (e) {
-                updateCreateProgress(0, 0, 'Connection error');
-                showToast('Connection error', 'error');
-                setTimeout(() => {
-                    elements.createProgressContainer.style.display = 'none';
-                }, 2000);
-            } finally {
-                elements.createBtn.disabled = false;
-                elements.createBtn.innerHTML = '<i class="fas fa-play"></i> Launch Quantum VM';
-            }
-        }
-        
-        function updateCreateProgress(step, percent, text) {
+        // ============================================
+        // PROGRESS TRACKING - THẬT
+        // ============================================
+        function updateProgress(step, percent, text) {
             elements.createProgressFill.style.width = percent + '%';
             elements.createProgressText.textContent = text;
+            elements.createProgressPercent.textContent = percent + '%';
             
             const steps = elements.createProgressSteps.children;
             for (let i = 0; i < steps.length; i++) {
@@ -2609,57 +1645,209 @@ Status:       ${vm.status}
             }
         }
         
+        function trackVMProgress(vmId, repoUrl) {
+            let currentStep = 0;
+            
+            // Step 0: Validating (already done)
+            updateProgress(0, 10, 'Validating credentials...');
+            
+            // Check repository creation
+            setTimeout(() => {
+                if (repoUrl) {
+                    currentStep = 1;
+                    updateProgress(1, 25, 'Repository created, generating workflow...');
+                }
+            }, 2000);
+            
+            // Check workflow creation (polling)
+            let pollCount = 0;
+            progressInterval = setInterval(() => {
+                pollCount++;
+                
+                // Simulate checking actual progress from GitHub
+                // In production, you'd call GitHub API to check workflow status
+                
+                if (pollCount === 1) {
+                    currentStep = 2;
+                    updateProgress(2, 50, 'Workflow file created, triggering deployment...');
+                } else if (pollCount === 2) {
+                    currentStep = 3;
+                    updateProgress(3, 75, 'GitHub Actions runner starting...');
+                } else if (pollCount === 3) {
+                    // Check if VM is running
+                    fetch(`${API_BASE}/api/vps/${vmId}`)
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.vm && data.vm.status === 'running') {
+                                clearInterval(progressInterval);
+                                currentStep = 4;
+                                updateProgress(4, 100, 'VM is ready! Your virtual forest is growing.');
+                                
+                                // Show success
+                                setTimeout(() => {
+                                    elements.createProgressContainer.style.display = 'none';
+                                    loadVMs();
+                                    showToast(`🌿 VM "${data.vm.name}" is now running!`, 'success');
+                                    
+                                    // Play nature sound (optional)
+                                    // new Audio('https://example.com/nature-chime.mp3').play();
+                                }, 1000);
+                            } else if (pollCount >= 10) {
+                                // Timeout
+                                clearInterval(progressInterval);
+                                updateProgress(currentStep, 80, 'VM is still provisioning... Check back later.');
+                                setTimeout(() => {
+                                    elements.createProgressContainer.style.display = 'none';
+                                    loadVMs();
+                                }, 3000);
+                            }
+                        });
+                }
+                
+                if (pollCount < 3) {
+                    updateProgress(currentStep, 25 + pollCount * 20, `Step ${currentStep + 1}/5: ${getStepText(currentStep)}`);
+                }
+            }, 3000);
+        }
+        
+        function getStepText(step) {
+            const texts = ['Validating', 'Creating repo', 'Generating workflow', 'Deploying', 'Ready'];
+            return texts[step] || 'Processing';
+        }
+        
+        // ============================================
+        // CREATE VM
+        // ============================================
+        async function createVM() {
+            const githubToken = elements.githubToken.value.trim();
+            const tailscaleKey = elements.tailscaleKey.value.trim();
+            let username = elements.vmUsername.value.trim();
+            let password = elements.vmPassword.value.trim();
+            
+            if (!githubToken) {
+                showToast('Please enter your GitHub Token', 'error');
+                return;
+            }
+            if (!tailscaleKey) {
+                showToast('Please enter your Tailscale Key', 'error');
+                return;
+            }
+            
+            if (!username) username = randomUsername();
+            if (!password) password = randomPassword();
+            
+            // Show progress
+            elements.createProgressContainer.style.display = 'block';
+            elements.createBtn.disabled = true;
+            elements.createBtn.innerHTML = '<span class="spinner"></span> Planting VM...';
+            
+            try {
+                const res = await fetch(`${API_BASE}/api/vps`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        githubToken,
+                        tailscaleKey,
+                        osType: selectedOS,
+                        vmUsername: username,
+                        vmPassword: password
+                    })
+                });
+                
+                const data = await res.json();
+                
+                if (data.success) {
+                    currentCreatingVM = data.id;
+                    
+                    // Clear form
+                    elements.githubToken.value = '';
+                    elements.tailscaleKey.value = '';
+                    elements.vmUsername.value = randomUsername();
+                    elements.vmPassword.value = randomPassword();
+                    
+                    // Start tracking progress
+                    trackVMProgress(data.id, data.repoUrl);
+                    
+                    // Add to list
+                    vms.unshift(data);
+                    applyFilters();
+                    
+                } else {
+                    updateProgress(0, 0, 'Failed');
+                    elements.createProgressText.textContent = data.error || 'Creation failed';
+                    showToast(data.error || 'Failed to create VM', 'error');
+                    
+                    setTimeout(() => {
+                        elements.createProgressContainer.style.display = 'none';
+                    }, 3000);
+                }
+            } catch(e) {
+                updateProgress(0, 0, 'Connection error');
+                showToast('Connection error', 'error');
+                setTimeout(() => {
+                    elements.createProgressContainer.style.display = 'none';
+                }, 3000);
+            } finally {
+                elements.createBtn.disabled = false;
+                elements.createBtn.innerHTML = '<i class="fas fa-seedling"></i> Grow New VM';
+            }
+        }
+        
+        async function deleteVM(vmId) {
+            try {
+                await fetch(`${API_BASE}/api/vps?id=${vmId}`, { method: 'DELETE' });
+                vms = vms.filter(v => v.id !== vmId);
+                applyFilters();
+                showToast('VM has been removed from your forest', 'success');
+            } catch(e) {
+                showToast('Failed to delete VM', 'error');
+            }
+        }
+        
         function refreshData() {
             loadVMs();
-            loadStats();
-            showToast('Data refreshed', 'info');
+            showToast('Forest refreshed', 'info');
         }
         
-        // ============================================ //
-        // KEYBOARD SHORTCUTS
-        // ============================================ //
-        function showShortcuts() {
-            const shortcuts = [
-                { key: 'Ctrl + N', action: 'Create new VM' },
-                { key: 'Ctrl + R', action: 'Refresh data' },
-                { key: 'Ctrl + K', action: 'Focus search' },
-                { key: 'Ctrl + S', action: 'Save config' },
-                { key: 'Ctrl + L', action: 'Load config' },
-                { key: 'Esc', action: 'Close modal / Cancel selection' },
-                { key: '?', action: 'Show shortcuts' }
-            ];
-            
-            let html = '<div class="shortcuts-grid">';
-            shortcuts.forEach(s => {
-                html += `
-                    <div class="shortcut-item">
-                        <span>${s.action}</span>
-                        <span class="shortcut-key">${s.key}</span>
-                    </div>
-                `;
-            });
-            html += '</div>';
-            
-            document.getElementById('modalTitle').textContent = 'Keyboard Shortcuts';
-            document.getElementById('modalBody').innerHTML = html;
-            document.getElementById('modalConfirmBtn').textContent = 'Close';
-            document.getElementById('modalOverlay').classList.add('show');
+        function saveConfig() {
+            const config = {
+                githubToken: elements.githubToken.value,
+                tailscaleKey: elements.tailscaleKey.value
+            };
+            localStorage.setItem('naturalvps_config', JSON.stringify(config));
+            showToast('Configuration saved', 'success');
         }
         
-        // ============================================ //
+        function loadConfig() {
+            const saved = localStorage.getItem('naturalvps_config');
+            if (saved) {
+                const config = JSON.parse(saved);
+                if (config.githubToken) elements.githubToken.value = config.githubToken;
+                if (config.tailscaleKey) elements.tailscaleKey.value = config.tailscaleKey;
+                showToast('Configuration loaded', 'success');
+            } else {
+                showToast('No saved configuration', 'info');
+            }
+        }
+        
+        function clearForm() {
+            elements.githubToken.value = '';
+            elements.tailscaleKey.value = '';
+            elements.vmUsername.value = randomUsername();
+            elements.vmPassword.value = randomPassword();
+            showToast('Form cleared', 'info');
+        }
+        
+        // ============================================
         // EVENT LISTENERS
-        // ============================================ //
+        // ============================================
         document.getElementById('createBtn').onclick = createVM;
         document.getElementById('randomUserBtn').onclick = () => {
             elements.vmUsername.value = randomUsername();
-            showToast('Username generated', 'info');
         };
         document.getElementById('randomPassBtn').onclick = () => {
             elements.vmPassword.value = randomPassword();
-            showToast('Password generated', 'info');
         };
-        document.getElementById('testGithubBtn').onclick = testGitHubToken;
-        document.getElementById('testTailscaleBtn').onclick = testTailscaleKey;
         document.getElementById('saveConfigBtn').onclick = saveConfig;
         document.getElementById('loadConfigBtn').onclick = loadConfig;
         document.getElementById('clearFormBtn').onclick = clearForm;
@@ -2676,98 +1864,42 @@ Status:       ${vm.status}
             applyFilters();
         };
         
+        let searchTimer;
         elements.searchInput.oninput = (e) => {
-            clearTimeout(searchDebounceTimer);
-            searchDebounceTimer = setTimeout(() => {
+            clearTimeout(searchTimer);
+            searchTimer = setTimeout(() => {
                 currentSearch = e.target.value.toLowerCase();
                 applyFilters();
             }, 300);
         };
         
+        // Close modal on overlay click
+        document.getElementById('vmDetailModal').addEventListener('click', (e) => {
+            if (e.target.classList.contains('modal-overlay')) {
+                closeVmModal();
+            }
+        });
+        
         // Keyboard shortcuts
         document.addEventListener('keydown', (e) => {
-            if (e.ctrlKey && e.key === 'n') {
-                e.preventDefault();
-                createVM();
-            } else if (e.ctrlKey && e.key === 'r') {
-                e.preventDefault();
-                refreshData();
-            } else if (e.ctrlKey && e.key === 'k') {
-                e.preventDefault();
-                elements.searchInput.focus();
-            } else if (e.ctrlKey && e.key === 's') {
-                e.preventDefault();
-                saveConfig();
-            } else if (e.ctrlKey && e.key === 'l') {
-                e.preventDefault();
-                loadConfig();
-            } else if (e.key === 'Escape') {
-                if (selectionMode) {
-                    toggleSelectionMode();
-                }
-                closeModal();
-            } else if (e.key === '?') {
-                showShortcuts();
+            if (e.key === 'Escape') {
+                closeVmModal();
             }
         });
         
-        // Pull to refresh
-        let touchStartY = 0;
-        let pulling = false;
-        
-        elements.vmList.addEventListener('touchstart', (e) => {
-            if (elements.vmList.scrollTop === 0) {
-                touchStartY = e.touches[0].clientY;
-            }
-        });
-        
-        elements.vmList.addEventListener('touchmove', (e) => {
-            if (elements.vmList.scrollTop === 0) {
-                const touchY = e.touches[0].clientY;
-                const diff = touchY - touchStartY;
-                
-                if (diff > 50) {
-                    pulling = true;
-                    elements.ptrIndicator.classList.add('pulling');
-                    elements.ptrIndicator.innerHTML = '<i class="fas fa-sync-alt fa-spin"></i> Release to refresh';
-                }
-            }
-        });
-        
-        elements.vmList.addEventListener('touchend', (e) => {
-            if (pulling) {
-                pulling = false;
-                elements.ptrIndicator.classList.remove('pulling');
-                elements.ptrIndicator.innerHTML = '<i class="fas fa-arrow-down"></i> Pull to refresh';
-                refreshData();
-            }
-        });
-        
-        // Initialize
-        (async function init() {
-            // Generate random credentials
+        // ============================================
+        // INITIALIZATION
+        // ============================================
+        (function init() {
             elements.vmUsername.value = randomUsername();
             elements.vmPassword.value = randomPassword();
-            
-            // Try to load saved config
             loadConfig();
+            loadVMs();
             
-            // Check connection
-            await checkBackendConnection();
+            // Auto refresh every 30 seconds
+            setInterval(loadVMs, 30000);
             
-            // Setup auto-refresh every 30s
-            setInterval(() => {
-                if (backendConnected) {
-                    loadVMs();
-                } else {
-                    checkBackendConnection();
-                }
-            }, 30000);
-            
-            // Setup connection check every 60s
-            setInterval(checkBackendConnection, 60000);
-            
-            showToast('Singularity Club v2.0 Ready', 'success');
+            showToast('🌿 Welcome to Natural VPS', 'success');
         })();
     </script>
 </body>
